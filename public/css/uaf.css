@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'planer';
+  font-style: normal;
+  src: url('../staging/wp-content/uploads/useanyfont/180611041122planer.eot');
+  src: local('planer'), url('../staging/wp-content/uploads/useanyfont/180611041122planer.eot') format('embedded-opentype'), url('../staging/wp-content/uploads/useanyfont/180611041122planer.woff') format('woff');
+}
+      
+      .planer{font-family: 'planer' !important;}
+      
