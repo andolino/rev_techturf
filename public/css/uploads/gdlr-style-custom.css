@@ -94,7 +94,7 @@ body.single-post .infinite-sidebar-style-none, body.blog .infinite-sidebar-style
 .infinite-body .infinite-top-bar a:hover{ color: #ffffff; } 
 .infinite-top-bar .infinite-top-bar-right-social a{ color: #ffffff; } 
 .infinite-top-bar .infinite-top-bar-right-social a:hover{ color: #e44444; } 
-.infinite-header-background, .infinite-sticky-menu-placeholder, .infinite-header-style-boxed.infinite-fixed-navigation{ background-color: #3c5192; } 
+.infinite-header-background, .infinite-sticky-menu-placeholder, .infinite-header-style-boxed.infinite-fixed-navigation{ background-color: #f0f0f000; } 
 .infinite-header-wrap.infinite-header-style-plain{ border-color: #565656; } 
 .infinite-header-side-nav.infinite-style-side-toggle .infinite-logo{ background-color: #ffffff; } 
 .infinite-top-menu-button i, .infinite-mobile-menu-button i{ color: #e2e2e2; }.infinite-mobile-button-hamburger:before, .infinite-mobile-button-hamburger:after, .infinite-mobile-button-hamburger span{ background: #e2e2e2; } 

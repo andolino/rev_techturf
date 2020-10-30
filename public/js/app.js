@@ -1921,22 +1921,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      todos: '',
       form: new Form({
         title: ''
       })
     };
   },
   methods: {
+    getTodos: function getTodos() {
+      var _this = this;
+
+      axios.get('/api/todo').then(function (res) {
+        _this.todos = res.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     saveData: function saveData() {
+      var _this2 = this;
+
       var data = new FormData();
       data.append('title', this.form.title);
-      axios.post('/api/todo', data);
+      axios.post('/api/todo', data).then(function () {
+        _this2.form.reset();
+
+        _this2.getTodos();
+      })["catch"](function (error) {
+        _this2.form.errors.record(error.response.data.errors);
+      });
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.getTodos();
+  }
 });
 
 /***/ }),
@@ -37554,6 +37580,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control form-control-lg",
+            class: { "is-invalid": _vm.form.errors.has("title") },
             attrs: { type: "text", name: "title" },
             domProps: { value: _vm.form.title },
             on: {
@@ -37567,8 +37594,26 @@ var render = function() {
           }),
           _vm._v(" "),
           _vm._m(0)
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.form.errors.has("title")
+          ? _c("span", {
+              staticClass: "text-danger pt-3",
+              domProps: { textContent: _vm._s(_vm.form.errors.get("title")) }
+            })
+          : _vm._e()
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "w-25" },
+      _vm._l(_vm.todos, function(todo) {
+        return _c("div", { key: todo.id, staticClass: "w-100" }, [
+          _vm._v("\n\t\t\t" + _vm._s(todo.title) + "\n\t\t")
+        ])
+      }),
+      0
     )
   ])
 }
