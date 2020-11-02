@@ -64,7 +64,7 @@
     </div>
 	<div class="infinite-copyright-wrapper">
     <div class="infinite-copyright-container infinite-container">
-      <div class="infinite-copyright-text infinite-item-pdlr">COPYRIGHT 2019 NEXLOGIC, ALL RIGHT
+      <div class="infinite-copyright-text infinite-item-pdlr">COPYRIGHT 2020 TECHTURF, ALL RIGHT
       RESERVED
       </div>
     </div>

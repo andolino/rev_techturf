@@ -41,7 +41,7 @@
 								<a aria-current="page" href="">Home</a>
 							</li>
 							<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1519">
-								<a href="about/index.html">Company</a>
+								<a href="#partners">Our Partners</a>
 							</li>
 							<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1537">
 								<a href="solutions/index.html">Solutions</a>
@@ -72,7 +72,7 @@
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1420 current_page_item menu-item-1424 infinite-normal-menu">
 								<a href="">Home</a></li>
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1519 infinite-normal-menu">
-								<a href="about/index.html">Company</a></li>
+								<a href="#partners">Our Partners</a></li>
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1537 infinite-normal-menu">
 								<a href="solutions/index.html">Solutions</a></li>
 								<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1524 infinite-normal-menu">
@@ -81,7 +81,7 @@
 							<div class="infinite-navigation-slide-bar" id="infinite-navigation-slide-bar"></div>
 						</div>
 						<div class="infinite-main-menu-right-wrap clearfix ">
-						<div class="infinite-main-menu-search" id="infinite-top-search"><i class="fa fa-search"></i></div>
+						<div class="infinite-main-menu-search d-none" id="infinite-top-search"><i class="fa fa-search"></i></div>
 							<div class="infinite-top-search-wrap">
 								<div class="infinite-top-search-close"></div>
 								<div class="infinite-top-search-row">
@@ -437,6 +437,33 @@
 			</div>
 		</div>
 	</div>
+<div class="gdlr-core-pbf-wrapper " style="padding: 0px 0px 45px 0px;">
+	<div class="gdlr-core-pbf-background-wrap" style="background-color:#1e0115;"></div>
+	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js " data-gdlr-animation="pulse" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
+		<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
+			<div class="gdlr-core-pbf-element">
+				<div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-center-align gdlr-core-title-item-caption-bottom gdlr-core-item-pdlr" id="gdlr-core-title-item-id-33675">
+					<div class="gdlr-core-title-item-title-wrap "><h6 class="gdlr-core-title-item-title gdlr-core-skin-title " style="font-size: 37px ;color: #ffffff ;">Network
+						Management<span class="gdlr-core-title-item-title-divider gdlr-core-skin-divider"></span>
+					</h6></div>
+						<p>We manage your network, keep it running and provide remote support and monitoring for your network and equipment.</p>
+					<div class="row text-left">
+						<div class="col-sm-6">
+							<h4 style="color: #ececec;">Network Security &nbsp;<i class="fa fa-chevron-right" style="font-size: 20px;" aria-hidden="true"></i>
+							</h4>
+							<p>Techturf is designed to protect your corporate network from multiple threats using the latest in virtual security technology.</p>
+						</div>
+						<div class="col-sm-6">
+							<h4 style="color: #ececec;">24/7 Support &nbsp;<i class="fa fa-chevron-right" style="font-size: 20px;" aria-hidden="true"></i>
+							</h4>
+							<p>We make sure that we are always available 24/7 to handle any issue you might or have encountered. Client satisfaction is a guaranteed priority.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="gdlr-core-pbf-wrapper " id="gdlr-core-wrapper-1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 40px 0px;overflow: hidden ;">
 <div class="gdlr-core-pbf-background-wrap">
 <div class="gdlr-core-pbf-background gdlr-core-parallax gdlr-core-js" data-parallax-speed="0" style="opacity: 1 ;background-image: url({{asset('uploads/techturf_bg_2.jpg')}});background-size: cover ;background-position: top center ;"></div>
@@ -520,42 +547,50 @@
 		<div class="gdlr-core-pbf-column gdlr-core-column-20 gdlr-core-column-first gdlr-core-hide-in-mobile">
 			<div class="gdlr-core-pbf-column-content-margin gdlr-core-js ">
 				<div class="gdlr-core-pbf-background-wrap">
-					<div class="gdlr-core-pbf-background gdlr-core-parallax gdlr-core-js" data-parallax-speed="0.2" style="background-image: url({{ asset('uploads/model-img-lr-man.png') }});background-repeat: no-repeat ;background-position: bottom center ;"></div>
+					<div class="gdlr-core-pbf-background gdlr-core-parallax gdlr-core-js" data-parallax-speed="0.2" style="background-image: url({{ asset('uploads/girl-handling-laptop.png') }});background-repeat: no-repeat ;background-position: bottom center ;"></div>
 				</div>
 				<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js " data-gdlr-animation="fadeInUp" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
 					<div class="gdlr-core-pbf-element">
 						<div class="gdlr-core-image-item gdlr-core-item-pdlr gdlr-core-item-pdb  gdlr-core-left-align" style="padding-bottom: -100px ;">
-							<div class="gdlr-core-image-item-wrap gdlr-core-media-image  gdlr-core-image-item-style-rectangle" style="border-width: 0px;"><img alt="" height="600" src="{{ asset('uploads/model-img-lr-gui.png') }}" width="356"></div>
+							<div class="gdlr-core-image-item-wrap gdlr-core-media-image  gdlr-core-image-item-style-rectangle" style="border-width: 0px;"><img alt="" height="600" src="{{ asset('uploads/model-img-tech-gui.png') }}" width="356"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="gdlr-core-pbf-column gdlr-core-column-20">
-			<div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="padding: 100px 0px 0px 10px;">
+			<div class="gdlr-core-pbf-column-content-margin gdlr-core-js " style="padding: 20px 0px 0px 10px;">
 				<div class="gdlr-core-pbf-background-wrap" style="background-color: #ffffff ;opacity: .7 ;"></div>
 				<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js " data-gdlr-animation="fadeIn" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
 					<div class="gdlr-core-pbf-element">
 						<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-left-align gdlr-core-column-service-icon-left gdlr-core-no-caption gdlr-core-item-pdlr">
-							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;"><i class="icon_link" style="color: #2d9bea ;"></i></div>
+							<span>DISCOVER</span>
+							<h4>
+								Network & I.T.
+								Solutions designed
+								for you.
+								</h4>
+							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;">
+								{{-- <i class="icon_link" style="color: #2d9bea ;"></i> --}}
+								<img alt="" class="m-b-20" src="{{ asset('images/internet.svg') }}">
+							</div>
 							<div class="gdlr-core-column-service-content-wrapper">
 								<div class="gdlr-core-column-service-title-wrap"><h3 class="gdlr-core-column-service-title" style="font-size: 16px ;letter-spacing: 2px ;">
-								CONNECTIVITY</h3></div>
-								<div class="gdlr-core-column-service-content"><p>NexLogic
-								interconnects Cable TV Operators and connect Companies to the
-								Internet.</p>
+								INTERNET</h3></div>
+								<div class="gdlr-core-column-service-content"><p>Techturf delivers the latest cost-effective private and public wide area high speed data networks. Enjoy international and domestic Leased Lines just for you <br> <span class="silent-span">Multiple routes to guarantee the optimum speed. You'll always be online</span></p>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="gdlr-core-pbf-element">
 						<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-left-align gdlr-core-column-service-icon-left gdlr-core-no-caption gdlr-core-item-pdlr">
-							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;"><i class="icon_lightbulb_alt" style="color: #2d9bea ;"></i></div>
+							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;">
+								{{-- <i class="icon_lightbulb_alt" style="color: #2d9bea ;"></i> --}}
+								<img alt="" class="m-b-20" src="{{ asset('images/cloud.svg') }}">
+							</div>
 							<div class="gdlr-core-column-service-content-wrapper">
-								<div class="gdlr-core-column-service-title-wrap"><h3 class="gdlr-core-column-service-title" style="font-size: 16px ;letter-spacing: 2px ;">NETWORK
-								SOLUTIONS</h3></div>
-								<div class="gdlr-core-column-service-content"><p>NexLogic Designs,
-								Develops, Implements Hardware and Software Solutions.</p>
+								<div class="gdlr-core-column-service-title-wrap"><h3 class="gdlr-core-column-service-title" style="font-size: 16px ;letter-spacing: 2px ;">CLOUD</h3></div>
+								<div class="gdlr-core-column-service-content"><p>Comprehensive, locally delivered private and public cloud hosted server options to meet your growing needs and daily business operations. <br> <span class="silent-span"> Get content fast from servers within your region. Available & Reliable at all times. </span></p>
 								</div>
 							</div>
 						</div>
@@ -569,26 +604,16 @@
 				<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js " data-gdlr-animation="fadeIn" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
 					<div class="gdlr-core-pbf-element">
 						<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-left-align gdlr-core-column-service-icon-left gdlr-core-no-caption gdlr-core-item-pdlr">
-							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;"><i class="icon_key_alt" style="color: #2d9bea ;"></i></div>
+							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;">
+								{{-- <i class="icon_key_alt" style="color: #2d9bea ;"></i> --}}
+								<img alt="" class="m-b-20" src="{{ asset('images/voice.svg') }}">
+							</div>
 								<div class="gdlr-core-column-service-content-wrapper">
 									<div class="gdlr-core-column-service-title-wrap"><h3 class="gdlr-core-column-service-title" style="font-size: 16px ;letter-spacing: 2px ;">
-									CONSULTANCY</h3></div>
-									<div class="gdlr-core-column-service-content"><p>NexLogic provides
-									technical knowledge for the Government and Companies.</p>
+									VOICE</h3></div>
+									<div class="gdlr-core-column-service-content"><p>A whole new way to do voice infrastructure, computer integration and collaboration systems. Telephony services from SME's to large enterprises. <br> <span class="silent-span"> Friendly & competitive rates to support your global & local call center needs. </span></p>
 									</div>
 								</div>
-						</div>
-					</div>
-					<div class="gdlr-core-pbf-element">
-						<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-left-align gdlr-core-column-service-icon-left gdlr-core-no-caption gdlr-core-item-pdlr">
-							<div class="gdlr-core-column-service-media gdlr-core-media-icon " style="margin-top: 5px;"><i class="icon_flowchart" style="color: #2d9bea ;"></i></div>
-							<div class="gdlr-core-column-service-content-wrapper">
-								<div class="gdlr-core-column-service-title-wrap"><h3 class="gdlr-core-column-service-title" style="font-size: 16px ;letter-spacing: 2px ;">PROJECT
-								MANAGEMENT</h3></div>
-								<div class="gdlr-core-column-service-content"><p>NexLogic Assists,
-								Trains, Assess, Coordinates Telecommunications improvements.</p>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -599,12 +624,12 @@
 </div>
 <div class="gdlr-core-pbf-wrapper " data-skin="Grey" style="padding: 75px 0px 30px 0px;">
 <div class="gdlr-core-pbf-background-wrap" style="background-color: #f1f1f1 ;"></div>
-	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js ">
+	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js" id="partners">
 		<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
 			<div class="gdlr-core-pbf-element">
 				<div class="gdlr-core-portfolio-item gdlr-core-item-pdb clearfix  gdlr-core-portfolio-item-style-grid gdlr-core-item-pdlr" style="padding-bottom: 0px ;">
 				<div class="gdlr-core-block-item-title-wrap  gdlr-core-left-align">
-				<div class="gdlr-core-block-item-title-inner"><h3 class="gdlr-core-block-item-title text-center">Partners</h3></div>
+				<div class="gdlr-core-block-item-title-inner"><h3 class="gdlr-core-block-item-title text-center">OUR PARTNERS</h3></div>
 				<div class="gdlr-core-flexslider-nav gdlr-core-round-style gdlr-core-absolute-center gdlr-core-right"></div>
 				</div>
 					<div class="gdlr-core-flexslider flexslider gdlr-core-js-2 " data-column="3" data-move="1" data-nav="navigation" data-nav-parent="gdlr-core-portfolio-item" data-type="carousel">
@@ -614,12 +639,21 @@
 									<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
 									<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
 										<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-											<img alt="" height="429" src="{{ asset('uploads/partners__0003_Luzvimin.jpg') }}" width="700"><span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js"><span class="gdlr-core-image-overlay-content"><span class="gdlr-core-portfolio-title gdlr-core-title-font"><a href="portfolio/luzvimin-catv/index.html">Luzvimin CATV</a></span><span class="gdlr-core-portfolio-icon-wrap"><a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0003_Luzvimin.jpg') }}"><i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i></a></span></span></span>
+											<img alt="" height="429" src="{{ asset('images/partners_pldt.jpg') }}" width="700">
+												<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js">
+												<span class="gdlr-core-image-overlay-content">
+												<span class="gdlr-core-portfolio-title gdlr-core-title-font">
+													<a href="#">PLDT</a>
+												</span>
+												<span class="gdlr-core-portfolio-icon-wrap">
+													<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('images/partners_pldt.jpg') }}">
+														<i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i>
+													</a>
+												</span></span></span>
 										</div>
 									</div>
 								<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-								<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/luzvimin-catv/index.html">Luzvimin
-								CATV</a></h3></div>
+								<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="#">PLDT</a></h3></div>
 								</div>
 							</li>
 							<li class="gdlr-core-item-mglr">
@@ -627,11 +661,21 @@
 								<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
 									<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
 										<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-											<img alt="" height="429" src="{{ asset('uploads/partners__0004_telmarc.jpg') }}" width="700"><span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js"><span class="gdlr-core-image-overlay-content"><span class="gdlr-core-portfolio-title gdlr-core-title-font"><a href="portfolio/telmarc/index.html">Telmarc</a></span><span class="gdlr-core-portfolio-icon-wrap"><a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0004_telmarc.jpg') }}"><i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i></a></span></span></span>
+											<img alt="" height="429" src="{{ asset('images/partners_globe.jpg') }}" width="700">
+											<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js">
+											<span class="gdlr-core-image-overlay-content">
+											<span class="gdlr-core-portfolio-title gdlr-core-title-font">
+												<a href="portfolio/telmarc/index.html">Globe</a>
+											</span>
+											<span class="gdlr-core-portfolio-icon-wrap">
+												<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('images/partners_globe.jpg') }}">
+													<i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i>
+												</a>
+											</span></span></span>
 										</div>
 									</div>
 									<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/telmarc/index.html">Telmarc</a></h3>
+										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/telmarc/index.html">Globe</a></h3>
 									</div>
 								</div>
 							</li>
@@ -640,14 +684,14 @@
 									<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
 									<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
 										<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-										<img alt="" height="429" src="{{ asset('uploads/partners__0006_broadcable.jpg') }}" width="700">
+										<img alt="" height="429" src="{{ asset('images/partners_cm.jpg') }}" width="700">
 											<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js">
 												<span class="gdlr-core-image-overlay-content">
 													<span class="gdlr-core-portfolio-title gdlr-core-title-font">
-														<a href="portfolio/broad-cable-communications-incorporated/index.html">Broad Cable Communications Incorporated</a>
+														<a href="portfolio/broad-cable-communications-incorporated/index.html">China Mobile</a>
 													</span>
 													<span class="gdlr-core-portfolio-icon-wrap">
-														<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0006_broadcable.jpg') }}">
+														<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('images/partners_cm.jpg') }}">
 															<i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i>
 														</a>
 													</span>
@@ -656,8 +700,7 @@
 										</div>
 									</div>
 									<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-									<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/broad-cable-communications-incorporated/index.html">Broad
-									Cable Communications Incorporated</a></h3></div>
+									<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="#">China Mobile</a></h3></div>
 								</div>
 							</li>
 							<li class="gdlr-core-item-mglr">
@@ -665,13 +708,21 @@
 									<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
 										<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
 											<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-												<img alt="" height="429" src="{{ asset('uploads/partners__0002_laguna-bay-vision-.jpg') }}" width="700">
-													<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js"><span class="gdlr-core-image-overlay-content"><span class="gdlr-core-portfolio-title gdlr-core-title-font"><a href="portfolio/laguna-bay-vision/index.html">Laguna Bay Vision</a></span><span class="gdlr-core-portfolio-icon-wrap"><a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0002_laguna-bay-vision-.jpg') }}"><i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i></a></span></span></span>
+												<img alt="" height="429" src="{{ asset('images/partners_network.jpg') }}" width="700">
+													<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js">
+													<span class="gdlr-core-image-overlay-content">
+													<span class="gdlr-core-portfolio-title gdlr-core-title-font">
+														<a href="portfolio/laguna-bay-vision/index.html">Partners Network</a>
+													</span>
+													<span class="gdlr-core-portfolio-icon-wrap">
+														<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('images/partners_network.jpg') }}">
+															<i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i>
+														</a>
+													</span></span></span>
 											</div>
 										</div>
 										<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/laguna-bay-vision/index.html">Laguna Bay
-										Vision</a></h3></div>
+										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="#">Partners Network</a></h3></div>
 								</div>
 							</li>
 							<li class="gdlr-core-item-mglr">
@@ -679,25 +730,21 @@
 									<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
 										<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
 											<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-											<img alt="" height="429" src="{{ asset('uploads/partners__0007_east-mannila.jpg') }}" width="700"><span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js"><span class="gdlr-core-image-overlay-content"><span class="gdlr-core-portfolio-title gdlr-core-title-font"><a href="portfolio/east-manila-cable-network/index.html">East Manila Cable Network</a></span><span class="gdlr-core-portfolio-icon-wrap"><a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0007_east-mannila.jpg') }}"><i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i></a></span></span></span>
+											<img alt="" height="429" src="{{ asset('images/partners_rubik.jpg') }}" width="700">
+												<span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js">
+												<span class="gdlr-core-image-overlay-content">
+												<span class="gdlr-core-portfolio-title gdlr-core-title-font">
+													<a href="portfolio/east-manila-cable-network/index.html">Rubik</a>
+												</span>
+												<span class="gdlr-core-portfolio-icon-wrap">
+													<a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('images/partners_rubik.jpg') }}">
+														<i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i>
+													</a>
+												</span></span></span>
 											</div>
 										</div>
 										<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/east-manila-cable-network/index.html">East
-									Manila Cable Network</a></h3></div>
-								</div>
-							</li>
-							<li class="gdlr-core-item-mglr">
-								<div class="gdlr-core-portfolio-grid  gdlr-core-center-align gdlr-core-style-with-frame gdlr-core-js" data-sync-height="portfolio-item-1">
-									<div class="gdlr-core-portfolio-grid-frame gdlr-core-skin-e-background" style="opacity: 1 ;"></div>
-										<div class="gdlr-core-portfolio-thumbnail gdlr-core-media-image  gdlr-core-style-title-icon">
-											<div class="gdlr-core-portfolio-thumbnail-image-wrap  gdlr-core-zoom-on-hover">
-												<img alt="" height="429" src="{{ asset('uploads/partners__0005_fil-products.jpg') }}" width="700"><span class="gdlr-core-image-overlay  gdlr-core-portfolio-overlay gdlr-core-image-overlay-center-icon gdlr-core-js"><span class="gdlr-core-image-overlay-content"><span class="gdlr-core-portfolio-title gdlr-core-title-font"><a href="portfolio/fil-products-cable-tv-and-internet-tacloban/index.html">Fil Products Cable TV and Internet Tacloban</a></span><span class="gdlr-core-portfolio-icon-wrap"><a class="gdlr-core-ilightbox gdlr-core-js " data-ilightbox-group="gdlr-core-img-group-1" href="{{ asset('uploads/partners__0005_fil-products.jpg') }}"><i class="gdlr-core-portfolio-icon icon_zoom-in_alt"></i></a></span></span></span>
-											</div>
-										</div>
-										<div class="gdlr-core-portfolio-content-wrap gdlr-core-skin-divider">
-										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="portfolio/fil-products-cable-tv-and-internet-tacloban/index.html">Fil
-										Products Cable TV and Internet Tacloban</a></h3></div>
+										<h3 class="gdlr-core-portfolio-title gdlr-core-skin-title"><a href="#">Rubik</a></h3></div>
 								</div>
 							</li>
 						</ul>
@@ -707,19 +754,7 @@
 	</div>
 </div>
 </div>
-<div class="gdlr-core-pbf-wrapper " style="padding: 80px 0px 45px 0px;">
-<div class="gdlr-core-pbf-background-wrap" style="background-color: #1a1a1a ;"></div>
-	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js " data-gdlr-animation="pulse" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
-		<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
-			<div class="gdlr-core-pbf-element">
-				<div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-center-align gdlr-core-title-item-caption-bottom gdlr-core-item-pdlr" id="gdlr-core-title-item-id-33675">
-					<div class="gdlr-core-title-item-title-wrap "><h6 class="gdlr-core-title-item-title gdlr-core-skin-title " style="font-size: 37px ;color: #ffffff ;">Where are we?<span class="gdlr-core-title-item-title-divider gdlr-core-skin-divider"></span>
-					</h6></div>
-					<a class="gdlr-core-title-item-link" href="https://www.google.com/maps/place/Nexlogic+Telecommunications+Network+Inc./@14.563261,121.0311073,17z/data=!3m1!4b1!4m5!3m4!1s0x3397c8d1bfd41b9b:0x86ab8877639ef18f!8m2!3d14.563261!4d121.033296" target="_blank">View On Google Map</a><span class="gdlr-core-title-item-caption gdlr-core-info-font gdlr-core-skin-caption" style="font-size: 18px ;color: #7a7a7a ;">Come and see us</span></div>
-			</div>
-		</div>
-	</div>
-</div>
+
 <div class="gdlr-core-pbf-wrapper " style="padding: 0px 0px 0px 0px;">
 <div class="gdlr-core-pbf-wrapper-content gdlr-core-js ">
 	<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-pbf-wrapper-full-no-space">
