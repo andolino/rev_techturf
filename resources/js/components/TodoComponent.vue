@@ -29,6 +29,7 @@
 			},
 			methods: {
 				getTodos(){
+					alert('check!');
 					axios.get('/api/todo').then((res) => {
 						this.todos = res.data
 					}).catch((error) => {
