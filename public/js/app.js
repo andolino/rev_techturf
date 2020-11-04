@@ -1940,6 +1940,7 @@ __webpack_require__.r(__webpack_exports__);
     getTodos: function getTodos() {
       var _this = this;
 
+      // alert('check!');
       axios.get('/api/todo').then(function (res) {
         _this.todos = res.data;
       })["catch"](function (error) {
