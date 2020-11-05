@@ -8,10 +8,10 @@
               <span class="infinite-widget-head-divider"></span>
             </h3>
             <span class="clear"></span>
-            <div class="textwidget"><p>NexLogic is a collective synergy of smart, passionate and
-              technology-driven people working together to provide connectivity, bandwidth and
-              Internet solutions. We deliver  innovative solutions to today’s and tomorrow’s
-              networking challenges.</p>
+            <div class="textwidget"><p>Techturf Inc. is an internet and information technology solutions provider. <br>
+              Techturf Inc. provides connectivity, communications, automation, digitalization, virtual or actual and physical. It is where solutions are made easy. <br>
+              Techturf Inc. is a consolidated expansion of Zippylet IT Services’ growing market demand for red-hot network setups in both corporate and government offices. <br>
+              Techturf is one of the few technology business aggregators in the country that creates a simple yet trendy take on technology worldwide</p>
               <p><a href="">Read more</a></p>
             </div>
           </div>
@@ -19,11 +19,11 @@
         <div class="infinite-footer-column infinite-item-pdlr infinite-column-20">
           <div class="widget widget_text infinite-widget" id="text-3">
             <h3 class="infinite-widget-title">
-              <span class="infinite-widget-head-text">NexLogic Telecommunications Network, Inc.</span>
+              <span class="infinite-widget-head-text">Techturf Information and Services.</span>
               <span class="infinite-widget-head-divider"></span>
             </h3>
             <span class="clear"></span>
-            <div class="textwidget">
+            {{-- <div class="textwidget">
               <div>
                 <span class="ttfmake-icon mceNonEditable fa"></span>  2/F EWC Building, 5417
                 Matilde Street, Barangay Poblacion, Makati City, Philippines
@@ -36,7 +36,7 @@
                 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a0c9cec6cfe0cec5d8cccfc7c9c38ecccfc3c1cc">[email&#160;protected]</a>
               </div>
               <p></p>
-            </div>
+            </div> --}}
           </div>
         </div>
         <div class="infinite-footer-column infinite-item-pdlr infinite-column-20">
@@ -51,7 +51,7 @@
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1420 current_page_item menu-item-1424">
                 <a aria-current="page" href="">Home</a></li>
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1519">
-                <a href="about/index.html">Company</a></li>
+                <a href="about/index.html">Our Partners</a></li>
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1537">
                 <a href="solutions/index.html">Solutions</a></li>
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1524">
@@ -150,5 +150,9 @@
 <script src="{{ asset('js/revolution.extension.navigation.min.js') }}" type="2e2a597d58b9266fdfe1ea73-text/javascript"></script>
 <script src="{{ asset('js/revolution.extension.parallax.min.js') }}" type="2e2a597d58b9266fdfe1ea73-text/javascript"></script>
 <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="2e2a597d58b9266fdfe1ea73-|49" defer=""></script>
+<script src="{{ asset('js/aos.js') }}"></script>
+<script>
+  AOS.init();
+</script>
 </body>
 </html>
