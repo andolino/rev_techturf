@@ -441,7 +441,7 @@
 	<div class="gdlr-core-pbf-background-wrap" style="background-color:#250e1e;"></div>
 	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js " data-gdlr-animation="pulse" data-gdlr-animation-duration="600ms" data-gdlr-animation-offset="0.8">
 		{{-- clearfix gdlr-core-container --}}
-		<div class="gdlr-core-pbf-wrapper-container vh-100">
+		<div class="gdlr-core-pbf-wrapper-container">
 			<div class="gdlr-core-pbf-element">
 				<div class="gdlr-core-title-item gdlr-core-item-pdb clearfix  gdlr-core-center-align gdlr-core-title-item-caption-bottom gdlr-core-item-pdlr" id="gdlr-core-title-item-id-33675">
 					<div class="gdlr-core-title-item-title-wrap "><h6 class="gdlr-core-title-item-title gdlr-core-skin-title text-center" style="font-size: 37px ;color: #ffffff ;">Network
@@ -461,7 +461,7 @@
 										data-aos-duration="2000"></div>
 						</div>
 						<div class="col-sm-5 text-dark" class="supp_24_7">
-							<div class="row side-panel-cont1-2" 
+							<div class="row side-panel-cont2-1" 
 										data-aos="fade-right"
 										data-aos-offset="300"
 										data-aos-easing="ease-in-sine"
@@ -485,10 +485,16 @@
 		</div>
 	</div>
 </div>
+
+
 <div class="gdlr-core-pbf-wrapper " id="gdlr-core-wrapper-1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 40px 0px;overflow: hidden ;">
-<div class="gdlr-core-pbf-background-wrap">
-<div class="gdlr-core-pbf-background gdlr-core-parallax gdlr-core-js" data-parallax-speed="0" style="opacity: 1 ;background-image: url({{asset('uploads/techturf_bg_2.jpg')}});background-size: cover ;background-position: top center ;"></div>
-</div>
+
+
+{{-- <div class="gdlr-core-pbf-background-wrap">
+	<div class="gdlr-core-pbf-background gdlr-core-parallax gdlr-core-js" data-parallax-speed="0" style="opacity: 1 ;background-image: url({{asset('uploads/techturf_bg_2.jpg')}});background-size: cover ;background-position: top center ;"></div>
+</div> --}}
+
+
 	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js ">
 		<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
 			<div class="gdlr-core-pbf-column gdlr-core-column-20 gdlr-core-column-first" data-skin="Light Blue">
@@ -565,6 +571,87 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div class="gdlr-core-pbf-wrapper-content gdlr-core-js ">
+		<div class="gdlr-core-pbf-wrapper-container clearfix gdlr-core-container">
+			<div class="gdlr-core-pbf-column gdlr-core-column-20 gdlr-core-column-first" data-skin="Light Blue">
+				<div class="gdlr-core-pbf-column-content-margin gdlr-core-js " data-sync-height="height-1" data-sync-height-center style="padding: 10px 20px 10px 20px;" data-aos="fade-up" data-aos-duration="3000">
+					<div class="gdlr-core-pbf-background-wrap" style="background-color: #ffffff ;border-radius: 0px 0px 0px 0px;-moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;"></div>
+					<div class="gdlr-core-pbf-background-frame" style="margin: 0px 0px 0px 0px;border-width: 0px 0px 0px 0px;border-style: solid ;border-color: #6d6d6d ;"></div>
+						<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js  gdlr-core-sync-height-content">
+							<div class="gdlr-core-pbf-element">
+								<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-center-align gdlr-core-no-caption gdlr-core-item-pdlr">
+									<div class="gdlr-core-column-service-media gdlr-core-media-icon "><i class="icon_flowchart_alt" style="font-size: 58px ;line-height: 58px ;width: 58px ;color: #3a3a3a ;"></i>
+									</div>
+										<div class="gdlr-core-column-service-content-wrapper">
+											{{-- <div class="gdlr-core-column-service-title-wrap" style="margin-bottom: 20px ;"><h3 class="gdlr-core-column-service-title" style="font-size: 18px ;padding-top: 7px ;">
+											CONNECTIVITY</h3></div> --}}
+											<div class="gdlr-core-column-service-content"><p>Make your life easier with our
+												I.T. Managed Services
+											interconnects<br>cable TV operators and connect<br>companies to
+											the internet.</p>
+											</div>
+										</div>
+								</div>
+							</div>
+						<div class="gdlr-core-pbf-element">
+							<div class="gdlr-core-button-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-center-align" style="padding-bottom: 0px ;">
+								{{-- <a class="gdlr-core-button  gdlr-core-button-solid gdlr-core-button-no-border" href="/?page_id=1247" style="border-radius: 1px;-moz-border-radius: 1px;-webkit-border-radius: 1px;background: #3c5192 ;">
+									<span class="gdlr-core-content">Learn More</span>
+								</a> --}}
+							</div>
+						</div>
+						</div>
+				</div>
+			</div>
+		<div class="gdlr-core-pbf-column gdlr-core-column-20" data-skin="Light">
+			<div class="gdlr-core-pbf-column-content-margin gdlr-core-js " data-sync-height="height-1" data-sync-height-center style="margin: 0px 10px 0px 10px;padding: 0px 0px 0px 0px;">
+				<div class="gdlr-core-pbf-background-wrap" style="background-color: #777777 ;border-radius: 0px 0px 0px 0px;-moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;"></div>
+					<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js  gdlr-core-sync-height-content">
+						<div class="gdlr-core-pbf-element">
+							<div class="gdlr-core-text-script-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-left-align" style="padding-bottom: 0px ;">
+								<div class="gdlr-core-text-script-item-content">
+									{{-- <iframe allow="autoplay; encrypted-media" allowfullscreen frameborder="0" height="360" src="https://www.youtube.com/embed/V6Wt_dTrjeU?rel=0&showinfo=0&modestbranding=0"></iframe> --}}
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="gdlr-core-pbf-column gdlr-core-column-20" data-skin="Light Purple">
+				<div class="gdlr-core-pbf-column-content-margin gdlr-core-js " data-sync-height="height-1" data-sync-height-center style="margin: 0px 5px 5px 5px;padding: 10px 10px 10px 10px;">
+				<div class="gdlr-core-pbf-background-wrap" style="background-color: #ffffff ;border-radius: 0px 0px 0px 0px;-moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;"></div>
+				<div class="gdlr-core-pbf-background-frame" style="margin: 0px 0px 0px 0px;border-width: 0px 0px 0px 0px;border-style: solid ;border-color: #6d6d6d ;"></div>
+				<div class="gdlr-core-pbf-column-content clearfix gdlr-core-js  gdlr-core-sync-height-content">
+					<div class="gdlr-core-pbf-element">
+						<div class="gdlr-core-column-service-item gdlr-core-item-pdb  gdlr-core-center-align gdlr-core-no-caption gdlr-core-item-pdlr">
+							<div class="gdlr-core-column-service-media gdlr-core-media-icon "><i class="icon_cloud-upload_alt" style="font-size: 58px ;line-height: 58px ;width: 58px ;color: #3a3a3a ;"></i>
+							</div>
+							<div class="gdlr-core-column-service-content-wrapper">
+								{{-- <div class="gdlr-core-column-service-title-wrap" style="margin-bottom: 20px ;"><h3 class="gdlr-core-column-service-title" style="font-size: 18px ;padding-top: 7px ;">Reimagined</h3>
+								</div> --}}
+								<div class="gdlr-core-column-service-content"><p>We'll manage your software, hardware, operations, network and manpower. Avoid all the hassle. Let us be your single point 
+									of contact (SPOC) to provide, handle and resolve all things I.T. and internet. Improve your operations, save time and cut your expenses.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="gdlr-core-pbf-element">
+						{{-- <div class="gdlr-core-button-item gdlr-core-item-pdlr gdlr-core-item-pdb gdlr-core-center-align" style="padding-bottom: 0px ;">
+							<a class="gdlr-core-button  gdlr-core-button-gradient gdlr-core-button-no-border" href="/?page_id=1535" style="border-radius: 1px;-moz-border-radius: 1px;-webkit-border-radius: 1px;">
+								<span class="gdlr-core-content">Learn More</span>
+							</a>
+						</div> --}}
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>	
+
+
+
 </div>
 <div class="gdlr-core-pbf-wrapper " style="padding: 80px 0px 0px 0px;">
 <div class="gdlr-core-pbf-background-wrap" style="background-color: #d8d8d8 ;">

@@ -109,11 +109,17 @@ div.wpcf7 input[type="file"]:disabled {
 	cursor: default;
 }
 
-.side-panel-cont1-1{
+/* .side-panel-cont1-1{
 	height: 450px;
-}
+} */
 
 .side-panel-cont1-2{
 	background-image: url('../images/misc-img1.jpg');
 	height: 100%;
+}
+.side-panel-cont2-1{
+	background-image: url('../images/misc-img2.jpg');
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
 }
