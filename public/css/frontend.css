@@ -12,3 +12,7 @@
 .gm-style-iw .wpgmp_map img {
 max-width: 100%;
 }
+
+.navbar.navbar-expand-md.navbar-light.bg-white.shadow-sm {
+	background: #000 !important;
+}

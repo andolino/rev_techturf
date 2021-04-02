@@ -1,6 +1,24 @@
+body{
+	background: #e9e3e3;
+	font-family: 'Poppins', sans-serif !important;
+}
+
+/* main{
+	background: #f2f2f2;
+} */
+
+.btn-default {
+	box-shadow: 1px 4px 17px 2px #e3dede !important;
+	color: #df9509 !important;
+}
+
 div.wpcf7 {
 	margin: 0;
 	padding: 0;
+}
+
+.font-12{
+	font-size: 12px !important; 
 }
 
 div.wpcf7 .screen-reader-response {
@@ -113,13 +131,469 @@ div.wpcf7 input[type="file"]:disabled {
 	height: 450px;
 } */
 
+#scrollToTopBtn {
+	display: none;
+  background-color: black;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 48px;
+  width: 48px;
+	position: fixed;
+	right: 12px;
+	bottom: 12px;
+}
+
 .side-panel-cont1-2{
 	background-image: url('../images/misc-img1.jpg');
 	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
-.side-panel-cont2-1{
+.side-panel-cont2-1 {
 	background-image: url('../images/misc-img2.jpg');
 	height: 100%;
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: cover;
+}
+
+.tech-title-panel-1 {
+	font-size: 30px;
+	line-height: 1.3;
+	font-weight: 600;
+	color: #383838;
+}
+
+.btn-custom {
+	background: #ffffff;
+	border: 3px solid #736f73 !important;
+	border-radius: 1000px;
+	padding: 9px 23px;
+	color: #606060;
+	display: inline-block;
+	font: normal bold 24px/1;
+	text-align: center;
+}
+
+.tp-rightarrow, .tp-leftarrow, .tp-bullets{
+	display: none !important;
+}
+
+.lheight-2p6{
+	line-height: 2.6 !important;
+}
+
+.bg-black {
+	background-color: #000000 !important;
+}
+
+.header-rs i {
+	font-size: 25px;
+	margin-top: 9px;
+}
+
+.header-rs .span-profile-n {
+	line-height: 3 !important;
+}
+
+.i-notif{
+	left: 34px;
+	position: absolute;
+	font-size: 11px;
+	top: 5px;
+}
+
+.cursor {
+	cursor: pointer;
+}
+
+.head-upcoming-lesson {
+	color: #f0f0f0;
+	padding: 10px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	border-bottom: 5px solid #e8b657;
+}
+
+.body-upcoming-lesson{
+	background: #fff;
+	height: auto;
+}
+
+.ico-wrapper{
+	position: relative;
+}
+
+.ico-wrapper i { 
+	position: absolute;
+	top: 2px;
+	left: 28px;
+	color: rgb(132, 132, 132);
+	font-size: 16px; 
+}
+
+.rounded-11px{
+	border-radius: 11px;
+}
+
+.cicle-active {
+	background: #398f14;
+	width: 9px;
+	height: 9px;
+	border-radius: 15px;
+	position: absolute;
+	top: 28px;
+}
+
+.btn-yellow{
+	background: #df9509 !important;
+	color: #fff !important;
+}
+
+.btn-white{
+	background: #fff;
+	color: #df9509 !important;
+}
+
+.header-banner {
+	text-align: left !important;
+	top: 27% !important;
+}
+
+.slider-1-cont{
+	width: 480px !important;
+}
+
+.slider-1-cont h1 {
+	color: rgb(238, 152, 23);
+}
+
+.carousel-indicators .active {
+	border-radius: 55% !important;
+	height: 11px;
+	width: 12px;
+}
+
+.carousel-indicators li {
+	width: 12px !important;
+	height: 11px !important;
+	border-radius: 50% !important;
+	margin-left: 14px !important;
+	background-color: #df9509 !important;
+}
+
+.carousel-item {
+	background: f2f2f2 !important;
+}
+
+.carousel-caption {
+	color: #242222 !important;
+}
+
+.carousel-caption.d-none.d-md-block {
+	width: 500px;
+	height: 29%;
+}
+
+.carousel-item img{
+	display: block;
+	object-fit: cover;
+	height: 100vh;
+}
+
+.header-available-lesson img{
+	height: auto !important;
+}
+
+.carousel-item.active {
+	border: none !important;
+}
+
+
+.header-available-lesson{
+	top: 8%;
+}
+
+.header-available-lesson p {
+	font-size: 12px;
+}
+
+.carousel-inner {
+	background: #f2f2f2;
+}
+
+.panel-banner-caption { width: 30%; }
+.panel-banner-caption h3{ color: #df9509; }
+.panel-banner-caption { color: #f0f0f0; }
+
+.tutor-with-heygo{
+	padding-top: 60px;
+}
+
+#feed-back-container {
+	padding-top: 130px !important;
+}
+
+#request-tutor-container {
+	padding-top: 130px !important;
+}
+
+#bg-semi-light{
+	background: #f2f2f2;
+}
+
+#feedback-section{
+	height: 80vh;
+}
+
+@media only screen and (max-width: 1920px) {
+	.carou-inner-av-les {
+		height: 90vh !important;
+	}
+
+	.tutor-with-heygo {
+		height: 60vh !important;
+	}
+	
+	#feed-back-container {
+		height: 60vh !important;
+	}
+	
+	#request-tutor-container {
+		height: 60vh !important;
+	}
+
+	#request-a-tutor {
+		height: 60vh;
+	}
+}
+
+@media only screen and (max-width: 992px) {
+	.carou-inner-av-les {
+		height: 1450px !important;
+	}
+	
+}
+
+@media only screen and (max-width: 768px) {
+	.carou-inner-av-les {
+		height: 1800px !important;
+	}
+	#feed-back-container {
+		margin-top: 528px !important;
+	}
+	#request-tutor-container {
+		margin-top: 528px !important;
+	}
+}
+
+@media only screen and (max-width: 490px) {
+	img.img-feedback-2 {
+		max-width: 53% !important;
+		object-fit: cover !important;
+		margin: auto !important;
+		display: block !important;
+	}
+	.flipster__item p {
+		font-size: 8px !important;
+		width: 50%;
+	}
+	#content-feeds.feed-mid p {
+		width: 341px !important;
+		left: -177px !important;
+		text-align: center !important;
+		top: 51px !important;
+	}
+	#content-feeds.feed-left p {
+		width: 341px !important;
+		left: -177px !important;
+		text-align: center !important;
+		top: 51px !important;
+	}
+	#content-feeds.feed-right p {
+		width: 341px !important;
+		left: -177px !important;
+		text-align: center !important;
+		top: 51px !important;
+	}
+	#feed-back-container {
+		margin-top: 400px !important;
+	}
+	.student-feeds {
+		z-index: -1;
+	}
+	#feedback-section {
+		height: 100vh;
+		padding-top: 24px;
+	}
+	#request-tutor-container {
+		margin-top: 150px !important;
+	}
+}
+
+.flipster {
+	overflow-y: unset !important;
+	overflow-x: unset !important;
+}
+
+#content-feeds {
+	position: absolute;
+	bottom: 86%;
+	left: 50%;
+	font-size: 107px !important;
+}
+
+#content-feeds.feed-mid h1 {
+	font-size: 202px;
+	position: absolute;
+	top: -41px;
+	color: #fff;
+	right: -23px;
+}
+
+#content-feeds.feed-left h1 {
+	font-size: 202px;
+	position: absolute;
+	top: -41px;
+	color: #464646;
+	right: -23px;
+}
+
+#content-feeds.feed-right h1 {
+	font-size: 202px;
+	position: absolute;
+	top: -41px;
+	color: #464646;
+	right: -23px;
+}
+
+#content-feeds h1 {
+	font-size: 202px;
+	position: absolute;
+	top: -41px;
+	color: #fff;
+	right: -23px;
+}
+
+#content-feeds.feed-mid p {
+	position: absolute;
+	font-size: 16px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 51px;
+	color: #f0f0f0;
+}
+
+#content-feeds.feed-left p {
+	position: absolute;
+	font-size: 16px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 51px;
+	color: #464646;
+}
+
+#content-feeds.feed-right p {
+	position: absolute;
+	font-size: 16px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 51px;
+	color: #464646;
+}
+
+#content-feeds.feed-mid label {
+	position: absolute;
+	font-size: 25px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 145px;
+	color: #f0f0f0;
+}
+
+#content-feeds.feed-left label {
+	position: absolute;
+	font-size: 25px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 145px;
+	color: #464646;
+}
+
+#content-feeds.feed-right label {
+	position: absolute;
+	font-size: 25px;
+	width: 670px;
+	left: -324px;
+	text-align: center;
+	top: 145px;
+	color: #464646;
+}
+
+#content-feeds img {
+	position: absolute;
+	bottom: 20px;
+}
+
+.img-feed {
+	position: absolute;
+	bottom: 0;
+	left: 42%;
+	top: -84px;
+}
+
+#feed-back-container {
+	margin-top: 200px;	
+}
+
+#request-tutor-container {
+	margin-top: 0px;	
+}
+
+.bg-cust-semi-light {
+	background-color: #eee !important;
+}
+
+.bg-grad-yellow {
+	background-image: url();
+}
+
+#request-a-tutor{
+	background: #f12711;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #e3950b, #fbb337);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #de8f03, #fbb337); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#request-tutor-container img {
+	max-width: 80%;
+	display: block;
+	object-fit: cover;
+	margin: auto;
+	padding-top: 100px;
+}
+
+#request-a-tutor {
+	height: 80vh;
+}
+
+.request-a-tutor-txt {
+	width: 41%;
+	margin: auto;
+	position: absolute;
+	left: 30%;
+	bottom: 20%;
+	text-align: center;
+}
+
+#request-a-tutor{
+	position: relative;
 }

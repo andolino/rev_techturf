@@ -7,7 +7,17 @@
 require('./bootstrap');
 window.Vue = require('vue');
 import Form from './Form'
+import HomeSlider from './components/HomeSlider.vue';
+import AvailableLesson from './components/AvailableLesson.vue';
+import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue'
+
+
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 window.Form = Form
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -18,10 +28,14 @@ window.Form = Form
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+Vue.component('BCard', BCard)
+Vue.component('todo-component', require('./components/TodoComponent.vue').default );
+// Vue.component('b-carousel', '');
 
-Vue.component(
-    'todo-component', 
-    require('./components/TodoComponent.vue').default );
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,7 +44,12 @@ Vue.component(
  */
 
 const app = new Vue({
-    el: '#app',
+	el: '#app',
+	components: {
+		// 'todo-component':
+		'home-slider': HomeSlider,
+		'available-lesson' : AvailableLesson
+	}
 });
 
 

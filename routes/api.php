@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// use App\Http\Controllers\TodoController;
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::resource('todo', 'App\Http\Controllers\TodoController');
-Route::resource('todo', 'App\Http\Controllers\TodoController');
+
+Route::resource('/todo', 'App\Http\Controllers\TodoController');
+// Route::get('/todo', [TodoController::class, 'index']);

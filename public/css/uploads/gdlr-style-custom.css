@@ -63,13 +63,15 @@ body.single-post .infinite-sidebar-style-none, body.blog .infinite-sidebar-style
 .infinite-copyright-container{ padding-top: 38px; } 
 .infinite-copyright-container{ padding-bottom: 38px; } 
 .infinite-copyright-container{ text-transform: uppercase; } 
-.infinite-body h1, .infinite-body h2, .infinite-body h3, .infinite-body h4, .infinite-body h5, .infinite-body h6, .infinite-body .infinite-title-font,.infinite-body .gdlr-core-title-font{ font-family: Planer; }.woocommerce-breadcrumb, .woocommerce span.onsale, .single-product.woocommerce div.product p.price .woocommerce-Price-amount, .single-product.woocommerce #review_form #respond label{ font-family: Planer; } 
-.infinite-navigation .sf-menu > li > a, .infinite-navigation .sf-vertical > li > a, .infinite-navigation-font{ font-family: Planer; } 
-.infinite-body, .infinite-body .gdlr-core-content-font, .infinite-body input, .infinite-body textarea, .infinite-body button, .infinite-body select, .infinite-body .infinite-content-font, .gdlr-core-audio .mejs-container *{ font-family: "Roboto Condensed", sans-serif; } 
+body, input, textarea, select, button {
+    font-family: 'Montserrat',Helvetica,Arial,Lucida,sans-serif !important;
+}
+/* .infinite-navigation .sf-menu > li > a, .infinite-navigation .sf-vertical > li > a, .infinite-navigation-font{ font-family: Planer; }  */
+/* .infinite-body, .infinite-body .gdlr-core-content-font, .infinite-body input, .infinite-body textarea, .infinite-body button, .infinite-body select, .infinite-body .infinite-content-font, .gdlr-core-audio .mejs-container *{ font-family: "Roboto Condensed", sans-serif; }  */
 .infinite-body .gdlr-core-info-font, .infinite-body .infinite-info-font{ font-family: Georgia, serif; } 
-.infinite-body .gdlr-core-blog-info-font, .infinite-body .infinite-blog-info-font{ font-family: "Raleway", sans-serif; } 
-.infinite-body .gdlr-core-quote-font, blockquote{ font-family: Georgia, serif; } 
-.infinite-body .gdlr-core-testimonial-content{ font-family: "Open Sans", sans-serif; } 
+/* .infinite-body .gdlr-core-blog-info-font, .infinite-body .infinite-blog-info-font{ font-family: "Raleway", sans-serif; }  */
+/* .infinite-body .gdlr-core-quote-font, blockquote{ font-family: Georgia, serif; }  */
+/* .infinite-body .gdlr-core-testimonial-content{ font-family: "Open Sans", sans-serif; }  */
 .infinite-body h1{ font-size: 52px; } 
 .infinite-body h2, #poststuff .gdlr-core-page-builder-body h2{ font-size: 48px; } 
 .infinite-body h3{ font-size: 36px; } 
@@ -472,14 +474,14 @@ span.woocommerce-Price-amount.amount{ color: #bd584e; }
 .gdlr-core-page-builder-body [data-skin="Light"] .gdlr-core-button.gdlr-core-button-gradient-v{ background: -webkit-linear-gradient(to right, #50a9e9, #2d9bea); background: -o-linear-gradient(to right, #50a9e9, #2d9bea);  background: -moz-linear-gradient(to right, #50a9e9, #2d9bea); background: linear-gradient(to right, #50a9e9, #2d9bea); } 
 .gdlr-core-page-builder-body [data-skin="Light Purple"] .gdlr-core-button.gdlr-core-button-gradient{ background: -webkit-linear-gradient(#365196, #365196); background: -o-linear-gradient(#365196, #365196);  background: -moz-linear-gradient(#365196, #365196); background: linear-gradient(#365196, #365196); } 
 .gdlr-core-page-builder-body [data-skin="Light Purple"] .gdlr-core-button.gdlr-core-button-gradient-v{ background: -webkit-linear-gradient(to right, #365196, #365196); background: -o-linear-gradient(to right, #365196, #365196);  background: -moz-linear-gradient(to right, #365196, #365196); background: linear-gradient(to right, #365196, #365196); } 
-@font-face {
-font-family: "Planer";
-src: url("");
-src: url("?#iefix") format("embedded-opentype"), 
-url("../../fonts/Planer_Reg_0.ttf") format("truetype");
-font-weight: normal;
-font-style: normal;
-}
+/* @font-face {
+    font-family: "Planer";
+    src: url("");
+    src: url("?#iefix") format("embedded-opentype"), 
+    url("../../fonts/Planer_Reg_0.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+} */
 
 .infinite-item-mgb, .gdlr-core-item-mgb{ margin-bottom: 30px; }
 
