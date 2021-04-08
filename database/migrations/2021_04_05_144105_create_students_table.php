@@ -24,6 +24,7 @@ class CreateStudentsTable extends Migration
             $table->string('password');
             $table->boolean('is_active')->default(false);
             $table->boolean('is_verified')->default(false);
+            $table->rememberToken();
             $table->timestamps();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
         });

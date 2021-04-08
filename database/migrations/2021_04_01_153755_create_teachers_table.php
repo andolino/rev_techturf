@@ -23,10 +23,11 @@ class CreateTeachersTable extends Migration
             $table->string('email');
             $table->string('username');
             $table->string('password');
-            $table->string('objective_title');
-            $table->longText('objective_text');
+            $table->string('objective_title')->nullable();
+            $table->longText('objective_text')->nullable();
             $table->boolean('is_active')->default(false);
             $table->boolean('is_verified')->default(false);
+            $table->rememberToken();
             $table->timestamps();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
         });
