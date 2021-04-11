@@ -38,8 +38,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('guest');
         $this->middleware('guest:teachers');
         $this->middleware('guest:students');
@@ -56,8 +55,7 @@ class RegisterController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showTeachersRegisterForm()
-    {
+    public function showTeachersRegisterForm(){
         $countries = DB::table('countries')->get();
         return view('auth.teachers-registration', ['url' => 'teachers', 'countries' => $countries]);
     }
@@ -65,8 +63,7 @@ class RegisterController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showStudentsRegisterForm()
-    {
+    public function showStudentsRegisterForm(){
         return view('auth.register', ['url' => 'students']);
     }
 
@@ -82,31 +79,31 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function createTeachers(Request $request)
-    {
+    protected function createTeachers(Request $request){
         $request->validate([
-            'username'        => 'required|string|max:255',
+            // 'username'        => 'required|string|max:255',
             'email'           => 'required|string|email|max:255|unique:teachers',
-            'password'        => 'required|string|min:6|confirmed',
-            'lastname'        => 'required|string',
-            'middlename'      => 'required|string',
-            'firstname'       => 'required|string',
-            'rate_per_hr'     => 'required|numeric',
-            'country_id'      => 'required',
-            'objective_title' => 'required|string',
-            'objective_text'  => 'required|string'
+            'password'        => 'required|string|min:6'
+            // 'password'        => 'required|string|min:6|confirmed'
+            // 'lastname'        => 'required|string',
+            // 'middlename'      => 'required|string',
+            // 'firstname'       => 'required|string',
+            // 'rate_per_hr'     => 'required|numeric',
+            // 'country_id'      => 'required',
+            // 'objective_title' => 'required|string',
+            // 'objective_text'  => 'required|string'
         ]);
         Teachers::create([
-            'username' => $request->username,
+            // 'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'lastname' => $request->lastname,
-            'middlename' => $request->middlename,
-            'firstname' => $request->firstname,
-            'rate_per_hr' => $request->rate_per_hr,
-            'country_id' => $request->country_id,
-            'objective_title' => $request->objective_title,
-            'objective_text'  => $request->objective_text
+            'password' => Hash::make($request->password)
+            // 'lastname' => $request->lastname,
+            // 'middlename' => $request->middlename,
+            // 'firstname' => $request->firstname,
+            // 'rate_per_hr' => $request->rate_per_hr,
+            // 'country_id' => $request->country_id,
+            // 'objective_title' => $request->objective_title,
+            // 'objective_text'  => $request->objective_text
         ]);
         return redirect()->intended('login/teachers');
     }
@@ -116,17 +113,17 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function createStudents(Request $request)
-    {
+    protected function createStudents(Request $request){
         $request->validate([
-            'username' => 'required|string|max:255',
+            // 'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:students',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6'
+            // 'password' => 'required|string|min:6|confirmed'
         ]);
         Students::create([
-            'username' => $request->username,
+            // 'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password)
         ]);
         return redirect()->intended('login/students');
     }

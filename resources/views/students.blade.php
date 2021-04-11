@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header">Student Dashboard</div>
 
                 <div class="card-body">
-                    Hi there, awesome blogger
+                    Hi there, 
                 </div>
             </div>
         </div>

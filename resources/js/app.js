@@ -9,6 +9,8 @@ window.Vue = require('vue');
 import Form from './Form'
 import HomeSlider from './components/HomeSlider.vue';
 import AvailableLesson from './components/AvailableLesson.vue';
+import SignupFormTeacher from './components/SignupFormTeacher.vue';
+import SignupFormStudent from './components/SignupFormStudent.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue'
 
 
@@ -48,7 +50,9 @@ const app = new Vue({
 	components: {
 		// 'todo-component':
 		'home-slider': HomeSlider,
-		'available-lesson' : AvailableLesson
+		'available-lesson' : AvailableLesson,
+		'signup-form-teacher' : SignupFormTeacher,
+		'signup-form-student' : SignupFormStudent
 	}
 });
 

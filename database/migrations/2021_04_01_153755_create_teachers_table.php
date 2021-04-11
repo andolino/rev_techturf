@@ -15,13 +15,13 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('lastname');
-            $table->string('firstname');
-            $table->string('middlename');
-            $table->decimal('rate_per_hr', 12, 2);
-            $table->unsignedBigInteger('country_id');
+            $table->string('lastname')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('middlename')->nullable();
+            $table->decimal('rate_per_hr', 12, 2)->nullable();
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->string('email');
-            $table->string('username');
+            $table->string('username')->nullable();
             $table->string('password');
             $table->string('objective_title')->nullable();
             $table->longText('objective_text')->nullable();

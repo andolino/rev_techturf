@@ -29,7 +29,6 @@
 			},
 			methods: {
 				getTodos(){
-					// alert('check!');
 					axios.get('/heygo/api/todo').then((res) => {
 						this.todos = res.data
 					}).catch((error) => {

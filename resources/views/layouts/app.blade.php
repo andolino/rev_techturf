@@ -65,15 +65,22 @@
                 <ul class="navbar-nav ml-auto text-light">
                     <!-- Authentication Links -->
                     @guest
-                        @if (Route::has('login'))
+                        {{-- @if (Route::has('login')) --}}
+                        {{-- login/teachers
+                        login/students --}}
+
+                        @if (!$logged_in)
                             <li class="nav-item mr-3">
-                                <a class="nav-link btn-white font-12 rounded" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                {{-- {{ route('login') }} --}}
+                                <a href="javascript:void(0);" class="nav-link btn-white font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Login') }}</a>
                             </li>
                         @endif
-                        @if (Route::has('register'))
+                        @if (!$logged_in)
                             <li class="nav-item">
-                                <a class="nav-link btn-yellow font-12 rounded" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                {{-- <a class="nav-link btn-yellow font-12 rounded" href="{{ route('register') }}">{{ __('Register') }}</a> --}}
+                                <a href="javascript:void(0);" class="nav-link btn-yellow font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Register') }}</a>
                             </li>
+                            <!-- Modal -->
                         @endif
                     @else
                         <li class="nav-item dropdown">
@@ -99,6 +106,113 @@
     <main class="">
         @yield('content')
     </main>
+    <div id="app">
+        {{-- Modal Teacher Signup--}}
+        <div class="modal fade custom-modal-register" id="custom-modal-register-teacher" tabindex="-1" role="dialog" aria-labelledby="custom-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    {{-- <div class="modal-header">
+                        <h5 class="modal-title" id="custom-modal-register-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div> --}}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 signup-login-left p-0">
+                                <div class="row">
+                                    <div class="col-lg-12 teacher-sign-up-frm">
+                                            <signup-form-teacher base_url="{{ url('') }}"></signup-form-teacher>
+                                        <div class="row p-3">
+                                            <div class="col-5 border border-secondary" style="height:0;"></div>
+                                            <div class="col-2 text-center" style="line-height: 0 !important;">Or</div>
+                                            <div class="col-5 border border-secondary" style="height:0;"></div>
+                                        </div>
+                                        <div class="row p-3">
+                                            <div class="col-6 text-right"><img src="{{ asset('images/fb-icon.png') }}" alt=""></div>
+                                            <div class="col-6 text-left"><img src="{{ asset('images/gmail-icon.png') }}" alt=""></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center font-style-undeline">
+                                                <a href="javascript:void(0);" class="text-dark font-14" data-toggle="modal" data-target="#custom-modal-register-student" onclick="$('#custom-modal-register-teacher').modal('hide');"><u>Sign Up as Student</u></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 signup-login-right p-0">
+                                <img src="{{ asset('images/banner-icon.png') }}" alt="">
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                                    Totam ipsam voluptate rerum vel nulla unde aspernatur eius 
+                                    laboriosam quia distinctio sapiente eos explicabo quidem 
+                                    nesciunt provident amet, ab, ad porro!</p>
+                            </div>
+                        </div>
+                        {{-- <div id="app">
+                            <signup-form></signup-form>
+                        </div> --}}
+                    </div>
+                    {{-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+        {{-- Modal Students Signup--}}
+        <div class="modal fade custom-modal-register" id="custom-modal-register-student" tabindex="-1" role="dialog" aria-labelledby="custom-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    {{-- <div class="modal-header">
+                        <h5 class="modal-title" id="custom-modal-register-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div> --}}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 signup-login-left p-0">
+                                <div class="row">
+                                    <div class="col-lg-12 teacher-sign-up-frm">
+                                        <signup-form-student base_url="{{ url('') }}"></signup-form-student>
+                                        <div class="row p-3">
+                                            <div class="col-5 border border-secondary" style="height:0;"></div>
+                                            <div class="col-2 text-center" style="line-height: 0 !important;">Or</div>
+                                            <div class="col-5 border border-secondary" style="height:0;"></div>
+                                        </div>
+                                        <div class="row p-3">
+                                            <div class="col-6 text-right"><img src="{{ asset('images/fb-icon.png') }}" alt=""></div>
+                                            <div class="col-6 text-left"><img src="{{ asset('images/gmail-icon.png') }}" alt=""></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center font-style-undeline">
+                                                <a 
+                                                    href="javascript:void(0);" 
+                                                    class="text-dark font-14" 
+                                                    data-toggle="modal" 
+                                                    data-target="#custom-modal-register-teacher" onclick="$('#custom-modal-register-student').modal('hide');"><u>Sign Up as Teacher</u></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 signup-login-right p-0">
+                                <img src="{{ asset('images/banner-icon.png') }}" alt="">
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                                    Totam ipsam voluptate rerum vel nulla unde aspernatur eius 
+                                    laboriosam quia distinctio sapiente eos explicabo quidem 
+                                    nesciunt provident amet, ab, ad porro!</p>
+                            </div>
+                        </div>
+                        {{-- <div id="app">
+                            <signup-form></signup-form>
+                        </div> --}}
+                    </div>
+                    {{-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+    </div>{{-- id="app" --}}
+    {{-- Button to top --}}
     <button id="scrollToTopBtn"><i class="fas fa-chevron-up"></i></button>
 </div>
 <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
@@ -145,7 +259,6 @@
         })
     }
 </script>
-
 </body>
 
 </html>

@@ -21,6 +21,17 @@ div.wpcf7 {
 	font-size: 12px !important; 
 }
 
+.font-14{
+	font-size: 14px !important; 
+}
+
+.input-custom{
+	border: 0 !important;
+	background: #eaeaea !important;
+	border-radius: 18px !important;
+	padding: 21px !important;
+}
+
 div.wpcf7 .screen-reader-response {
 	position: absolute;
 	overflow: hidden;
@@ -596,4 +607,71 @@ div.wpcf7 input[type="file"]:disabled {
 
 #request-a-tutor{
 	position: relative;
+}
+
+.signup-login-right {
+	background-image: url('../images/signup-login-right.png');
+	height: 648px !important;
+	max-height: -moz-min-content;
+	background-repeat: no-repeat;
+	display: block;
+	object-fit: cover;
+	background-position: right;
+	width: 613px !important;
+}
+
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 1085px !important;
+  }
+}
+
+.custom-modal-register .modal-body {
+	padding: 0;
+}
+
+.custom-modal-register .modal-content {
+	background: none;
+	background-image: url('../images/signup-login-main.png') !important;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 0px;
+}
+
+.teacher-sign-up-frm {
+	padding: 14% 12% 5% 18% !important;
+	max-height: 636px;
+	height: 636px;
+}
+
+.btn-cust-radius {
+	border-radius: 18px !important;
+	padding: 10px !important;
+}
+
+.modal-dialog {
+	-webkit-transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	transform: translate(0,-50%);
+	top: 10%;
+	margin: 0 auto;
+}
+
+.signup-login-right img {
+	display: block;
+	display: flex;
+	margin: auto;
+	padding-top: 18%;
+}
+
+.signup-login-right p {
+	margin: 20px;
+}
+
+.signup-login-right p {
+	margin-left: 19%;
+	margin-right: 19%;
+	text-align: justify;
+	color: #fff;
 }

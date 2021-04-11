@@ -114,7 +114,21 @@
                         <span class="badge badge-danger badge-pill i-notif">14</span>
                       </div>
                       <div class="col-lg-2 text-right">
-                        <span class="span-profile-n">Juan Dela Cruz</span>
+                        {{-- <span class="span-profile-n">Juan Dela Cruz</span> --}}
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ $data->email }} <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                              onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
                       </div>
                       <div class="col-lg-1 text-left">
                         <i class="fas fa-user"></i>
@@ -125,6 +139,8 @@
         </nav>
         <main class="py-4">
             @yield('content')
+
+
             {{-- {{ Auth::user()->id }} --}}
         </main>
     </div>
