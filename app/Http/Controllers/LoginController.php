@@ -43,7 +43,13 @@ class LoginController extends Controller{
     }
 
      public function showTeachersLoginForm(){
-        return view('auth.login', ['url' => 'teachers']);
+        $logged_in = true;
+        $objT = Auth::guard('teachers')->user();
+        $objS = Auth::guard('students')->user();
+        if (is_null($objT) && is_null($objS)) {
+            $logged_in = false;
+        }
+        return view('auth.login', ['url' => 'teachers', 'logged_in' => $logged_in]);
     }
 
     public function teachersLogin(Request $request){
@@ -53,14 +59,23 @@ class LoginController extends Controller{
         ]);
 
         if (Auth::guard('teachers')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
             return redirect()->intended('/teachers');
         }
-        return back()->withInput($request->only('email', 'remember'));
+
+        // return back()->withInput($request->only('email', 'remember'));
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function showStudentsLoginForm(){
-        return view('auth.login', ['url' => 'students']);
+        $logged_in = true;
+        $objT = Auth::guard('teachers')->user();
+        $objS = Auth::guard('students')->user();
+        if (is_null($objT) && is_null($objS)) {
+            $logged_in = false;
+        }
+        return view('auth.login', ['url' => 'students', 'logged_in' => $logged_in]);
     }
 
     public function studentsLogin(Request $request){

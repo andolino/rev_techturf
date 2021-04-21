@@ -120,7 +120,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 signup-login-left p-0">
                                 <div class="row">
                                     <div class="col-lg-12 teacher-sign-up-frm">
-                                            <signup-form-teacher base_url="{{ url('') }}"></signup-form-teacher>
+                                        <signup-form-teacher base_url="{{ url('') }}"></signup-form-teacher>
                                         <div class="row p-3">
                                             <div class="col-5 border border-secondary" style="height:0;"></div>
                                             <div class="col-2 text-center" style="line-height: 0 !important;">Or</div>
