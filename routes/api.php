@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,4 +24,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('/todo', 'App\Http\Controllers\TodoController');
+Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
+Route::post('/register/students', [RegisterController::class,'createStudents']);
+
+Route::post('/login/teachers', [LoginController::class,'teachersLogin'])->name('login-teachers');
+Route::post('/login/students', [LoginController::class,'studentsLogin'])->name('login-students');
 // Route::get('/todo', [TodoController::class, 'index']);

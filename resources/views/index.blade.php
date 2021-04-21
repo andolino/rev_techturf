@@ -5,6 +5,7 @@
 		<todo-component></todo-component>
 	</div> --}}
 <section>
+
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">
 		<div class="carousel-item active">
@@ -12,7 +13,7 @@
 			<div class="carousel-caption header-banner d-md-block">
 				<div class="row">
 					<div class="col-lg-5 col-md-7 col-sm-12 panel-banner-caption" data-aos="fade-right">
-						<h3>Lorem, ipsum dolor sit amet consectetur adipisicing e</h3>
+						<h3>Lorem,  ipsum dolor sit amet consectetur adipisicing e</h3>
 						<p>Some representative placeholder content for the first slide.</p>
 						<button class="btn btn-md btn-yellow font-12">Get Started</button>
 					</div>

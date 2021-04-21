@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/teacher-dashboard', function () {
     return view('teacher-dashboard');
@@ -23,3 +24,26 @@ Route::get('/teacher-dashboard', function () {
 
 
 Auth::routes();
+
+
+Route::get('/login/teachers', [LoginController::class, 'showTeachersLoginForm']);
+Route::get('/login/students', [LoginController::class,'showStudentsLoginForm']);
+Route::get('/register/teachers', [RegisterController::class, 'showTeachersRegisterForm']);
+Route::get('/register/students', [RegisterController::class,'showStudentsRegisterForm']);
+
+Route::post('/login/teachers', [LoginController::class,'teachersLogin']);
+Route::post('/login/students', [LoginController::class,'studentsLogin']);
+Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
+Route::post('/register/students', [RegisterController::class,'createStudents']);
+
+Route::group(['middleware' => 'auth:students'], function () {
+    // Route::view('/students', 'students');
+    Route::get('/students', [HomeController::class, 'studentsDashboard']);
+});
+
+Route::group(['middleware' => 'auth:teachers'], function () {
+    // Route::view('/teachers', 'teachers');
+    Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
+});
+
+Route::get('logout', [LoginController::class,'logout']);
