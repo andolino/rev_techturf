@@ -1,3 +1,53 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.custom-scrollbar-js,
+.custom-scrollbar-css {
+  height: 200px;
+}
+
+
+/* Custom Scrollbar using CSS */
+.custom-scrollbar-css {
+  overflow-y: scroll;
+}
+
+/* scrollbar width */
+.custom-scrollbar-css::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* scrollbar track */
+.custom-scrollbar-css::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* scrollbar handle */
+.custom-scrollbar-css::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: #00d2ff;
+  background-image: linear-gradient(to top, #00d2ff 0%, #3a7bd5 100%);
+}
+
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+body {
+  min-height: 100vh;
+  background-color: #00d2ff;
+  background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5 100%);
+}
+
+
 body{
 	background: #e9e3e3;
 	font-family: 'Poppins', sans-serif !important;
@@ -199,7 +249,7 @@ div.wpcf7 input[type="file"]:disabled {
 }
 
 .bg-black {
-	background-color: #000000 !important;
+	background-color: #222121 !important;
 }
 
 .header-rs i {
@@ -247,6 +297,40 @@ div.wpcf7 input[type="file"]:disabled {
 	font-size: 16px; 
 }
 
+.ico-wrapper-find{
+	position: relative;
+}
+
+.upcoming-lesson-list{
+	overflow-y: scroll;
+	max-height: 900px;
+	height: 800px;
+}
+
+.homework-list{
+	overflow-y: scroll;
+	max-height: 500px;
+	height: 400px;
+}
+
+.books-workbooks-list{
+	overflow-y: scroll;
+	max-height: 500px;
+	height: 400px;
+}
+
+.find-tutor-ipt{
+	text-indent: 25px;
+}
+
+.ico-wrapper-find i {
+	position: absolute;
+	top: 15px;
+	left: 14px;
+	color: rgb(132, 132, 132);
+	font-size: 20px;
+}
+
 .rounded-11px{
 	border-radius: 11px;
 }
@@ -259,6 +343,20 @@ div.wpcf7 input[type="file"]:disabled {
 	position: absolute;
 	top: 28px;
 }
+
+.cont-upcoming-lesson{
+	background: #f0f0f0;
+}
+
+.cont-home-works{
+	background: #f0f0f0;
+}
+
+.cont-books-workbooks-shop{
+	background: #f0f0f0;
+}
+
+
 
 .btn-yellow{
 	background: #df9509 !important;
