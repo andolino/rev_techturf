@@ -21,6 +21,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css?no-cache='.rand()) }}" rel="stylesheet">
 
+    {{-- custom scrollbar --}}
+    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.css') }}">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;1,300&display=swap');
       /* Set the border color */ 
@@ -41,7 +44,8 @@
         <nav class="navbar navbar-expand-md navbar-light bg-black shadow-sm">
             <div class="container">
                 <a class="navbar-brand text-light font-weight-bold" href="{{ url('/teacher-dashboard') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
+                    <img src="{{ asset('images/icon-main.png') }}" alt="">
                 </a>
                 {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon my-toggler"></span>
@@ -93,9 +97,9 @@
                         @endguest --}}
                     </ul>
                     <div class="row w-100 ml-auto text-light lheight-2p6 header-rs">
-                      <div class="col-lg-2 offset-lg-5 mt-1 ico-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" class="form-control" id="inputSuccess4">
+                      <div class="col-lg-3 offset-lg-5 mt-1 ico-wrapper">
+                        {{-- <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" id="inputSuccess4"> --}}
                       </div>
                       <div class="col-lg-1 text-center" style="max-width: 3.6%;">
                         <i class="far fa-calendar-alt cursor"></i>
@@ -130,9 +134,8 @@
                             </form>
                         </div>
                       </div>
-                      <div class="col-lg-1 text-left">
-                        <i class="fas fa-user"></i>
-                      </div>
+                      {{-- <div class="col-lg-1 text-left">
+                      </div> --}}
                     </div>
                 </div>
             </div>
@@ -144,6 +147,70 @@
             {{-- {{ Auth::user()->id }} --}}
         </main>
     </div>
+
+
+
+{{-- custom scrollbar --}}
+<!-- Google CDN jQuery with fallback to local -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+{{-- <script>window.jQuery || document.write('<script src="../js/minified/jquery-1.11.0.min.js"><\/script>')</script> --}}
+
+<!-- custom scrollbar plugin -->
+<script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+
+<script>
+  (function($){
+    $(window).on("load",function(){
+      
+      $("#content-3").mCustomScrollbar({
+        scrollButtons:{enable:true},
+        theme:"light-thick",
+        scrollbarPosition:"outside"
+      });
+      
+      $("#content-4").mCustomScrollbar({
+        theme:"rounded-dots",
+        scrollInertia:400
+      });
+      
+      $("#content-5").mCustomScrollbar({
+        axis:"x",
+        theme:"dark-thin",
+        autoExpandScrollbar:true,
+        advanced:{autoExpandHorizontalScroll:true}
+      });
+      
+      $("#content-6").mCustomScrollbar({
+        axis:"x",
+        theme:"light-3",
+        advanced:{autoExpandHorizontalScroll:true}
+      });
+      
+      $("#content-7").mCustomScrollbar({
+        scrollButtons:{enable:true},
+        theme:"3d-thick"
+      });
+      
+      $("#content-8").mCustomScrollbar({
+        axis:"yx",
+        scrollButtons:{enable:true},
+        theme:"3d",
+        scrollbarPosition:"outside"
+      });
+      
+      $("#content-9").mCustomScrollbar({
+        scrollButtons:{enable:true,scrollType:"stepped"},
+        keyboard:{scrollType:"stepped"},
+        mouseWheel:{scrollAmount:188},
+        theme:"rounded-dark",
+        autoExpandScrollbar:true,
+        snapAmount:188,
+        snapOffset:65
+      });
+      
+    });
+  })(jQuery);
+</script>
 </body>
 </html>
 

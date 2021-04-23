@@ -57,15 +57,13 @@ class LoginController extends Controller{
             'email'   => 'required|email',
             'password' => 'required|min:6'
         ]);
-
         if (Auth::guard('teachers')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
             return redirect()->intended('/teachers');
         }
-
         // return back()->withInput($request->only('email', 'remember'));
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        return [ 'errors' => [
+            'email' => ['Invalid Credentials']
+        ]];
     }
 
     public function showStudentsLoginForm(){
@@ -83,11 +81,12 @@ class LoginController extends Controller{
             'email'   => 'required|email',
             'password' => 'required|min:6'
         ]);
-
         if (Auth::guard('students')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
             return redirect()->intended('/students');
         }
-        return back()->withInput($request->only('email', 'remember'));
+        // return back()->withInput($request->only('email', 'remember'));
+        return [ 'errors' => [
+            'email' => ['Invalid Credentials']
+        ]];
     }
 }

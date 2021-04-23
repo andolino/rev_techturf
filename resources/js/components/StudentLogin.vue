@@ -61,7 +61,10 @@
 					data.append('password', this.form.password)
 					axios.post('/heygo/login/students', data).then((res) => {
 						this.form.reset();
-            window.location.href = this.base_url + "/students";
+            if (typeof res.data.errors === 'undefined') {
+              window.location.href = this.base_url + "/students";
+            }
+            this.form.errors.record(res.data.errors);
 					}).catch((error) => {
 						this.form.errors.record(error.response.data.errors);
 					});
