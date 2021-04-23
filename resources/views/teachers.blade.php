@@ -18,110 +18,140 @@
 						<div class="card-group">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
-						<div class="card-group">
+						<div class="card-group mt-2">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
+									<label class="card-title">8:00 - 9:30am</label>
+									<small class="float-right text-success">Class starts in 20mins</small>
+									<h6 class="card-title font-weight-bold">Language 1</h6>
 									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								</div>
 								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
+									<img src="{{ asset('images/ellipse.png') }}" alt="">
+									<small class="text-muted">Mr. James Cameron</small>
 								</div>
 							</div>
 						</div>
