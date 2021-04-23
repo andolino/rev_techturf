@@ -97,11 +97,11 @@
                         @endguest --}}
                     </ul>
                     <div class="row w-100 ml-auto text-light lheight-2p6 header-rs">
-                      <div class="col-lg-3 offset-lg-5 mt-1 ico-wrapper">
+                      {{-- <div class="col-lg-3 offset-lg-5 mt-1 ico-wrapper"> --}}
                         {{-- <i class="fas fa-search"></i>
                         <input type="text" class="form-control" id="inputSuccess4"> --}}
-                      </div>
-                      <div class="col-lg-1 text-center" style="max-width: 3.6%;">
+                      {{-- </div> --}}
+                      <div class="col-lg-1 offset-lg-7 text-center" style="max-width: 3.6%;">
                         <i class="far fa-calendar-alt cursor"></i>
                         <span class="badge badge-danger badge-pill i-notif">14</span>
                       </div>
@@ -117,7 +117,7 @@
                         <i class="fas fa-bell cursor"></i>
                         <span class="badge badge-danger badge-pill i-notif">14</span>
                       </div>
-                      <div class="col-lg-2 text-right">
+                      <div class="col-lg-3 text-right">
                         {{-- <span class="span-profile-n">Juan Dela Cruz</span> --}}
                         <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ $data->email }} <span class="caret"></span>
