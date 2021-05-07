@@ -41,109 +41,144 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-black shadow-sm">
-            <div class="container">
-                <a class="navbar-brand text-light font-weight-bold" href="{{ url('/teacher-dashboard') }}">
-                    {{-- {{ config('app.name', 'Laravel') }} --}}
-                    <img src="{{ asset('images/icon-main.png') }}" alt="">
+        <nav class="navbar navbar-expand-lg navbar-light bg-black shadow-sm">
+          <a class="navbar-brand text-light font-weight-bold" href="{{ url('/teachers') }}">
+              {{-- {{ config('app.name', 'Laravel') }} --}}
+              <img src="{{ asset('images/icon-main.png') }}" alt="">
+          </a>
+          
+          <button class="navbar-toggler ml-auto custom-toggler" 
+                  type="button" 
+                  data-toggle="collapse"  data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}"
+                  data-target="#nav3"> 
+                  <span class="navbar-toggler-icon"></span> 
+          </button> 
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              {{-- <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li> --}}
+            </ul>
+            <span class="navbar-text my-2 my-lg-0">
+              <a href="">
+                <i class="far fa-calendar-alt cursor i-con"></i>
+                <span class="badge badge-danger badge-pill i-notif">14</span>
+              </a>
+              
+              <a href="">
+                <i class="far fa-heart cursor i-con"></i>
+                <span class="badge badge-danger badge-pill i-notif">14</span>
+              </a>
+              <span>
+                <a href="#" id="navShowStudentMsg" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <i class="far fa-envelope cursor i-con" ></i>
+                    <span class="badge badge-danger badge-pill i-notif">16</span>
                 </a>
-                {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon my-toggler"></span>
-                </button> --}}
-                <button class="navbar-toggler ml-auto custom-toggler" 
-                        type="button" 
-                        data-toggle="collapse"  data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}"
-                        data-target="#nav3"> 
-                        <span class="navbar-toggler-icon"></span> 
-                </button> 
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-                    
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto text-light">
-                        <!-- Authentication Links -->
-                        {{-- @guest
-                          @if (Route::has('login'))
-                              <li class="nav-item">
-                                  <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
-                              </li>
-                          @endif
-                          @if (Route::has('register'))
-                              <li class="nav-item">
-                                  <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
-                              </li>
-                          @endif
-                        @else
-                          <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ ucwords(Auth::user()->name) }} 
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                                document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                            </form>
-                            </div>
-                          </li>
-                        @endguest --}}
-                    </ul>
-                    <div class="row w-100 ml-auto text-light lheight-2p6 header-rs">
-                      {{-- <div class="col-lg-3 offset-lg-5 mt-1 ico-wrapper"> --}}
-                        {{-- <i class="fas fa-search"></i>
-                        <input type="text" class="form-control" id="inputSuccess4"> --}}
-                      {{-- </div> --}}
-                      <div class="col-lg-1 offset-lg-7 text-center" style="max-width: 3.6%;">
-                        <i class="far fa-calendar-alt cursor"></i>
-                        <span class="badge badge-danger badge-pill i-notif">14</span>
+                <div class="dropdown-menu card-student-msg-cont dropdown-menu-right p-2 custom-scrollbar-css mCustomScrollbar" data-mcs-theme="minimal-dark" aria-labelledby="navShowStudentMsg">
+                  <div class="card-group card-student-msg pb-1">
+                    <span class="font-12">Unread <span class="badge badge-danger">1</span></span>
+                  </div>
+                  <div class="card-group card-student-msg pb-1">
+                    <div class="card">
+                      <div class="card-body">
+                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
+                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
+                        <small class="float-right"><strong>08:00 am</strong></small>
+                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
                       </div>
-                      <div class="col-lg-1 text-center" style="max-width: 3.6%;">
-                        <i class="far fa-heart cursor"></i>
-                        <span class="badge badge-danger badge-pill i-notif">14</span>
-                      </div>
-                      <div class="col-lg-1 text-center" style="max-width: 3.6%;">
-                        <i class="far fa-envelope cursor"></i>
-                        <span class="badge badge-danger badge-pill i-notif">14</span>
-                      </div>
-                      <div class="col-lg-1 text-center" style="max-width: 3.6%;">
-                        <i class="fas fa-bell cursor"></i>
-                        <span class="badge badge-danger badge-pill i-notif">14</span>
-                      </div>
-                      <div class="col-lg-3 text-right">
-                        {{-- <span class="span-profile-n">Juan Dela Cruz</span> --}}
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ $data->email }} <span class="caret"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                              onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                      </div>
-                      {{-- <div class="col-lg-1 text-left">
-                      </div> --}}
                     </div>
+                  </div>
+                  <div class="card-group card-student-msg pb-1">
+                    <div class="card">
+                      <div class="card-body">
+                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
+                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
+                        <small class="float-right"><strong>08:00 am</strong></small>
+                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-group card-student-msg pb-1">
+                    <div class="card">
+                      <div class="card-body">
+                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
+                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
+                        <small class="float-right"><strong>08:00 am</strong></small>
+                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
+              </span>
+
+              <a href="">
+                <i class="fas fa-bell cursor i-con"></i>
+                <span class="badge badge-danger badge-pill i-notif">14</span>
+              </a>
+
+              <span class="float-right">
+                <a id="navbarDropdownSettings" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                  Hi Teachers, <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right settings-cont font-12 p-3" aria-labelledby="navbarDropdownSettings">
+                  <a class="dropdown-item l-h-1p4 font-weight-bold" href="#">
+                    Hi Teacher,
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    {{ strtoupper($data->email) }}
+                  </a>
+                  <hr>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Your Profile
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Edit Profile
+                  </a>
+                  <hr>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Calendar
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Notifications
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Messages
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Favorites
+                  </a>
+                  <hr>
+                  <a class="dropdown-item l-h-1p4" href="{{ url('teachers-account-settings') }}">
+                    Account Settings
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Payment Methods
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Heygo Credits
+                  </a>
+                  <a class="dropdown-item l-h-1p4" href="#">
+                    Purchase History
+                  </a>
+                  <hr>
+                  <a class="dropdown-item pb-2" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                  document.getElementById('logout-form').submit();">
+                      <i class="fas fa-arrow-alt-circle-right" style="float: left;margin-right: 7px;margin-top: 3px;"></i><span> {{ __('Logout') }}</span>
+                  </a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
+
+                </div>
+              </span>
+            </span>
+          </div>
         </nav>
+        
         <main class="py-4">
             @yield('content')
-
-
             {{-- {{ Auth::user()->id }} --}}
         </main>
     </div>
@@ -207,16 +242,59 @@
         snapAmount:188,
         snapOffset:65
       });
+
+      
       
     });
   })(jQuery);
 </script>
-</body>
-</html>
-
 
 <style>
 	.container-xl, .container-lg, .container-md, .container-sm, .container {
 		max-width: 100%;
 	}
 </style>
+
+<style>
+  .value {
+    border-bottom: 4px dashed #bdc3c7;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10em;
+    width: 300px; 
+    height: 100px;
+    line-height: 60px;
+    margin: 40px auto;
+    letter-spacing: -.07em;
+    text-shadow: white 2px 2px 2px;
+  }
+  input[type="range"] {
+    display: block;
+    -webkit-appearance: none;
+    background-color: #bdc3c7;
+    width: 300px;
+    height: 5px;
+    border-radius: 5px;
+    margin: 0 auto;
+    outline: 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #e74c3c;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+  }​
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: white;
+    border: 2px solid #e74c3c;
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.6);
+  }
+</style>
+</body>
+</html>

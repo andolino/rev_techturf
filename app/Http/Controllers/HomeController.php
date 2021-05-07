@@ -39,6 +39,11 @@ class HomeController extends Controller
         return view('teachers', ['data' => $data]);
     }
     
+    public function teachersAccountSettings(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        return view('teachers-account-settings', ['data' => $data]);
+    }
+    
     public function studentsDashboard(){
         $data = DB::table('students')->where('id', '=', Auth::id())->get();
         return view('students', ['data' => $data]);

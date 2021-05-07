@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:students'], function () {
 Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
+    Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);

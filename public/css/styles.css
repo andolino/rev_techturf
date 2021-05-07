@@ -261,11 +261,23 @@ div.wpcf7 input[type="file"]:disabled {
 	line-height: 3 !important;
 }
 
-.i-notif{
-	left: 34px;
-	position: absolute;
-	font-size: 11px;
-	top: 5px;
+.i-notif {
+	position: relative;
+	font-size: 10px !important;
+	top: -16px;
+	left: -13px;
+}
+
+#navbarDropdownSettings{
+	width: 228px;
+	text-align: right;
+}
+
+
+.i-con {
+	font-size: 24px;
+	line-height: 1.6;
+	color: #f0f0f0;
 }
 
 .cursor {
@@ -337,11 +349,11 @@ div.wpcf7 input[type="file"]:disabled {
 
 .cicle-active {
 	background: #398f14;
-	width: 9px;
-	height: 9px;
+	width: 12px;
+	height: 12px;
 	border-radius: 15px;
 	position: absolute;
-	top: 28px;
+	top: 10px;
 }
 
 .cont-upcoming-lesson{
@@ -772,4 +784,79 @@ div.wpcf7 input[type="file"]:disabled {
 	margin-right: 19%;
 	text-align: justify;
 	color: #fff;
+}
+
+.card-student-msg{
+	width: 300px;
+	max-width: 300px;
+}
+
+.card-student-msg .card {
+	border-radius: 17px !important;
+	border: 1.5px solid #fcb017;
+}
+
+.card-student-msg p {
+	line-height: 1.2;
+	text-align: left;
+}
+
+.card-student-msg-cont{
+	height: 450px;
+	max-height: 650px;
+	position: absolute !important;
+	right: auto !important;
+}
+
+.b-bot-red{
+	border-bottom: 4px solid #d50e0e;
+}
+
+.b-bot-yellow{
+	border-bottom: 4px solid #f5c425;
+}
+
+.b-bot-blue{
+	border-bottom: 4px solid #0c4daf;
+}
+
+.settings-cont {
+	width: auto;
+	border-radius: 0 !important;
+	top: 97% !important;
+	right: 0px !important;
+	background: #f7f7f7 !important;
+}
+
+.l-h-1p4{
+	line-height: 1.4;
+}
+
+.b-top-s-1{
+	border-top: 1px solid rgb(34, 32, 32) !important;
+}
+
+.nav-icon{
+	max-width: 70px;
+	width: 60px;
+	color: #fff;
+}
+
+.nav-icon i {
+	font-size: 25px;
+}
+
+.custom-shadow {
+	box-shadow: 0px 0px 13px 0px #d0c9c9;
+}
+
+.background-none{
+	background: none !important;
+}
+
+.cont-account-settings{
+	border-top-left-radius: 18px;
+	border-top-right-radius: 18px;
+	border-bottom-left-radius: 16px;
+	border-bottom-right-radius: 16px;
 }

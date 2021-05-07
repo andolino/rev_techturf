@@ -11,6 +11,7 @@ import HomeSlider from './components/HomeSlider.vue';
 import AvailableLesson from './components/AvailableLesson.vue';
 import SignupFormTeacher from './components/SignupFormTeacher.vue';
 import SignupFormStudent from './components/SignupFormStudent.vue';
+import TeacherAcctSettings from './components/TeacherAcctSettings.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue'
 
 
@@ -49,10 +50,11 @@ const app = new Vue({
 	el: '#app',
 	components: {
 		// 'todo-component':
-		'home-slider': HomeSlider,
-		'available-lesson' : AvailableLesson,
-		'signup-form-teacher' : SignupFormTeacher,
-		'signup-form-student' : SignupFormStudent
+		'home-slider'						: HomeSlider,
+		'available-lesson' 			: AvailableLesson,
+		'signup-form-teacher'   : SignupFormTeacher,
+		'signup-form-student'   : SignupFormStudent,
+		'teacher-acct-settings' : TeacherAcctSettings
 	}
 });
 
