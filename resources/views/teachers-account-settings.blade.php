@@ -7,7 +7,6 @@
           <h5 class="font-weight-regular">Upcoming Lesson </h5>
         </div>
         <div class="p-3">
-          <div class="row mt-5">
             <teacher-acct-settings></teacher-acct-settings>
             {{-- <div class="col-lg-4 text-right">
               <img src="{{ asset('images/ellipse-4.png') }}" alt="">
@@ -15,7 +14,6 @@
               <input type="range" min="0" max="10" step="1" value="0">
             </div>
             <div class="col-lg-8"></div> --}}
-          </div>
         </div>
       </div>
 		</div>
