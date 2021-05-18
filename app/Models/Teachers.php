@@ -14,7 +14,9 @@ class Teachers extends Authenticatable{
     protected $guard = 'teachers';
     
     protected $fillable = [
-        'email', 'password'
+        'email', 'password',  'username', 'email', 'lastname', 
+        'middlename', 'firstname', 'country_id', 'objective_title', 
+        'contact_no', 'objective_text'
         // 'username', 'username', 'lastname', 'firstname', 'middlename', 'rate_per_hr', 'country_id', 'objective_title', 'objective_text'
     ];
 

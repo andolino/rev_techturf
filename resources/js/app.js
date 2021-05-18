@@ -12,8 +12,9 @@ import AvailableLesson from './components/AvailableLesson.vue';
 import SignupFormTeacher from './components/SignupFormTeacher.vue';
 import SignupFormStudent from './components/SignupFormStudent.vue';
 import TeacherAcctSettings from './components/TeacherAcctSettings.vue';
-import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue'
-
+import TeacherFeeds from './components/TeacherFeeds.vue';
+import FetchFeeds from './components/FetchFeeds.vue';
+import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -54,7 +55,9 @@ const app = new Vue({
 		'available-lesson' 			: AvailableLesson,
 		'signup-form-teacher'   : SignupFormTeacher,
 		'signup-form-student'   : SignupFormStudent,
-		'teacher-acct-settings' : TeacherAcctSettings
+		'teacher-acct-settings' : TeacherAcctSettings,
+		'teacher-feeds'					: TeacherFeeds,
+		'fetch-feeds'						: FetchFeeds
 	}
 });
 

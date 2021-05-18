@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('/todo', 'App\Http\Controllers\TodoController');
+Route::get('/get-fetch-tutor', [HomeController::class,'getFetchTeacher']);//'App\Http\Controllers\HomeController\getFetchTeacher');
 Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
 Route::post('/register/students', [RegisterController::class,'createStudents']);
 

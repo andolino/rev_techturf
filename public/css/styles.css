@@ -49,7 +49,7 @@ body {
 
 
 body{
-	background: #e9e3e3;
+	background: #f0ede8 !important;
 	font-family: 'Poppins', sans-serif !important;
 }
 
@@ -57,9 +57,14 @@ body{
 	background: #f2f2f2;
 } */
 
+textarea{
+	border: 1px solid #000 !important;
+}
+
 .btn-default {
 	box-shadow: 1px 4px 17px 2px #e3dede !important;
 	color: #df9509 !important;
+	border: 1px solid #e8b657 !important;
 }
 
 div.wpcf7 {
@@ -77,7 +82,7 @@ div.wpcf7 {
 
 .input-custom{
 	border: 0 !important;
-	background: #eaeaea !important;
+	background: #e1e1e1 !important;
 	border-radius: 18px !important;
 	padding: 21px !important;
 }
@@ -191,6 +196,11 @@ div.wpcf7 input[type="file"]:disabled {
 /* .side-panel-cont1-1{
 	height: 450px;
 } */
+
+.close {
+	color: #eca20f !important;
+	opacity: 1 !important;
+}
 
 #scrollToTopBtn {
 	display: none;
@@ -337,10 +347,10 @@ div.wpcf7 input[type="file"]:disabled {
 
 .ico-wrapper-find i {
 	position: absolute;
-	top: 15px;
+	top: 12px;
 	left: 14px;
 	color: rgb(132, 132, 132);
-	font-size: 20px;
+	font-size: 15px;
 }
 
 .rounded-11px{
@@ -357,18 +367,16 @@ div.wpcf7 input[type="file"]:disabled {
 }
 
 .cont-upcoming-lesson{
-	background: #f0f0f0;
+	background: #fbfbfb;
 }
 
 .cont-home-works{
-	background: #f0f0f0;
+	background: #fbfbfb;
 }
 
 .cont-books-workbooks-shop{
-	background: #f0f0f0;
+	background: #fbfbfb;
 }
-
-
 
 .btn-yellow{
 	background: #df9509 !important;
@@ -859,4 +867,26 @@ div.wpcf7 input[type="file"]:disabled {
 	border-top-right-radius: 18px;
 	border-bottom-left-radius: 16px;
 	border-bottom-right-radius: 16px;
+}
+
+.inp-right-a-post i {
+	float: right;
+	position: absolute;
+	right: 32px;
+	bottom: 11px;
+	color: #fcb017;
+}
+
+.inp-right-a-post .bg-light {
+	height: 40px;
+	line-height: 0.7;
+	font-size: 13px;
+	color: #737171;
+	padding-left: 19px !important;
+	cursor: pointer;
+}
+
+.post-feed-icon i{
+	color: #2c2c2c;
+	font-size: 23px !important;
 }

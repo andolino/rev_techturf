@@ -162,65 +162,8 @@
 			{{-- mid content --}}
 
 			<div class="col-lg-6 pr-2 pl-4">
-				<div class="row mb-2">
-					<div class="col-lg-12 float-right">
-						<form class="form-inline float-right font-12">
-							<label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-							<select class="custom-select my-1 rounded mr-3 rounded-pill font-14" id="inlineFormCustomSelectPref">
-								<option selected>Choose...</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-							<label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-							<select class="custom-select my-1 rounded mr-3 rounded-pill font-14" id="inlineFormCustomSelectPref">
-								<option selected>Choose...</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-							<label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-							<select class="custom-select my-1 rounded rounded-pill font-14" id="inlineFormCustomSelectPref">
-								<option selected>Choose...</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-							{{-- <button type="submit" class="btn btn-primary my-1">Submit</button> --}}
-						</form>
-					</div>
-				</div>
-				<div class="card rounded-11px">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-1">
-								<img src="{{ asset('images/ellipse-3.png') }}" alt="">
-							</div>
-							<div class="col-lg-11 pl-0">
-								<div class="cicle-active"></div>
-								<h4 class="ml-4"> James Cameron</h4>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis saepe modi, molestiae ad 
-									illum nihil at corrupti a, excepturi expedita repellendus quae vel possimus consequuntur rem! Ipsam itaque quis ex.</p>
-							</div>
-						</div>
-					</div>
-					<div class="card-footer">
-						<div class="row cont-count-feeds">
-							<div class="col-lg-1 text-right pl-1 pr-1 offset-lg-9 count-feeds-like">
-								<i class="fas fa-heart"></i>
-								<span class="font-12">100</span>
-							</div>
-							<div class="col-lg-1 text-center pl-1 pr-1 count-feeds-comment">
-								<i class="fas fa-eye"></i>
-								<span class="font-12">100</span>
-							</div>
-							<div class="col-lg-1 text-left pl-1 pr-1 count-feeds-dislikes">
-								<i class="fas fa-minus-square"></i>
-								<span class="font-12">100</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				<teacher-feeds></teacher-feeds>
+				
 			</div>
 
 
