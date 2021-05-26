@@ -166,8 +166,10 @@
         {{-- mid content --}}
 
         <div class="col-lg-6 pr-2 pl-4">
-            @if ($teachers)
-                <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
+            @if (!empty($teachers))
+               <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
+            @elseif (!empty($teachersprofile))
+                <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
             @else
                 <fetch-feeds></fetch-feeds>
             @endif
@@ -409,4 +411,5 @@
         </div>
     </div>
 </div>
+
 @endsection

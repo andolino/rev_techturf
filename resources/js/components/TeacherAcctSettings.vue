@@ -90,6 +90,18 @@
             </div>
             <p class="text-danger text-center" v-if="form.errors.has('contact_no')" v-text="form.errors.get('contact_no')"></p>
 
+            <label for="" class="text-left w-100">Rate Per Hour</label>
+            <div class="form-group input-group mb-0">
+                <input 
+                  type="text" 
+                  v-model="form.rate_per_hr" 
+                  :class="{'is-invalid' : form.errors.has('rate_per_hr')}" 
+                  class="form-control text-center input-custom font-14 mb-3" 
+                  id="rate_per_hr" 
+                  name="rate_per_hr">
+            </div>
+            <p class="text-danger text-center" v-if="form.errors.has('rate_per_hr')" v-text="form.errors.get('rate_per_hr')"></p>
+
             <label for="" class="text-left w-100">Location</label>
             <div class="form-group input-group mb-0">
                   <select name="country_id" 
@@ -166,6 +178,7 @@
             firstname: '',
             lastname: '',
             contact_no: '',
+            rate_per_hr: '',
             country_id: '',
             email: '',
             objective_title: '',
@@ -189,6 +202,7 @@
             this.form.firstname = res.data[0].firstname;
             this.form.lastname = res.data[0].lastname;
             this.form.contact_no = res.data[0].contact_no;
+            this.form.rate_per_hr = res.data[0].rate_per_hr;
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
             this.form.objective_title = res.data[0].objective_title;
@@ -200,6 +214,7 @@
 					data.append('firstname', this.form.firstname);
 					data.append('lastname', this.form.lastname);
 					data.append('contact_no', this.form.contact_no);
+					data.append('rate_per_hr', this.form.rate_per_hr);
 					data.append('country_id', this.form.country_id);
 					data.append('email', this.form.email);
 					data.append('objective_title', this.form.objective_title);
@@ -208,7 +223,7 @@
 					data.append('_token', this.csrf);
 					axios.post('/heygo/update-teacher-settings', data).then((res) => {
             if (typeof res.data.errors === 'undefined') {
-              window.location.href = this.base_url + "/teachers-account-settings";
+              window.location.reload();
             }
 					}).catch((error) => {
             console.log(error);

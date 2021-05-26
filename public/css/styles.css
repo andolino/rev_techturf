@@ -890,3 +890,7 @@ div.wpcf7 input[type="file"]:disabled {
 	color: #2c2c2c;
 	font-size: 23px !important;
 }
+
+.btn-dashboard {
+	padding: 15px 41px 15px 41px !important;
+}

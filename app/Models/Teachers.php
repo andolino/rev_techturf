@@ -16,7 +16,7 @@ class Teachers extends Authenticatable{
     protected $fillable = [
         'email', 'password',  'username', 'email', 'lastname', 
         'middlename', 'firstname', 'country_id', 'objective_title', 
-        'contact_no', 'objective_text'
+        'rate_per_hr', 'contact_no', 'objective_text'
         // 'username', 'username', 'lastname', 'firstname', 'middlename', 'rate_per_hr', 'country_id', 'objective_title', 'objective_text'
     ];
 

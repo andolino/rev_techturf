@@ -44,12 +44,14 @@ Route::post('/get-teachers-details', [HomeController::class,'getTeachersDetails'
 Route::group(['middleware' => 'auth:students'], function () {
     // Route::view('/students', 'students');
     Route::get('/students', [HomeController::class, 'studentsDashboard']);
+    Route::get('/teachers-profile/{any}', [HomeController::class, 'teachersProfile']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
+    
 });
 
 Route::get('logout', [LoginController::class,'logout']);

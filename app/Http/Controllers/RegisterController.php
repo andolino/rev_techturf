@@ -108,6 +108,8 @@ class RegisterController extends Controller
         return redirect()->intended('login/teachers');
     }
 
+    
+
     /**
      * @param Request $request
      *

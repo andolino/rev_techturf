@@ -65,6 +65,7 @@ class HomeController extends Controller
             'firstname'       => 'required|string',
             'country_id'      => 'required',
             'contact_no'      => 'required',
+            'rate_per_hr'      => 'required|numeric',
             'objective_title' => 'required|string',
             'objective_text'  => 'required|string'
         ]);
@@ -73,12 +74,19 @@ class HomeController extends Controller
         $teachers->lastname = Request::post('lastname');
         $teachers->firstname = Request::post('firstname');
         $teachers->contact_no = Request::post('contact_no');
+        $teachers->rate_per_hr = Request::post('rate_per_hr');
         $teachers->country_id = Request::post('country_id');
         $teachers->objective_title = Request::post('objective_title');
         $teachers->objective_text  = Request::post('objective_text');
         $teachers->save();
         
         return redirect()->intended('teachers-account-settings');
+    }
+
+    public function teachersProfile($id){
+        $data = DB::table('teachers')->where('id', '=', $id)->first();
+        $teachersRow = DB::table('teachers')->where('id', '=', $id)->get();
+        return view('students', ['data' => $data, 'teachers' => [], 'teachersprofile' => $teachersRow]);
     }
     
     /*

@@ -28,3 +28,4 @@ class ModifyTeachersTableAddContactNo extends Migration
         //
     }
 }
+
