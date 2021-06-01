@@ -30,11 +30,6 @@
         </div>
       </div>
 
-
-
-      
-
-
   </div>
 </template>
 
@@ -59,16 +54,8 @@ export default {
     }
   },
   methods: {
-    fetchTutor(){
-      axios.get('/heygo/api/get-fetch-tutor').then((res) => {
-          this.dataFetchTutor = res.data
-        }).catch((error) => {
-          console.log(error);
-      });
-    },
   },
   mounted() {
-    this.fetchTutor();
   }
 }
 </script>

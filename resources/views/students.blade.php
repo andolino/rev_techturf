@@ -167,11 +167,11 @@
 
         <div class="col-lg-6 pr-2 pl-4">
             @if (!empty($teachers))
-               <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
+               <fetch-feeds :findtutor="{{ $teachers }}" ></fetch-feeds>
             @elseif (!empty($teachersprofile))
                 <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
             @else
-                <fetch-feeds></fetch-feeds>
+                <fetch-feeds :teachersdata="{{ $teachersprofile }}"></fetch-feeds>
             @endif
         </div>
 

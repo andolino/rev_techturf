@@ -45,6 +45,10 @@ Route::group(['middleware' => 'auth:students'], function () {
     // Route::view('/students', 'students');
     Route::get('/students', [HomeController::class, 'studentsDashboard']);
     Route::get('/teachers-profile/{any}', [HomeController::class, 'teachersProfile']);
+    Route::get('/get-week-calendar', [HomeController::class, 'getAWeekCalendar']);
+    Route::get('/get-time-available-per-day', [HomeController::class, 'getATimeAvailablePerDay']);
+    Route::get('/get-teachers-info/{any}', [HomeController::class, 'getTeachersInfo']);
+    Route::get('/get-lesson-option', [HomeController::class, 'getLessonOption']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {

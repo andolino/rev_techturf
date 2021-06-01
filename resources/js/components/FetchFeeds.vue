@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-lg-9 mt-4">
                   <button class="btn btn-default font-12 float-right text-center ml-3 btn-dashboard" 
-                    @click="fnBookATrial()">
+                    @click="fnBookATrial(dft.id)">
                     Book A Trial
                   </button>
                   <button 
@@ -73,7 +73,7 @@
             <!-- <section> -->
               <div class="rt-container row">
                 <div class="col-lg-4 pr-0">
-                  <div class="left-stepper-tab">
+                  <div class="left-stepper-tab h-100">
                     <h5 for="" class="mb-5">Book Your Trial</h5>
                     <div class="step" :class="{ 'step-active' : showStepper1 }">
                       <div>
@@ -123,23 +123,11 @@
                   <div class="col-lg-8 pl-0" v-if="showStepper1">
                     <div class="stepper-control">
                       <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-light w-100 mb-2 p-3 active">
-                          <input type="radio" name="options" id="option1" autocomplete="off" checked> 
-                          <span class="sc-title">Trial Lesson</span>
-                          <span class="sc-sm-silent">300 Lessons</span>
-                          <span class="sc-price">JPY500</span>
-                        </label>
-                        <label class="btn btn-light w-100 mb-2 p-3">
-                          <input type="radio" name="options" id="option2" autocomplete="off"> 
-                          <span class="sc-title">1 Hour Lesson</span>
-                          <span class="sc-sm-silent">300 Lessons</span>
-                          <span class="sc-price">JPY1,000</span>
-                        </label>
-                        <label class="btn btn-light w-100  p-3">
-                          <input type="radio" name="options" id="option3" autocomplete="off">
-                          <span class="sc-title">30 Minutes Lesson (For Elementary Level)</span>
-                          <span class="sc-sm-silent">300 Lessons</span>
-                          <span class="sc-price">JPY1,000</span>
+                        <label v-for="lo in lessonOption" :key="lo.id" class="btn btn-light w-100 mb-2 p-3">
+                          <input type="radio" v-model="formToSave.lesson_option_id" :value="lo.id" name="lesson-option" id="lesson-option" autocomplete="off"> 
+                          <span class="sc-title">{{ lo.title }}</span>
+                          <span class="sc-sm-silent">{{ lo.lesson_count }} Lessons</span>
+                          <span class="sc-price">{{ lo.currency }}{{ lo.cost }}</span>
                         </label>
                       </div>
                     </div>
@@ -150,38 +138,116 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper2">
                     <div class="stepper-control">
-                      <h4>Schedule</h4>
+                      <table class="table table-sm font-12">
+                        <thead>
+                          <tr>
+                            <td class="text-center bg-calendar-hdr" v-for="dwc in dataWeekCalendar" :key="dwc.key">
+                              {{ dwc.key }} <strong>{{ dwc.value }}</strong>
+                            </td>
+                          </tr>
+                          <tr v-for="dta in dataTimaAvPerDay" :key="dta.time">
+                            <td class="text-center clk-time" v-for="dwc in dataWeekCalendar" :key="dwc.key">
+                              <button type="button" 
+                                class="btn btn-xs btn-radio-select"
+                                :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta[0].time)}"
+                                :data-date="dwc.w_date + ' ' + dta[0].time"
+                                @click="selectTimePreferred" 
+                                >{{ dta[0].time }}</button></td>
+                          </tr>
+                        </thead>
+                      </table>
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                         v-on:click="showStepper2 = !showStepper2; 
                                     showStepper3 = !showStepper3;">Next</button>
+                    <button type="button" 
+                        class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
+                        v-on:click="showStepper1 = !showStepper1; 
+                                    showStepper2 = !showStepper2;">Previous</button>
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper3">
-                    <div class="stepper-control">
-                        <h4>Booking Information</h4>
+                    <div class="stepper-control mb-5">
+
+                      <div v-for="dft in teachersdata" :key="dft.id">
+                        <div class="card rounded-11px">
+                          <div class="card-body mt-2 ml-2">
+                            <div class="row">
+                              <div class="col-lg-2 text-center mt-3 pr-1">
+                                <img :src="asset + 'images/ellipse-1.png'" alt="">
+                              </div>
+                              <div class="col-lg-10">
+                                <div class="cicle-active"></div>
+                                <span class="ml-4" style="font-size: 23px;"> {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span><br>
+                                <span class="ml-0"><i class="fas fa-map-marker-alt text-warning pl-0 pr-2 text-left"></i><img :src="asset + 'images/flag-1.png'" width="20"></span>
+                                <span class="ml-3"><i class="fas fa-star text-warning p-2"></i><strong>4.5</strong></span>
+                                <span class="ml-3">43 Reviews <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span>
+                                <hr class="mb-1">
+                                
+                                <label for="" class="w-100 font-14">Date and Time</label>
+                                <p class="font-14 mb-0" v-for="fts in sorted_date" :key="fts">
+                                  {{ moment(new Date(fts)).format('LLL') }}</p>
+                                
+                                <hr class="mb-1">
+                                <div class="row font-14">
+                                  <div class="col-lg-6 text-left">
+                                    <label for="">Service Details</label>
+                                    <p class="mb-1">1 hour lesson <br> Transaction Fee</p>
+                                  </div>
+                                  <div class="col-lg-6 text-right">
+                                    <label for="">Service Details</label>
+                                    <p class="mb-1">5,000JPY/hour <br> 500JPY</p>
+                                  </div>
+                                </div>
+                                
+                                <hr class="mb-1">
+                                <div class="row font-14">
+                                  <div class="col-lg-6 text-left">
+                                    <label for="">TOTAL</label>
+                                  </div>
+                                  <div class="col-lg-6 text-right">
+                                    <label for="">5,500JPY</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                         v-on:click="showStepper3 = !showStepper3; 
                                     showStepper4 = !showStepper4;">Next</button>
+                    <button type="button" 
+                        class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
+                        v-on:click="showStepper2 = !showStepper2; 
+                                    showStepper3 = !showStepper3;">Previous</button>
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper4">
                     <div class="stepper-control">
                         <h4>Choose Payment</h4>
+                        
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                         v-on:click="showStepper4 = !showStepper4; 
                                     showStepper5 = !showStepper5;">Next</button>
+                    <button type="button" 
+                        class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
+                        v-on:click="showStepper3 = !showStepper3; 
+                                    showStepper4 = !showStepper4;">Previous</button>
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper5">
                     <div class="stepper-control">
                         <h4>Done</h4>
+                        
                     </div>
                     <button type="button" 
-                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="showStepper5 = !showStepper5">Next</button>
+                            class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
+                            v-on:click="showStepper4 = !showStepper4; 
+                                        showStepper5 = !showStepper5;">Finished</button>
                   </div>
                   
                 </transition>
@@ -200,6 +266,7 @@
 </template>
 
 <script>
+  import moment from 'moment';
   export default {
     props: {
       findtutor: {
@@ -211,6 +278,10 @@
     data(){
       return {
         dataFetchTutor: '',
+        dataWeekCalendar: '',
+        dataTimaAvPerDay: '',
+        teachersdata: '',
+        lessonOption: '',
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
@@ -218,10 +289,24 @@
         showStepper2: false,
         showStepper3: false,
         showStepper4: false,
-        showStepper5: false
+        showStepper5: false,
+        timeActive: false,
+        formToSave: {
+          lesson_option_id : '',
+          lesson_date: [],
+        },
+        sorted_date: '',
+        moment: moment
       }
     },
     methods: {
+      getLessonOption(){
+        axios.get('/heygo/get-lesson-option').then((res) => {
+						this.lessonOption = res.data
+					}).catch((error) => {
+						console.log(error);
+        });
+      },
       fetchTutor(){
         axios.get('/heygo/api/get-fetch-tutor').then((res) => {
 						this.dataFetchTutor = res.data
@@ -229,38 +314,75 @@
 						console.log(error);
         });
       },
+      fetchCalendarWeek(){
+        axios.get('/heygo/get-week-calendar').then((res) => {
+						// this.dataWeekCalendar = res.data
+            this.dataWeekCalendar = res.data;
+					}).catch((error) => {
+						console.log(error);
+        });
+      },
+      fetchTimePerDay(){
+        axios.get('/heygo/get-time-available-per-day').then((res) => {
+						// this.dataWeekCalendar = res.data
+            this.dataTimaAvPerDay = res.data;
+					}).catch((error) => {
+						console.log(error);
+        });
+      },
       showTeacherProfile(id){
         window.location.href = this.baseurl + '/teachers-profile/' + id
       },
-      fnBookATrial(){
+      fnBookATrial(e){
+        axios.get('/heygo/get-teachers-info/'+e).then((res) => {
+						// this.dataWeekCalendar = res.data
+            this.teachersdata = res.data;
+					}).catch((error) => {
+						console.log(error);
+        });
         $('#modalWriteAPost').modal('show');
       },
+      selectTimePreferred(event){
+        // this.timeActive = !this.timeActive
+        if (event.target.classList.contains('active-time')) {
+          event.target.classList.remove("active-time");
+          this.formToSave.lesson_date.splice(this.formToSave.lesson_date.indexOf(event.target.getAttribute('data-date')), 1);
+        } else {
+          event.target.classList.add('active-time');
+          this.formToSave.lesson_date.push(event.target.getAttribute('data-date')); 
+        }
+        this.sorted_date = this.formToSave.lesson_date.sort();
+      }
       
     },
     mounted(){
+      
       this.fetchTutor();
+      this.fetchCalendarWeek();
+      this.fetchTimePerDay();
+      this.getLessonOption();
       // Get the element with id="defaultOpen" and click on it
-      document.getElementById("defaultOpen").click();
+      // document.getElementById("defaultOpen").click();
     }
   }
 </script>
 
 <style>
   body{font-size:21px;font-family:Roboto;margin:30px}*,*:before,*:after{box-sizing:border-box}.step{position:relative;min-height:4.5em;color:gray}.step+.step{margin-top:0em}.step>div:first-child{position:static;height:0}.step>div:not(:first-child){margin-left:1.5em;padding-left:1em}.step.step-active{color:#f7bb17}.step.step-active .circle{background-color:#f7bb17}.circle{background:gray;position:relative;width:1.5em;height:1.5em;line-height:1.5em;border-radius:100%;color:#fff;text-align:center;box-shadow:0 0 0 3px #fff}.circle:after{
-        content: ' ';
-        position: absolute;
-        display: block;
-        top: 0px;
-        right: 50%;
-        bottom: 1px;
-        left: 43%;
-        height: 100%;
-        width: 3px;
-        transform: scale(1,2);
-        transform-origin: 50% -100%;
-        background-color: rgba(15, 14, 14, 0.55);
-        z-index: 1;
-      }
+    content: ' ';
+    position: absolute;
+    display: block;
+    top: 0px;
+    right: 50%;
+    bottom: 1px;
+    left: 43%;
+    height: 100%;
+    width: 3px;
+    transform: scale(1,2);
+    transform-origin: 50% -100%;
+    background-color: rgba(15, 14, 14, 0.55);
+    z-index: 1;
+  }
   .step:last-child .circle:after{
     display:none
   }
@@ -282,10 +404,15 @@
   .stepper-next {
     position: absolute;
     bottom: 17px;
-    right: 33px;
+    right: 74px;
+  }
+  .stepper-prev {
+    position: absolute;
+    bottom: 17px;
+    left: 62px;
   }
   .stepper-control{
-    padding: 86px;
+    padding: 61px;
   }
   .sc-title {
     width: 100%;
@@ -313,5 +440,21 @@
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+  }
+  .bg-calendar-hdr{
+    background: #f3dea2;
+  }
+  .btn-radio-select{
+    font-size: 12px !important;
+    padding: 3px !important;
+    padding-right: 3px !important;
+    padding-left: 3px !important;
+    border: 1px solid #e3e2e2 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .active-time{
+    background: #f7bb17 !important;
+    color: #fff !important;
   }
 </style>
