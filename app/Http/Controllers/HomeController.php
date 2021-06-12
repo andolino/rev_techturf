@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use Illuminate\Http\Request;
 use Request;
 use App\Models\Teachers;
+use App\Models\Students;
 use Auth;
 use DB;
 
@@ -49,11 +50,15 @@ class HomeController extends Controller
         return Teachers::where('id', '=', Request::post('user_id'))->get();
     }
     
+    public function getStudentsDetails(){
+        return Students::where('id', '=', Request::post('user_id'))->get();
+    }
+    
     public function teachersAccountSettings(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         return view('teachers-account-settings', ['data' => $data]);
     }
-
+    
     public function getFetchTeacher(){
        return Teachers::latest()->get();
     }
@@ -81,6 +86,43 @@ class HomeController extends Controller
         $teachers->save();
         
         return redirect()->intended('teachers-account-settings');
+    }
+    
+    public function updateStudentSettings(){
+        Request::validate([
+            'email'           => 'required|string|email|max:255',
+            'lastname'        => 'required|string',
+            'firstname'       => 'required|string',
+            'country_id'      => 'required',
+            'contact_no'      => 'required',
+        ]);
+        $teachers = Students::find(Request::post('user_id'));
+        $teachers->email = Request::post('email');
+        $teachers->lastname = Request::post('lastname');
+        $teachers->firstname = Request::post('firstname');
+        $teachers->contact_no = Request::post('contact_no');
+        $teachers->country_id = Request::post('country_id');
+        $teachers->save();
+        
+        return redirect()->intended('students-account-settings');
+    }
+    
+    public function saveStudentBankAcct(){
+        Request::validate([
+            'account_name'           => 'required|string',
+            'card_number'        => 'required|string',
+            'expiry_date'       => 'required|string',
+            'cvv_code'      => 'required',
+            'card_name'      => 'required'
+        ]);
+
+        DB::table('student_banks')->insert([
+            'student_id' => Request::post('user_id'),
+            'bank' => Request::post('card_name'),
+            'acct_no' => Request::post('card_number')
+        ]);
+        
+        return redirect()->intended('students-payment-methods');
     }
 
     public function teachersProfile($id){
@@ -120,6 +162,14 @@ class HomeController extends Controller
                                 ->get();
         }
         return view('students', ['data' => $data, 'teachers' => $teachers]);
+    }
+    public function studentsAccountSettings(){
+        $data = DB::table('students')->where('id', '=', Auth::id())->first();
+        return view('students-account-settings', ['data' => $data]);
+    }
+    public function studentsPaymentMethods(){
+        $data = DB::table('students')->where('id', '=', Auth::id())->first();
+        return view('students-payment-methods', ['data' => $data]);
     }
 
     /*

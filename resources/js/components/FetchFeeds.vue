@@ -123,11 +123,11 @@
                   <div class="col-lg-8 pl-0" v-if="showStepper1">
                     <div class="stepper-control">
                       <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
-                        <label v-for="lo in lessonOption" :key="lo.id" class="btn btn-light w-100 mb-2 p-3">
+                        <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3">
                           <input type="radio" v-model="formToSave.lesson_option_id" :value="lo.id" name="lesson-option" id="lesson-option" autocomplete="off"> 
                           <span class="sc-title">{{ lo.title }}</span>
                           <span class="sc-sm-silent">{{ lo.lesson_count }} Lessons</span>
-                          <span class="sc-price">{{ lo.currency }}{{ lo.cost }}</span>
+                          <span class="sc-price">{{ lo.currency }} {{ rate_per_hr || 0 }}</span>
                         </label>
                       </div>
                     </div>
@@ -192,11 +192,11 @@
                                 <div class="row font-14">
                                   <div class="col-lg-6 text-left">
                                     <label for="">Service Details</label>
-                                    <p class="mb-1">1 hour lesson <br> Transaction Fee</p>
+                                    <p class="mb-1">{{ lessonOptTitle }} <br> Total Hour/s <br> Transaction Fee</p>
                                   </div>
                                   <div class="col-lg-6 text-right">
                                     <label for="">Service Details</label>
-                                    <p class="mb-1">5,000JPY/hour <br> 500JPY</p>
+                                    <p class="mb-1">{{ (rate_per_hr || 0) }}/hour <br> {{ totalHrs }} <br> 500JPY</p>
                                   </div>
                                 </div>
                                 
@@ -206,7 +206,7 @@
                                     <label for="">TOTAL</label>
                                   </div>
                                   <div class="col-lg-6 text-right">
-                                    <label for="">5,500JPY</label>
+                                    <label for="">{{ (rate_per_hr || 0) * totalHrs + 500 }} JPY</label>
                                   </div>
                                 </div>
                               </div>
@@ -227,8 +227,26 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper4">
                     <div class="stepper-control">
-                        <h4>Choose Payment</h4>
-                        
+                        <h4>Payment Method</h4>
+                        <label class="mb-3 font-12">It's safe to pay on Preply All transactions are protected by SSL encryption.</label>
+                        <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
+                          <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
+                          <label class="btn btn-light w-100 mb-2 p-3">
+                            <input type="radio" name="payment-method" autocomplete="off"> 
+                            <span class="sc-title"><img :src="asset + 'images/gpay.png'" alt=""></span>
+                            <span class="sc-price"></span>
+                          </label>
+                          <label class="btn btn-light w-100 mb-2 p-3">
+                            <input type="radio" name="payment-method" autocomplete="off"> 
+                            <span class="sc-title"><img :src="asset + 'images/apay.png'" alt=""></span>
+                            <span class="sc-price"></span>
+                          </label>
+                          <label class="btn btn-light w-100 mb-2 p-3">
+                            <input type="radio" name="payment-method" autocomplete="off"> 
+                            <span class="sc-title"><img :src="asset + 'images/ppay.png'" alt=""></span>
+                            <span class="sc-price"></span>
+                          </label>
+                        </div>
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
@@ -241,8 +259,12 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper5">
                     <div class="stepper-control">
-                        <h4>Done</h4>
-                        
+                        <h4>Complete Payment to Book your Lesson</h4>
+                        <label class="mb-3 font-12">It's safe to pay on Preply All transactions are protected by SSL encryption.</label>
+                        <div class="row">
+                          <div class="col-lg-4"></div>
+                          <div class="col-lg-8"></div>
+                        </div>
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
@@ -282,6 +304,7 @@
         dataTimaAvPerDay: '',
         teachersdata: '',
         lessonOption: '',
+        rate_per_hr: '',
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
@@ -296,7 +319,9 @@
           lesson_date: [],
         },
         sorted_date: '',
-        moment: moment
+        moment: moment,
+        totalHrs: 0,
+        lessonOptTitle: ''
       }
     },
     methods: {
@@ -337,6 +362,7 @@
         axios.get('/heygo/get-teachers-info/'+e).then((res) => {
 						// this.dataWeekCalendar = res.data
             this.teachersdata = res.data;
+            this.rate_per_hr = res.data[0].rate_per_hr;
 					}).catch((error) => {
 						console.log(error);
         });
@@ -351,12 +377,37 @@
           event.target.classList.add('active-time');
           this.formToSave.lesson_date.push(event.target.getAttribute('data-date')); 
         }
+
         this.sorted_date = this.formToSave.lesson_date.sort();
+        const sorted_date = this.sorted_date;
+        const lesson_option_id = this.formToSave.lesson_option_id;
+        switch (lesson_option_id) {
+          case 1:
+            //trial lesson
+            var ed = moment(new Date(sorted_date[0])).add(30, 'minutes');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            this.totalHrs = duration.asHours();
+            break;
+          case 2:
+            //1 Hour lesson
+            var ed = moment(new Date(sorted_date[0])).add(1, 'hours');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            this.totalHrs = duration.asHours();
+          default:
+            //30 Minute Lesson (For Elementary Level)
+            var ed = moment(new Date(sorted_date[0])).add(30, 'minutes');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            this.totalHrs = duration.asHours();
+            break;
+        }
+        console.log(this.totalHrs)
+      },
+      getTitleLessonOpt(title){
+        this.lessonOptTitle = title;
       }
       
     },
     mounted(){
-      
       this.fetchTutor();
       this.fetchCalendarWeek();
       this.fetchTimePerDay();

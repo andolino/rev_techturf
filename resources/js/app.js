@@ -12,9 +12,12 @@ import AvailableLesson from './components/AvailableLesson.vue';
 import SignupFormTeacher from './components/SignupFormTeacher.vue';
 import SignupFormStudent from './components/SignupFormStudent.vue';
 import TeacherAcctSettings from './components/TeacherAcctSettings.vue';
+import StudentAcctSettings from './components/StudentAcctSettings.vue';
 import TeacherFeeds from './components/TeacherFeeds.vue';
 import FetchFeeds from './components/FetchFeeds.vue';
 import TeachersProfile from './components/TeachersProfile.vue';
+import StudentHomework from './components/StudentHomework.vue';
+import StudentPaymentMethods from './components/StudentPaymentMethods.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
@@ -52,14 +55,17 @@ const app = new Vue({
 	el: '#app',
 	components: {
 		// 'todo-component':
-		'home-slider'						: HomeSlider,
-		'available-lesson' 			: AvailableLesson,
-		'signup-form-teacher'   : SignupFormTeacher,
-		'signup-form-student'   : SignupFormStudent,
-		'teacher-acct-settings' : TeacherAcctSettings,
-		'teacher-feeds'					: TeacherFeeds,
-		'fetch-feeds'						: FetchFeeds,
-		'teachers-profile'			: TeachersProfile,
+		'home-slider'							: HomeSlider,
+		'available-lesson' 				: AvailableLesson,
+		'signup-form-student'   	: SignupFormStudent,
+		'signup-form-teacher'   	: SignupFormTeacher,
+		'student-acct-settings' 	: StudentAcctSettings,
+		'teacher-acct-settings' 	: TeacherAcctSettings,
+		'fetch-feeds'							: FetchFeeds,
+		'teacher-feeds'						: TeacherFeeds,
+		'student-homework'				: StudentHomework,
+		'teachers-profile'				: TeachersProfile,
+		'student-payment-methods'	: StudentPaymentMethods
 	}
 });
 

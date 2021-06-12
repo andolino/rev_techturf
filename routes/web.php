@@ -38,7 +38,9 @@ Route::post('/login/students', [LoginController::class,'studentsLogin']);
 Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
 Route::post('/register/students', [RegisterController::class,'createStudents']);
 Route::post('/update-teacher-settings', [HomeController::class,'updateTeacherSettings']);
+Route::post('/update-student-settings', [HomeController::class,'updateStudentSettings']);
 Route::post('/get-teachers-details', [HomeController::class,'getTeachersDetails']);
+Route::post('/get-students-details', [HomeController::class,'getStudentsDetails']);
 
 
 Route::group(['middleware' => 'auth:students'], function () {
@@ -49,6 +51,10 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::get('/get-time-available-per-day', [HomeController::class, 'getATimeAvailablePerDay']);
     Route::get('/get-teachers-info/{any}', [HomeController::class, 'getTeachersInfo']);
     Route::get('/get-lesson-option', [HomeController::class, 'getLessonOption']);
+    Route::get('/students-account-settings', [HomeController::class, 'studentsAccountSettings']);
+    Route::get('/students-payment-methods', [HomeController::class, 'studentsPaymentMethods']);
+    Route::post('/save-student-bank-acct', [HomeController::class, 'saveStudentBankAcct']);
+
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {

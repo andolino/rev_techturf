@@ -7,7 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ url('') }}">
     <meta name="url-asset" content="{{ asset('') }}">
-
+    <meta name="user-id" content="{{ Auth::id() }}">
+    
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
@@ -123,7 +124,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right settings-cont font-12 p-3" aria-labelledby="navbarDropdownSettings">
                   <a class="dropdown-item l-h-1p4 font-weight-bold" href="#">
-                    Hi Teacher,
+                    Hi Students,
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">
                     {{ strtoupper($data->email) }}
@@ -149,10 +150,10 @@
                     Favorites
                   </a>
                   <hr>
-                  <a class="dropdown-item l-h-1p4" href="{{ url('teachers-account-settings') }}">
+                  <a class="dropdown-item l-h-1p4" href="{{ url('students-account-settings') }}">
                     Account Settings
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  <a class="dropdown-item l-h-1p4" href="{{ url('students-payment-methods') }}">
                     Payment Methods
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">

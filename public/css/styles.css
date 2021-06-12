@@ -323,10 +323,10 @@ div.wpcf7 input[type="file"]:disabled {
 	position: relative;
 }
 
-.upcoming-lesson-list{
+.upcoming-lesson-list {
 	overflow-y: scroll;
-	max-height: 900px;
-	height: 800px;
+	max-height: 800px;
+	height: 400px;
 }
 
 .homework-list{
@@ -893,4 +893,8 @@ div.wpcf7 input[type="file"]:disabled {
 
 .btn-dashboard {
 	padding: 15px 41px 15px 41px !important;
+}
+
+.font-30{
+	font-size: 30px;
 }
