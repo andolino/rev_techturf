@@ -210,15 +210,15 @@ class HomeController extends Controller
     public function getATimeAvailablePerDay(){
         $timePerDay = array();
         $time = [
-            '8:00',
-            '8:30',
-            '9:00',
-            '9:30',
-            '10:00',
-            '10:30',
-            '11:00',
-            '11:30',
-            '12:00'
+            '8:00 AM',
+            '8:30 AM',
+            '9:00 AM',
+            '9:30 AM',
+            '10:00 AM',
+            '10:30 AM',
+            '11:00 AM',
+            '11:30 AM',
+            '12:00 PM'
         ];
         for ($i=0; $i < count($time); $i++) {
             array_push($timePerDay, array(

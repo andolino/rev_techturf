@@ -153,6 +153,7 @@
                                 :data-date="dwc.w_date + ' ' + dta[0].time"
                                 @click="selectTimePreferred" 
                                 >{{ dta[0].time }}</button></td>
+                                <!-- :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta[0].time)}" -->
                           </tr>
                         </thead>
                       </table>
@@ -259,17 +260,39 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper5">
                     <div class="stepper-control">
-                        <h4>Complete Payment to Book your Lesson</h4>
-                        <label class="mb-3 font-12">It's safe to pay on Preply All transactions are protected by SSL encryption.</label>
+                        <h5>These are the communication tools your teacher uses.</h5>
+                        <label class="mb-3 font-12">Please choose your preferred communication tool.</label>
+                        
                         <div class="row">
-                          <div class="col-lg-4"></div>
-                          <div class="col-lg-8"></div>
+                          <div class="col-lg-6">
+                            <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
+                              <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
+                              <label class="btn btn-light w-100 mb-2 p-3">
+                                <input type="radio" name="communication-tool" autocomplete="off"> 
+                                <span class="sc-title"><img :src="asset + 'images/zoom.png'" alt=""> Skype</span>
+                                <span class="sc-price"></span>
+                              </label>
+                              <label class="btn btn-light w-100 mb-2 p-3">
+                                <input type="radio" name="communication-tool" autocomplete="off"> 
+                                <span class="sc-title"><img :src="asset + 'images/skype.png'" alt=""> Zoom</span>
+                                <span class="sc-price"></span>
+                              </label>
+                            </div>
+                            <input type="text" 
+                              class="form-control text-center input-custom font-14 mb-3" 
+                              placeholder="Your ID"
+                              name="com_id">
+                          </div>
                         </div>
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                             v-on:click="showStepper4 = !showStepper4; 
                                         showStepper5 = !showStepper5;">Finished</button>
+                    <button type="button" 
+                        class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
+                        v-on:click="showStepper4 = !showStepper4; 
+                                    showStepper5 = !showStepper5;">Previous</button>
                   </div>
                   
                 </transition>
@@ -370,37 +393,45 @@
       },
       selectTimePreferred(event){
         // this.timeActive = !this.timeActive
-        if (event.target.classList.contains('active-time')) {
-          event.target.classList.remove("active-time");
-          this.formToSave.lesson_date.splice(this.formToSave.lesson_date.indexOf(event.target.getAttribute('data-date')), 1);
-        } else {
-          event.target.classList.add('active-time');
-          this.formToSave.lesson_date.push(event.target.getAttribute('data-date')); 
-        }
-
-        this.sorted_date = this.formToSave.lesson_date.sort();
-        const sorted_date = this.sorted_date;
+        // if (event.target.classList.contains('active-time')) {
+        //   event.target.classList.remove("active-time");
+        //   this.formToSave.lesson_date.splice(this.formToSave.lesson_date.indexOf(event.target.getAttribute('data-date')), 1);
+        // } else {
+        //   event.target.classList.add('active-time');
+        //   this.formToSave.lesson_date.push(event.target.getAttribute('data-date')); 
+        // }
+        
+        // this.sorted_date = this.formToSave.lesson_date.sort();
+        // const sorted_date = this.sorted_date;
+        const sorted_date = event.target.getAttribute('data-date');
         const lesson_option_id = this.formToSave.lesson_option_id;
         switch (lesson_option_id) {
           case 1:
             //trial lesson
-            var ed = moment(new Date(sorted_date[0])).add(30, 'minutes');
-            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            var sd = moment(new Date(sorted_date)).format('L LT');
+            var ed = moment(new Date(sorted_date)).add(30, 'minutes');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
+            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
             this.totalHrs = duration.asHours();
             break;
           case 2:
             //1 Hour lesson
-            var ed = moment(new Date(sorted_date[0])).add(1, 'hours');
-            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            var sd = moment(new Date(sorted_date)).format('L LT');
+            var ed = moment(new Date(sorted_date)).add(1, 'hours');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date)))); 
+            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
             this.totalHrs = duration.asHours();
+            break;
           default:
             //30 Minute Lesson (For Elementary Level)
-            var ed = moment(new Date(sorted_date[0])).add(30, 'minutes');
-            var duration = moment.duration(ed.diff(moment(new Date(sorted_date[0])))) 
+            var sd = moment(new Date(sorted_date)).format('L LT');
+            var ed = moment(new Date(sorted_date)).add(30, 'minutes');
+            var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
+            this.formToSave.lesson_date = [sd, format('L LT')];
             this.totalHrs = duration.asHours();
             break;
         }
-        console.log(this.totalHrs)
+        console.log(this.formToSave.lesson_date);
       },
       getTitleLessonOpt(title){
         this.lessonOptTitle = title;

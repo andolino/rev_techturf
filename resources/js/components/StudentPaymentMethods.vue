@@ -2,10 +2,10 @@
   <div>
     <div class="row pl-5 pr-5 cont-payment-methods pt-3">
       <div class="col-lg-12 mb-2">
-        <button type="button" class="btn w-100 text-left">Link Bank Accounts</button>
+        <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/gpay.png'" alt=""></button>
       </div>
       <div class="col-lg-12 mb-2">
-        <button type="button" class="btn w-100 text-left">Link Cards</button>
+        <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/apay.png'" alt=""></button>
       </div>
       <div class="col-lg-12 mb-3">
         <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/ppay.png'"></button>
