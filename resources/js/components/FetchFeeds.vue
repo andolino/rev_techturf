@@ -401,6 +401,7 @@
 						// this.dataWeekCalendar = res.data
             this.teachersdata = res.data;
             this.rate_per_hr = res.data[0].rate_per_hr;
+            console.log(this.rate_per_hr);
 					}).catch((error) => {
 						console.log(error);
         });
