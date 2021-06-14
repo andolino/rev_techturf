@@ -9,10 +9,25 @@
             </div>
             <div class="col-lg-10">
               <div class="cicle-active"></div>
-              <span class="ml-4" style="font-size: 23px;"> {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span>
-              <span class="ml-3"><i class="fas fa-map-marker-alt text-warning p-2"></i><img :src="asset + 'images/flag-1.png'" width="20"></span>
-              <span class="ml-3"><i class="fas fa-star text-warning p-2"></i><strong>4.5</strong></span>
-              <span class="ml-3">43 Reviews <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span>
+              <span class="ml-4" style="font-size: 23px;"> 
+                {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span>
+              <span class="ml-3">
+                <i class="fas fa-map-marker-alt text-warning p-2"></i>
+                <img :src="asset + 'images/flag-1.png'" width="20"></span>
+              <span class="ml-3">
+                <i class="fas fa-star text-warning p-2"></i>
+                <strong>4.5</strong></span>
+              <span class="ml-3">
+                43 Reviews 
+                <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span>
+              <span class="ml-3" style="float: right;">
+                {{ dft.currency }} - {{ dft.rate_per_hr }}
+              </span><br>
+              <div class="row">
+                <span class="ml-3" style="float: right;line-height: 1.5;">
+                  {{ dft.type }}
+                </span>
+              </div>
               <hr>
               <label for=""><strong>Speaks:</strong> English, Japanese</label><br>
               <label for=""><strong>About Me</strong></label>
@@ -127,7 +142,7 @@
                           <input type="radio" v-model="formToSave.lesson_option_id" :value="lo.id" name="lesson-option" id="lesson-option" autocomplete="off"> 
                           <span class="sc-title">{{ lo.title }}</span>
                           <span class="sc-sm-silent">{{ lo.lesson_count }} Lessons</span>
-                          <span class="sc-price">{{ lo.currency }} {{ rate_per_hr || 0 }}</span>
+                          <span class="sc-price">{{ lo.id == 1 ? '' : lo.currency + ' ' + ( rate_per_hr || 0)}}</span>
                         </label>
                       </div>
                     </div>
@@ -264,7 +279,7 @@
                         <label class="mb-3 font-12">Please choose your preferred communication tool.</label>
                         
                         <div class="row">
-                          <div class="col-lg-6">
+                          <div class="col-lg-6 m-auto">
                             <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
                               <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
                               <label class="btn btn-light w-100 mb-2 p-3">
@@ -427,10 +442,11 @@
             var sd = moment(new Date(sorted_date)).format('L LT');
             var ed = moment(new Date(sorted_date)).add(30, 'minutes');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-            this.formToSave.lesson_date = [sd, format('L LT')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
             this.totalHrs = duration.asHours();
             break;
         }
+        this.sorted_date = this.formToSave.lesson_date;
         console.log(this.formToSave.lesson_date);
       },
       getTitleLessonOpt(title){

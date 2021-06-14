@@ -61,6 +61,9 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
+    Route::get('/get-lesson-type-rate', [HomeController::class, 'getLessonTypeRate']);
+    Route::get('/get-lesson-plan', [HomeController::class, 'getLessonPlan']);
+    Route::get('/get-curreny-rate', [HomeController::class, 'getCurrenyRate']);
     
 });
 

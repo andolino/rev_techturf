@@ -71,6 +71,10 @@ class HomeController extends Controller
             'country_id'      => 'required',
             'contact_no'      => 'required',
             'rate_per_hr'      => 'required|numeric',
+            'rate_per_hr'      => 'required|numeric',
+            'lesson_plan_id'      => 'required',
+            'lesson_rate_type_id'      => 'required',
+            'currency_rate_id'      => 'required',
             'objective_title' => 'required|string',
             'objective_text'  => 'required|string'
         ]);
@@ -81,6 +85,9 @@ class HomeController extends Controller
         $teachers->contact_no = Request::post('contact_no');
         $teachers->rate_per_hr = Request::post('rate_per_hr');
         $teachers->country_id = Request::post('country_id');
+        $teachers->lesson_plan_id = Request::post('lesson_plan_id');
+        $teachers->lesson_rate_type_id = Request::post('lesson_rate_type_id');
+        $teachers->currency_rate_id = Request::post('currency_rate_id');
         $teachers->objective_title = Request::post('objective_title');
         $teachers->objective_text  = Request::post('objective_text');
         $teachers->save();
@@ -135,6 +142,36 @@ class HomeController extends Controller
         $data = DB::table('teachers')->where('id', '=', $id)->get();
         return response()->json($data);
     }
+    public function getLessonTypeRate(){
+        $data = DB::table('lesson_rate_type')
+                    ->select('*')
+                    ->get();
+        return response()->json($data);
+    }
+    public function getLessonPlan(){
+        $tol = DB::table('type_of_lesson')->select('*')->get();
+        $obj = array();
+        foreach ($tol as $trow) {
+            $dlp = [];
+            $lp = DB::table('lesson_plan')->where('type_of_lesson_id', '=', $trow->id)->get();
+            if (!empty($lp)) {
+                foreach ($lp as $lprow) {
+                    $dlp[] = array(
+                        'id'=>$lprow->id,
+                        'body'=>$lprow->body
+                    );
+                }
+                $obj[$trow->lesson_type] = $dlp;
+            }
+        }
+        return response()->json($obj);
+    }
+    public function getCurrenyRate(){
+        $data = DB::table('currency_rate')
+                    ->select('*')
+                    ->get();
+        return response()->json($data);
+    }
     
     /*
     * get lesson option *
@@ -152,7 +189,11 @@ class HomeController extends Controller
     */
     public function studentsDashboard(){
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
-        $teachers = DB::table('teachers')->get();
+        $teachers = DB::table('teachers')
+                        ->leftJoin('currency_rate', 'currency_rate.id', '=', 'teachers.currency_rate_id')
+                        ->leftJoin('lesson_rate_type', 'lesson_rate_type.id', '=', 'teachers.lesson_rate_type_id')
+                        ->select('teachers.*', 'currency_rate.*', 'lesson_rate_type.type')
+                        ->get();
         if (isset($_GET['q'])) {
             $q = $_GET['q'];
             $teachers = Teachers::where('firstname','LIKE','%'.$q.'%')

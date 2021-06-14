@@ -6,40 +6,77 @@
           <img :src="asset + 'images/ellipse-4.png'" alt="">
             <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
-                <label for="">Free Trial</label>
+                <label for="">Trial Lesson</label>
               </div>
-              <div class="col-lg-12">
-                <label for="" class="font-12">30 Minutes Free Lesson</label>
+              <div class="col-lg-12 mb-2">
+                <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
+                <select class="form-control form-control-sm font-12" name="" id="">
+                  <option value="Yes" selected>Yes</option>
+                  <option value="No">No</option>
+                </select>
               </div>
-              <div class="col-lg-12">
+              <div class="col-lg-12 mb-2">
+                <label for="currency_rate_id" class="font-12">Currency Rate</label>
+                <select 
+                  class="form-control form-control-sm font-12" 
+                  name="currency_rate_id" 
+                  id="currency_rate_id"
+                  v-model="form.currency_rate_id"
+                  :class="{'is-invalid' : form.errors.has('currency_rate_id')}">
+                  <option value="" selected hidden>--</option>
+                  <option v-for="cr in currencyRate"
+                          :key="cr.id"
+                          :value="cr.id" >
+                    {{ cr.currency }} - {{ cr.rate }}
+                  </option>
+                </select>
+              </div>
+              <!-- <div class="col-lg-12">
                 <label class="switch">
                   <input type="checkbox" id="togBtn">
                   <div class="slider round">
-                    <!--ADDED HTML -->
-                    <span class="on">Yes</span>
                     <span class="off">No</span>
-                    <!--END-->
+                    <span class="on">Yes</span>
                   </div>
                 </label>
-              </div>
+              </div> -->
               <div class="col-lg-12">
-                <label for="" class="font-12">Lorem ipsum dolor, sit</label>
-              </div>
-              <div class="col-lg-12">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                  <label class="form-check-label font-12" for="inlineRadio1">Free</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                  <label class="form-check-label font-12" for="inlineRadio2">50% Hourly Rate</label>
+                <div class="form-check form-check-inline" v-for="lrt in lessonTypeRate" :key="lrt.id">
+                  <input class="form-check-input" 
+                        type="radio" 
+                        name="lesson_rate_type_id" 
+                        :id="lrt.id" 
+                        :value="lrt.id" 
+                        v-model="form.lesson_rate_type_id"
+                        :class="{'is-invalid' : form.errors.has('lesson_rate_type_id')}">
+                  <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
                 </div>
               </div>
             </div>
             <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
-                <label class="font-12">Student Age Preference</label>
-                <div class="value">5</div>
+                <label class="font-12" for="lesson_plan_id">Type of Lesson</label>
+                  <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
+                  <!-- <select class="form-control form-control-sm font-12" name="lesson_plan_id" id="lesson_plan_id">
+                    <option value="" selected="" hidden="">--</option>
+                    <option :value="lp.id" v-for="lp in lessonPlan" :key="lp.id">
+                      {{ lp.body }}
+                    </option>
+                  </select> -->
+                  <label for="" class="font-12">30 Minutes Free Lesson</label>
+                  <select 
+                    class="form-control form-control-sm font-12" 
+                    name="lesson_plan_id" 
+                    id="lesson_plan_id"
+                    v-model="form.lesson_plan_id" 
+                    :class="{'is-invalid' : form.errors.has('lesson_plan_id')}">
+                    <optgroup v-for="(group, name) in lessonPlan" :label="name" :key="group.id">
+                      <option v-for="option in group" :value="option.id" :key="option.id">
+                        {{ option.body }}
+                      </option>
+                    </optgroup>
+                  </select>
+                <!-- <div class="value">5</div>
                 <input 
                   type="range" 
                   min="0" 
@@ -47,7 +84,7 @@
                   step="0" 
                   value="5" 
                   name="age_pref"
-                  v-model="form.age_pref">
+                  v-model="form.age_pref"> -->
               </div>
             </div>
         </div>
@@ -174,6 +211,9 @@
           selectCountryClass: 'w-100 input-custom font-14 pb-2 pr-2 pt-2 mb-3',
           countries: [],
           teachersData: [],
+          lessonTypeRate: [],
+          lessonPlan: [],
+          currencyRate: [],
 					form: new Form({
             firstname: '',
             lastname: '',
@@ -181,8 +221,11 @@
             rate_per_hr: '',
             country_id: '',
             email: '',
+            lesson_plan_id: '',
+            lesson_rate_type_id: '',
             objective_title: '',
-            objective_text: ''
+            objective_text: '',
+            currency_rate_id: ''
 					}),
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -197,6 +240,21 @@
             
           }).catch((error) => {});
         },
+        getLessonTypeRate(){
+          axios.get('/heygo/get-lesson-type-rate', { 'user_id': this.user_id }).then((res) => {
+            this.lessonTypeRate = res.data;
+          }).catch((error) => {});
+        },
+        getLessonPlan(){
+          axios.get('/heygo/get-lesson-plan', { 'user_id': this.user_id }).then((res) => {
+            this.lessonPlan = res.data;
+          }).catch((error) => {});
+        },
+        getCurrencyRate(){
+          axios.get('/heygo/get-curreny-rate', { 'user_id': this.user_id }).then((res) => {
+            this.currencyRate = res.data;
+          }).catch((error) => {});
+        },
         getTeachersData(){
           axios.post('/heygo/get-teachers-details', { 'user_id': this.user_id }).then((res) => {
             this.form.firstname = res.data[0].firstname;
@@ -205,6 +263,9 @@
             this.form.rate_per_hr = res.data[0].rate_per_hr;
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
+            this.form.lesson_plan_id = res.data[0].lesson_plan_id;
+            this.form.lesson_rate_type_id = res.data[0].lesson_rate_type_id;
+            this.form.currency_rate_id = res.data[0].currency_rate_id;
             this.form.objective_title = res.data[0].objective_title;
             this.form.objective_text = res.data[0].objective_text;
           }).catch((error) => {});
@@ -217,6 +278,9 @@
 					data.append('rate_per_hr', this.form.rate_per_hr);
 					data.append('country_id', this.form.country_id);
 					data.append('email', this.form.email);
+					data.append('lesson_plan_id', this.form.lesson_plan_id);
+					data.append('lesson_rate_type_id', this.form.lesson_rate_type_id);
+					data.append('currency_rate_id', this.form.currency_rate_id);
 					data.append('objective_title', this.form.objective_title);
 					data.append('objective_text', this.form.objective_text);
 					data.append('user_id', this.user_id);
@@ -232,15 +296,20 @@
 				},
 			},
 			mounted() { 
-        var elem = document.querySelector('input[type="range"]');
-        var rangeValue = function(){
-          var newValue = elem.value;
-          var target = document.querySelector('.value');
-          target.innerHTML = newValue;
-        }
-        elem.addEventListener("input", rangeValue);
         this.getCountries();
+        this.getLessonTypeRate();
+        this.getLessonPlan();
         this.getTeachersData();
+        this.getCurrencyRate();
+        // var elem = document.querySelector('input[type="range"]');
+        // var rangeValue = function(){
+        //   var newValue = elem.value;
+        //   var target = document.querySelector('.value');
+        //   target.innerHTML = newValue;
+        // }
+        // elem.addEventListener("input", rangeValue);
+        
+        
       },
 	  }
 </script>
@@ -352,10 +421,10 @@
   }
 
   input:checked+ .slider .on
-  {display: block;}
+  {display: none;}
 
   input:checked + .slider .off
-  {display: none;}
+  {display: block;}
 
   /*--------- END --------*/
 
