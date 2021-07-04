@@ -9,25 +9,31 @@
             </div>
             <div class="col-lg-10">
               <div class="cicle-active"></div>
-              <span class="ml-4" style="font-size: 23px;"> 
-                {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span>
-              <span class="ml-3">
-                <i class="fas fa-map-marker-alt text-warning p-2"></i>
-                <img :src="asset + 'images/flag-1.png'" width="20"></span>
-              <span class="ml-3">
-                <i class="fas fa-star text-warning p-2"></i>
-                <strong>4.5</strong></span>
-              <span class="ml-3">
-                43 Reviews 
-                <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span>
-              <span class="ml-3" style="float: right;">
-                {{ dft.currency }} - {{ dft.rate_per_hr }}
-              </span><br>
               <div class="row">
-                <span class="ml-3" style="float: right;line-height: 1.5;">
-                  {{ dft.type }}
-                </span>
+                <div class="col-lg-7">
+                  <span class="ml-4" style="font-size: 23px;"> 
+                    {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span>
+                  <span class="ml-3">
+                    <i class="fas fa-map-marker-alt text-warning p-2"></i>
+                    <img :src="asset + 'images/flag-1.png'" width="20"></span>
+                  <span class="ml-3">
+                    <i class="fas fa-star text-warning p-2"></i>
+                    <strong>4.5</strong></span>
+                </div>
+                <div class="col-lg-5">
+                  <span class="ml-3" style="float: right;">
+                    {{ dft.currency }} - {{ new Intl.NumberFormat().format(dft.rate_per_hr) }}
+                  </span><br>
+                  <span class="ml-3 font-12" style="float: right;line-height: 1.5;">
+                    {{ dft.type }}
+                  </span>
+                </div>
               </div>
+              
+              <!-- <span class="ml-3">
+                43 Reviews 
+                <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span> -->
+              
               <hr>
               <label for=""><strong>Speaks:</strong> English, Japanese</label><br>
               <label for=""><strong>About Me</strong></label>
@@ -74,7 +80,7 @@
       </div>
     </div>  
 
-    <div class="modal fade bd-example-modal-lg" id="modalWriteAPost" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="modalBookTrial" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <!-- <div class="modal-header">
@@ -282,28 +288,23 @@
                           <div class="col-lg-6 m-auto">
                             <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
                               <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
-                              <label class="btn btn-light w-100 mb-2 p-3">
-                                <input type="radio" name="communication-tool" autocomplete="off"> 
-                                <span class="sc-title"><img :src="asset + 'images/zoom.png'" alt=""> Skype</span>
-                                <span class="sc-price"></span>
-                              </label>
-                              <label class="btn btn-light w-100 mb-2 p-3">
-                                <input type="radio" name="communication-tool" autocomplete="off"> 
-                                <span class="sc-title"><img :src="asset + 'images/skype.png'" alt=""> Zoom</span>
+                              <label class="btn btn-light w-100 mb-2 p-3" v-for="gca in getComApp" :key="gca.id">
+                                <input type="radio" v-model="formToSave.communication_app_id" :value="gca.id" name="communication-tool" autocomplete="off"> 
+                                <span class="sc-title"><img :src="asset + 'images/' + gca.icon" alt=""> {{ gca.app_name }}</span>
                                 <span class="sc-price"></span>
                               </label>
                             </div>
                             <input type="text" 
                               class="form-control text-center input-custom font-14 mb-3" 
                               placeholder="Your ID"
-                              name="com_id">
+                              name="com_id"
+                              v-model="formToSave.app_id">
                           </div>
                         </div>
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                            v-on:click="showStepper4 = !showStepper4; 
-                                        showStepper5 = !showStepper5;">Finished</button>
+                            @click="submitBookedSchedule">Finished</button>
                     <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
                         v-on:click="showStepper4 = !showStepper4; 
@@ -343,18 +344,25 @@
         teachersdata: '',
         lessonOption: '',
         rate_per_hr: '',
+        getComApp: '',
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
+        user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
         showStepper1: true,
         showStepper2: false,
         showStepper3: false,
         showStepper4: false,
         showStepper5: false,
+        showStepper6: false,
         timeActive: false,
         formToSave: {
+          teachers_id : '',
+          lesson_plan_id : '',
           lesson_option_id : '',
           lesson_date: [],
+          communication_app_id: '',
+          app_id: ''
         },
         sorted_date: '',
         moment: moment,
@@ -370,6 +378,13 @@
 						console.log(error);
         });
       },
+      getCommunicationApp(){
+        axios.get('/heygo/get-com-app').then((res) => {
+						this.getComApp = res.data
+					}).catch((error) => {
+						console.log(error);
+        });
+      },
       fetchTutor(){
         axios.get('/heygo/api/get-fetch-tutor').then((res) => {
 						this.dataFetchTutor = res.data
@@ -379,7 +394,6 @@
       },
       fetchCalendarWeek(){
         axios.get('/heygo/get-week-calendar').then((res) => {
-						// this.dataWeekCalendar = res.data
             this.dataWeekCalendar = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -387,7 +401,6 @@
       },
       fetchTimePerDay(){
         axios.get('/heygo/get-time-available-per-day').then((res) => {
-						// this.dataWeekCalendar = res.data
             this.dataTimaAvPerDay = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -397,61 +410,71 @@
         window.location.href = this.baseurl + '/teachers-profile/' + id
       },
       fnBookATrial(e){
+        //get the teachers_id
+        this.formToSave.teachers_id = e;
         axios.get('/heygo/get-teachers-info/'+e).then((res) => {
-						// this.dataWeekCalendar = res.data
             this.teachersdata = res.data;
             this.rate_per_hr = res.data[0].rate_per_hr;
-            console.log(this.rate_per_hr);
+            this.formToSave.lesson_plan_id = res.data[0].lesson_plan_id;
 					}).catch((error) => {
 						console.log(error);
         });
-        $('#modalWriteAPost').modal('show');
+        $('#modalBookTrial').modal('show');
       },
       selectTimePreferred(event){
-        // this.timeActive = !this.timeActive
-        // if (event.target.classList.contains('active-time')) {
-        //   event.target.classList.remove("active-time");
-        //   this.formToSave.lesson_date.splice(this.formToSave.lesson_date.indexOf(event.target.getAttribute('data-date')), 1);
-        // } else {
-        //   event.target.classList.add('active-time');
-        //   this.formToSave.lesson_date.push(event.target.getAttribute('data-date')); 
-        // }
-        
-        // this.sorted_date = this.formToSave.lesson_date.sort();
-        // const sorted_date = this.sorted_date;
         const sorted_date = event.target.getAttribute('data-date');
         const lesson_option_id = this.formToSave.lesson_option_id;
         switch (lesson_option_id) {
           case 1:
             //trial lesson
-            var sd = moment(new Date(sorted_date)).format('L LT');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
             var ed = moment(new Date(sorted_date)).add(30, 'minutes');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
             this.totalHrs = duration.asHours();
             break;
           case 2:
             //1 Hour lesson
-            var sd = moment(new Date(sorted_date)).format('L LT');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
             var ed = moment(new Date(sorted_date)).add(1, 'hours');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date)))); 
-            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
             this.totalHrs = duration.asHours();
             break;
           default:
             //30 Minute Lesson (For Elementary Level)
-            var sd = moment(new Date(sorted_date)).format('L LT');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
             var ed = moment(new Date(sorted_date)).add(30, 'minutes');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-            this.formToSave.lesson_date = [sd, moment(ed).format('L LT')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
             this.totalHrs = duration.asHours();
             break;
         }
         this.sorted_date = this.formToSave.lesson_date;
-        console.log(this.formToSave.lesson_date);
+        console.log(this.sorted_date);
       },
       getTitleLessonOpt(title){
         this.lessonOptTitle = title;
+      },
+      submitBookedSchedule(){
+        let data = new FormData();
+        data.append('teachers_id', this.formToSave.teachers_id);
+        data.append('lesson_plan_id', this.formToSave.lesson_plan_id);
+        data.append('lesson_option_id', this.formToSave.lesson_option_id);
+        data.append('lesson_date', this.formToSave.lesson_date);
+        data.append('communication_app_id', this.formToSave.communication_app_id);
+        data.append('app_id', this.formToSave.app_id);
+        data.append('user_id', this.user_id);
+        data.append('_token', this.csrf);
+        axios.post('/heygo/save-booked-schedule', data).then((res) => {
+            if (typeof res.data.errors === 'undefined') {
+              // window.location.reload();
+              
+            }
+					}).catch((error) => {
+            console.log(error);
+						// this.form.errors.record(error.response.data.errors);
+					});
       }
       
     },
@@ -460,8 +483,13 @@
       this.fetchCalendarWeek();
       this.fetchTimePerDay();
       this.getLessonOption();
+      this.getCommunicationApp();
+    
       // Get the element with id="defaultOpen" and click on it
       // document.getElementById("defaultOpen").click();
+    },
+    destroyed(){
+      console.log('destroyed');
     }
   }
 </script>

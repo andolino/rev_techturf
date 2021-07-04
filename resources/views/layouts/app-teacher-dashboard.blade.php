@@ -79,39 +79,7 @@
                     <span class="badge badge-danger badge-pill i-notif">16</span>
                 </a>
                 <div class="dropdown-menu card-student-msg-cont dropdown-menu-right p-2 custom-scrollbar-css mCustomScrollbar" data-mcs-theme="minimal-dark" aria-labelledby="navShowStudentMsg">
-                  <div class="card-group card-student-msg pb-1">
-                    <span class="font-12">Unread <span class="badge badge-danger">1</span></span>
-                  </div>
-                  <div class="card-group card-student-msg pb-1">
-                    <div class="card">
-                      <div class="card-body">
-                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
-                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
-                        <small class="float-right"><strong>08:00 am</strong></small>
-                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-group card-student-msg pb-1">
-                    <div class="card">
-                      <div class="card-body">
-                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
-                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
-                        <small class="float-right"><strong>08:00 am</strong></small>
-                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-group card-student-msg pb-1">
-                    <div class="card">
-                      <div class="card-body">
-                        <img src="{{ asset('images/ellipse-2.png') }}" alt="">
-                        <small class="text-muted"><strong>Mr. James Cameron</strong></small>
-                        <small class="float-right"><strong>08:00 am</strong></small>
-                        <p class="font-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa necessitatibus excepturi expedita unde adipisci deserunt d</p>
-                      </div>
-                    </div>
-                  </div>
+                  <teachers-notifications></teachers-notifications>
                 </div>
               </span>
 

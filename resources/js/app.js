@@ -18,13 +18,19 @@ import FetchFeeds from './components/FetchFeeds.vue';
 import TeachersProfile from './components/TeachersProfile.vue';
 import StudentHomework from './components/StudentHomework.vue';
 import StudentPaymentMethods from './components/StudentPaymentMethods.vue';
+import TeacherUpcomingLesson from './components/TeacherUpcomingLesson.vue';
+import StudentUpcomingLesson from './components/StudentUpcomingLesson.vue';
+import TeachersNotifications from './components/TeachersNotifications.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
+import VueSweetalert2 from 'vue-sweetalert2';
+import swal from 'sweetalert2';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 window.Form = Form
+window.Swal = swal
 
 /**
  * The following block of code may be used to automatically register your
@@ -38,6 +44,7 @@ window.Form = Form
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueSweetalert2)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 // Vue.component('b-carousel', '');
@@ -65,7 +72,10 @@ const app = new Vue({
 		'teacher-feeds'						: TeacherFeeds,
 		'student-homework'				: StudentHomework,
 		'teachers-profile'				: TeachersProfile,
-		'student-payment-methods'	: StudentPaymentMethods
+		'student-payment-methods'	: StudentPaymentMethods,
+		'teacher-upcoming-lesson' : TeacherUpcomingLesson,
+		'student-upcoming-lesson' : StudentUpcomingLesson,
+		'teachers-notifications' : TeachersNotifications
 	}
 });
 

@@ -121,6 +121,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'timezone' => 'Asia/Manila',
+
     'cipher' => 'AES-256-CBC',
 
     /*

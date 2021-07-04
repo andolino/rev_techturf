@@ -71,6 +71,18 @@
             </div>
             <p class="text-danger text-center mb-3" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
 
+            <label for="" class="text-left w-100">Abount Me</label>
+            <div class="form-group input-group mb-0">
+                <textarea 
+                  id="about_me" 
+                  name="about_me" 
+                  v-model="form.about_me" 
+                  class="form-control input-custom font-14 mb-3"
+                  :class="{'is-invalid' : form.errors.has('about_me')}" 
+                  cols="30" rows="10"></textarea>
+            </div>
+            <p class="text-danger text-center mb-3" v-if="form.errors.has('about_me')" v-text="form.errors.get('about_me')"></p>
+
             <p class="text-danger text-center" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></p>
             
           </div>
@@ -99,6 +111,7 @@
             contact_no: '',
             country_id: '',
             email: '',
+            about_me: '',
 					}),
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -119,6 +132,7 @@
             this.form.contact_no = res.data[0].contact_no;
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
+            this.form.about_me = res.data[0].about_me;
           }).catch((error) => {});
         },
 				submitStudentsAcctSettings(){
@@ -128,6 +142,7 @@
 					data.append('contact_no', this.form.contact_no);
 					data.append('country_id', this.form.country_id);
 					data.append('email', this.form.email);
+					data.append('about_me', this.form.about_me);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
 					axios.post('/heygo/update-student-settings', data).then((res) => {

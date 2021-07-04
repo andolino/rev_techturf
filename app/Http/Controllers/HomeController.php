@@ -102,6 +102,7 @@ class HomeController extends Controller
             'firstname'       => 'required|string',
             'country_id'      => 'required',
             'contact_no'      => 'required',
+            'about_me'      => 'required',
         ]);
         $teachers = Students::find(Request::post('user_id'));
         $teachers->email = Request::post('email');
@@ -109,6 +110,7 @@ class HomeController extends Controller
         $teachers->firstname = Request::post('firstname');
         $teachers->contact_no = Request::post('contact_no');
         $teachers->country_id = Request::post('country_id');
+        $teachers->about_me = Request::post('about_me');
         $teachers->save();
         
         return redirect()->intended('students-account-settings');
@@ -172,7 +174,59 @@ class HomeController extends Controller
                     ->get();
         return response()->json($data);
     }
-    
+    public function getTeacherBookedLesson(){
+        $students_id = Request::post('students_id');
+        $data = DB::select(DB::raw("SELECT 
+                                        ls.id as lesson_id,
+                                        t.*, 
+                                        DATE_FORMAT(min(ls.lesson_date), '%Y-%m-%d %H:%i') as start_date,
+                                        DATE_FORMAT(max(ls.lesson_date), '%Y-%m-%d %H:%i') as end_date,
+                                        GROUP_CONCAT(DISTINCT DATE_FORMAT(ls.lesson_date, '%H:%i %p')
+                                        ORDER BY DATE_FORMAT(ls.lesson_date, '%H:%i %p') DESC SEPARATOR ' - ') 
+                                        as time_sched,
+                                        lrt.type,
+                                        lp.title,
+                                        concat(t.lastname, ', ', t.firstname) as fullname
+                                    FROM teachers t
+                                    LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                    LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
+                                    LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
+                                    LEFT JOIN students s on s.id = ls.students_id
+                                    WHERE s.id = $students_id
+                                    GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
+                                    ORDER BY ls.id desc"));
+        return response()->json($data);
+    }  
+    public function getBookedTeacherInfo(){
+        $lesson_date = date('Y-m-d', strtotime(Request::post('lesson_date')));
+        $data = DB::select(DB::raw("SELECT 
+                                        ls.id as lesson_id,
+                                        t.*, 
+                                        DATE_FORMAT(min(ls.lesson_date), '%Y-%m-%d %H:%i') as start_date,
+                                        DATE_FORMAT(max(ls.lesson_date), '%Y-%m-%d %H:%i') as end_date,
+                                        GROUP_CONCAT(DISTINCT DATE_FORMAT(ls.lesson_date, '%H:%i %p')
+                                        ORDER BY DATE_FORMAT(ls.lesson_date, '%H:%i %p') DESC SEPARATOR ' - ') 
+                                        as time_sched,
+                                        lrt.type,
+                                        lp.title,
+                                        concat(t.lastname, ', ', t.firstname) as fullname,
+                                        ca.app_name,
+                                        ls.app_id,
+                                        ls.lesson_option_id
+                                    FROM teachers t
+                                    LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                    LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
+                                    LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
+                                    LEFT JOIN students s on s.id = ls.students_id
+                                    LEFT JOIN communication_app ca on ca.id = ls.communication_app_id
+                                    WHERE DATE_FORMAT(ls.lesson_date, '%Y-%m-%d') = '$lesson_date'
+                                    GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
+                                    ORDER BY ls.id desc"));
+        return response()->json($data);
+    }    
+
+      
+
     /*
     * get lesson option *
     */
@@ -192,7 +246,8 @@ class HomeController extends Controller
         $teachers = DB::table('teachers')
                         ->leftJoin('currency_rate', 'currency_rate.id', '=', 'teachers.currency_rate_id')
                         ->leftJoin('lesson_rate_type', 'lesson_rate_type.id', '=', 'teachers.lesson_rate_type_id')
-                        ->select('teachers.*', 'currency_rate.*', 'lesson_rate_type.type')
+                        ->select('teachers.*', 'currency_rate.currency', 'lesson_rate_type.type')
+                        // , 'currency_rate.*', 'lesson_rate_type.type'
                         ->get();
         if (isset($_GET['q'])) {
             $q = $_GET['q'];
@@ -212,6 +267,79 @@ class HomeController extends Controller
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
         return view('students-payment-methods', ['data' => $data]);
     }
+    public function saveBookedSchedule(){
+        $lesson_date = explode(',', Request::post('lesson_date'));
+        $d = array();
+        for ($i=0; $i < count($lesson_date); $i++) { 
+            array_push($d, array(
+                'teachers_id'   => Request::post('teachers_id'),
+                'lesson_plan_id' => Request::post('lesson_plan_id'),
+                'lesson_option_id' => Request::post('lesson_option_id'),
+                'lesson_date' => date('Y-m-d h:i:s', strtotime($lesson_date[$i])),
+                'communication_app_id' => Request::post('communication_app_id'),
+                'app_id' => Request::post('app_id'),
+                'students_id' => Request::post('user_id')
+            ));
+        }
+        DB::table('lesson_schedule')->insert($d);
+        return redirect()->intended('students');
+    }
+    public function getStudentBookedLesson(){
+        $teachers_id = Request::post('teachers_id');
+        $data = DB::select(DB::raw("SELECT 
+                                        ls.id as lesson_id,
+                                        t.*, 
+                                        DATE_FORMAT(min(ls.lesson_date), '%Y-%m-%d %H:%i') as start_date,
+                                        DATE_FORMAT(max(ls.lesson_date), '%Y-%m-%d %H:%i') as end_date,
+                                        GROUP_CONCAT(DISTINCT DATE_FORMAT(ls.lesson_date, '%H:%i %p')
+                                        ORDER BY DATE_FORMAT(ls.lesson_date, '%H:%i %p') DESC SEPARATOR ' - ') 
+                                        as time_sched,
+                                        lrt.type,
+                                        lp.title,
+                                        concat(s.lastname, ', ', s.firstname) as fullname,
+                                        s.id as students_id
+                                    FROM teachers t
+                                    LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                    LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
+                                    LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
+                                    LEFT JOIN students s on s.id = ls.students_id
+                                    WHERE t.id = $teachers_id
+                                    GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
+                                    ORDER BY ls.id desc"));
+        return response()->json($data);
+    }
+    public function getBookedStudentInfo(){
+        $lesson_date = date('Y-m-d', strtotime(Request::post('lesson_date')));
+        $students_id = Request::post('students_id');
+        $data = DB::select(DB::raw("SELECT 
+                                        ls.id as lesson_id,
+                                        t.*, 
+                                        DATE_FORMAT(min(ls.lesson_date), '%Y-%m-%d %H:%i') as start_date,
+                                        DATE_FORMAT(max(ls.lesson_date), '%Y-%m-%d %H:%i') as end_date,
+                                        GROUP_CONCAT(DISTINCT DATE_FORMAT(ls.lesson_date, '%H:%i %p')
+                                        ORDER BY DATE_FORMAT(ls.lesson_date, '%H:%i %p') DESC SEPARATOR ' - ') 
+                                        as time_sched,
+                                        lrt.type,
+                                        lp.title,
+                                        concat(s.lastname, ', ', s.firstname) as fullname,
+                                        ca.app_name,
+                                        ls.app_id,
+                                        ls.lesson_option_id
+                                    FROM teachers t
+                                    LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                    LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
+                                    LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
+                                    LEFT JOIN students s on s.id = ls.students_id
+                                    LEFT JOIN communication_app ca on ca.id = ls.communication_app_id
+                                    WHERE DATE_FORMAT(ls.lesson_date, '%Y-%m-%d') = '$lesson_date' AND s.id = $students_id
+                                    GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
+                                    ORDER BY ls.id desc"));
+        return response()->json($data);
+    }  
+    public function getStudentsInfo($id){
+        $data = DB::table('students')->where('id', '=', $id)->get();
+        return response()->json($data);
+    }
 
     /*
     * get countries *
@@ -220,6 +348,16 @@ class HomeController extends Controller
         return DB::table('countries')
                     ->select('id', 'iso', 'country_name', 'iso3', 'phonecode')
                     ->get();
+    }
+    
+    /*
+    * get com app *
+    */
+    public function getCommunicationApp(){
+        $data = DB::table('communication_app')
+                    ->select('id', 'app_name', 'created_at', 'updated_at', 'icon')
+                    ->get();
+        return response()->json($data);
     }
     
     public function getAWeekCalendar(){
@@ -251,15 +389,15 @@ class HomeController extends Controller
     public function getATimeAvailablePerDay(){
         $timePerDay = array();
         $time = [
-            '8:00 AM',
-            '8:30 AM',
-            '9:00 AM',
-            '9:30 AM',
-            '10:00 AM',
-            '10:30 AM',
-            '11:00 AM',
-            '11:30 AM',
-            '12:00 PM'
+            '01:00 AM',
+            '01:30 AM',
+            '02:00 AM',
+            '02:30 AM',
+            '03:00 AM',
+            '03:30 AM',
+            '04:00 AM',
+            '04:30 AM',
+            '05:00 AM'
         ];
         for ($i=0; $i < count($time); $i++) {
             array_push($timePerDay, array(
