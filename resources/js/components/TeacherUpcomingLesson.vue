@@ -1,7 +1,10 @@
 <template>
   <div>
 
-    <div class="card-group b-bot-yellow mb-3 cursor" @click="fnAcceptingLesson(ul.start_date, ul.students_id)" v-for="ul in upcomingLessonData" :key="ul.lesson_id">
+    <div class="card-group b-bot-yellow mb-3 cursor" 
+        @click="fnAcceptingLesson(ul.start_date, ul.students_id, ul.lesson_id)" 
+        v-for="ul in upcomingLessonData" 
+        :key="ul.lesson_id">
       <div class="card">
         <div class="card-body">
           <label class="card-title">{{ ul.time_sched }}</label>
@@ -82,9 +85,13 @@
                       </div>
                     </div>
                     <button type="button" 
-                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next" @click="lessonApproval" data-apptype="confirm">Confirm</button>
+                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next" 
+                        @click="lessonApproval(studentInfo.lesson_schedule_id)" 
+                        data-apptype="confirm">Confirm</button>
                     <button type="button" 
-                        class="btn btn-default float-right btn-dashboard mb-3 font-14 decline-student-booked" @click="lessonApproval" data-apptype="decline">Decline</button>
+                        class="btn btn-default float-right btn-dashboard mb-3 font-14 decline-student-booked" 
+                        @click="lessonApproval(studentInfo.lesson_schedule_id)" 
+                        data-apptype="decline">Decline</button>
                   </div>
 
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="viewStudentCalendarBooked">
@@ -203,7 +210,8 @@ export default {
         app_name: '',
         app_id: '',
         lesson_option_id: '',
-        students_id: ''
+        students_id: '',
+        lesson_schedule_id: ''
       },
       formToSave: {
         lesson_date: [],
@@ -293,25 +301,29 @@ export default {
       this.sorted_date = this.formToSave.lesson_date;
       console.log(this.sorted_date);
     },
-    fnAcceptingLesson(e, students_id){
-      axios.post('/heygo/get-booked-student-info', { 'lesson_date' : e, 'students_id': students_id }).then((res) => {
-          this.studentInfo.name             = res.data[0].fullname;
-          this.studentInfo.date             = moment(new Date(res.data[0].start_date)).format('LL');
-          this.studentInfo.time             = res.data[0].time_sched;
-          this.studentInfo.type_of_lesson   = res.data[0].type + ' - ' + res.data[0].title;
-          this.studentInfo.app_name         = res.data[0].app_name;
-          this.studentInfo.app_id           = res.data[0].app_id;
-          this.studentInfo.lesson_option_id = res.data[0].lesson_option_id;
-          this.studentInfo.students_id      = students_id;
-          this.formToSave.lesson_date       = [moment(res.data[0].start_date).format('L HH:mm A'),
-                                                moment(res.data[0].end_date).format('L HH:mm A')]
-                     
+    fnAcceptingLesson(e, students_id, lesson_schedule_id){
+      axios.post('/heygo/get-booked-student-info', { 
+        'lesson_date' : e, 
+        'students_id': students_id,
+        'lesson_schedule_id': lesson_schedule_id })
+          .then((res) => {
+            this.studentInfo.name               = res.data[0].fullname;
+            this.studentInfo.date               = moment(new Date(res.data[0].start_date)).format('LL');
+            this.studentInfo.time               = res.data[0].time_sched;
+            this.studentInfo.type_of_lesson     = res.data[0].type + ' - ' + res.data[0].title;
+            this.studentInfo.app_name           = res.data[0].app_name;
+            this.studentInfo.app_id             = res.data[0].app_id;
+            this.studentInfo.lesson_option_id   = res.data[0].lesson_option_id;
+            this.studentInfo.students_id        = students_id;
+            this.studentInfo.lesson_schedule_id = lesson_schedule_id;
+            this.formToSave.lesson_date         = [moment(res.data[0].start_date).format('L HH:mm A'),
+                                                  moment(res.data[0].end_date).format('L HH:mm A')]
         }).catch((error) => {
           console.log(error);
       });
       $('#modalTeacherStartLesson').modal('show');
     },
-    lessonApproval() {
+    lessonApproval(lesson_schedule_id) {
       const approval_type = event.target.getAttribute('data-apptype');
         // Adding an input method from SweetAlert 2 automatically binds an input form.
         // $swal function calls SweetAlert into the application with the specified configuration.
@@ -324,14 +336,24 @@ export default {
         cancelButtonColor: '#212222',
         confirmButtonText: 'Yes, ' + approval_type + ' it!'
       }).then((result) => {
-        if (result.isConfirmed) {
+        // if (result.isConfirmed) {
+          axios.post('/heygo/approve-student-booking', { 
+            'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
+              .then((res) => {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Successfully ' + approval_type + '!',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+            }).catch((error) => {
+              console.log(error);
+          });
+        // } else {
           
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
-        }
+        // }
+        $('#modalTeacherStartLesson').modal('hide');
       });
     },
     fetchTimePerDay(){

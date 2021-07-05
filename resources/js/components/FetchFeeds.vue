@@ -468,7 +468,7 @@
         data.append('_token', this.csrf);
         axios.post('/heygo/save-booked-schedule', data).then((res) => {
             if (typeof res.data.errors === 'undefined') {
-              // window.location.reload();
+              window.location.reload();
               
             }
 					}).catch((error) => {

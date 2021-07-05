@@ -3,7 +3,7 @@
 
     <div class="card-group b-bot-yellow mb-3 cursor" 
         v-for="ul in upcomingLessonData" 
-        @click="fnAcceptingLesson(ul.start_date)"
+        @click="fnAcceptingLesson(ul.start_date, ul.lesson_id)"
         :key="ul.lesson_id">
       <div class="card">
         <div class="card-body">
@@ -225,8 +225,8 @@ export default {
           console.log(error);
       });
     },
-    fnAcceptingLesson(e){
-      axios.post('/heygo/get-booked-teacher-info', { 'lesson_date' : e }).then((res) => {
+    fnAcceptingLesson(e, lesson_schedule_id){
+      axios.post('/heygo/get-booked-teacher-info', { 'lesson_date' : e, 'lesson_schedule_id': lesson_schedule_id }).then((res) => {
           this.teacherInfo.name             = res.data[0].fullname;
           this.teacherInfo.date             = moment(new Date(res.data[0].start_date)).format('LL');
           this.teacherInfo.time             = res.data[0].time_sched;

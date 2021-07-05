@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/get-lesson-plan', [HomeController::class, 'getLessonPlan']);
     Route::get('/get-curreny-rate', [HomeController::class, 'getCurrenyRate']);
     Route::post('/get-student-booked-lesson', [HomeController::class, 'getStudentBookedLesson']);
+    Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);
