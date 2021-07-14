@@ -172,7 +172,7 @@
                       @csrf
                   </form>
 
-                </div>
+                </div >
               </span>
             </span>
           </div>
