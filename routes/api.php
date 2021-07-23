@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FeedsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,6 @@ Route::post('/register/students', [RegisterController::class,'createStudents']);
 
 Route::post('/login/teachers', [LoginController::class,'teachersLogin'])->name('login-teachers');
 Route::post('/login/students', [LoginController::class,'studentsLogin'])->name('login-students');
+Route::post('/post-teacher-feeds', [FeedsController::class,'postTeacherFeeds'])->name('post-feeds');
+
 // Route::get('/todo', [TodoController::class, 'index']);

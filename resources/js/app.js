@@ -29,6 +29,9 @@ import swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+//view dropzone
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
 window.Form = Form
 window.Swal = swal
 
