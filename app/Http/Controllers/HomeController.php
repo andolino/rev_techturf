@@ -447,6 +447,46 @@ class HomeController extends Controller {
     }
     
     /*
+    * get students level *
+    */
+    public function getStudentsLevel(){
+        $data = DB::table('students_level')
+                    ->select('id', 'level', 'age_range_from', 'age_range_to')
+                    ->get();
+        return response()->json($data);
+    }
+    
+    /*
+    * get Lesson Type Details *
+    */
+    public function getLessonTypeDetails(){
+        $data = DB::table('lesson_type_details')
+                    ->select('id', 'title', 'body')
+                    ->get();
+        return response()->json($data);
+    }
+    
+    /*
+    * get Student Test Preparation *
+    */
+    public function getTestStudentPreparation(){
+        $data = DB::table('students_test_preparation')
+                    ->select('id', 'title', 'body')
+                    ->get();
+        return response()->json($data);
+    }
+    
+    /*
+    * get Student English Level *
+    */
+    public function getStudentsEnglishLevel(){
+        $data = DB::table('students_english_level')
+                    ->select('id', 'level')
+                    ->get();
+        return response()->json($data);
+    }
+    
+    /*
     * get com app *
     */
     public function getCommunicationApp(){

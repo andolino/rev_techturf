@@ -61,6 +61,10 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::post('/save-booked-schedule', [HomeController::class, 'saveBookedSchedule']);
     Route::post('/get-teacher-booked-lesson', [HomeController::class, 'getTeacherBookedLesson']);
     Route::post('/get-booked-teacher-info', [HomeController::class, 'getBookedTeacherInfo']);
+    Route::get('/get-students-level', [HomeController::class, 'getStudentsLevel']);
+    Route::get('/get-lesson-type-details', [HomeController::class, 'getLessonTypeDetails']);
+    Route::get('/get-test-student-preparation', [HomeController::class, 'getTestStudentPreparation']);
+    Route::get('/get-students-english-level', [HomeController::class, 'getStudentsEnglishLevel']);
 
 });
 
