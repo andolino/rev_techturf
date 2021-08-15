@@ -208,8 +208,8 @@ export default {
     },
     displayTeacherFeeds(){
       axios.post('/heygo/display-teacher-feeds', { 'teachers_id' : this.user_id }).then((res) => {
-          this.postedFeedsData = res.data
-          console.log(this.postedFeedsData);
+          this.postedFeedsData = res.data;
+          // console.log(this.postedFeedsData);
         }).catch((error) => {
           console.log(error);
       });

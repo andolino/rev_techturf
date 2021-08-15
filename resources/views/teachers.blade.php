@@ -38,86 +38,9 @@
 			{{-- right content --}}
 			<div class="col-lg-3 pr-0">
 				<div class="cont-home-works">
-					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Homeworks <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
+					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Lesson Plans <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
 					<div class="homework-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 						<div class="card-group b-bot-red">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-yellow">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-blue">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-red">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-yellow">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-blue">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-red">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-yellow">
 							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title">Card title</h5>
@@ -151,6 +74,9 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="cont-home-works mt-4">
+					<teachers-library></teachers-library>
 				</div>
 				<div class="cont-home-works mt-4">
 					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Library <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
@@ -195,83 +121,6 @@
 							</div>
 						</div>
 						<div class="card-group b-bot-yellow">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-blue">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-red">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-yellow">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-blue">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-red">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-yellow">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Card title</h5>
-									<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								</div>
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-							</div>
-						</div>
-						<div class="card-group b-bot-blue">
 							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title">Card title</h5>

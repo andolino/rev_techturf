@@ -337,21 +337,33 @@ export default {
         confirmButtonText: 'Yes, ' + approval_type + ' it!'
       }).then((result) => {
         // if (result.isConfirmed) {
-          axios.post('/heygo/approve-student-booking', { 
-            'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
-              .then((res) => {
-                Swal.fire({
-                  position: 'top-end',
-                  icon: 'success',
-                  title: 'Successfully ' + approval_type + '!',
-                  showConfirmButton: false,
-                  timer: 1500
-                });
-            }).catch((error) => {
-              console.log(error);
-          });
+        //   axios.post('/heygo/approve-student-booking', { 
+        //     'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
+        //       .then((res) => {
+        //         Swal.fire({
+        //           position: 'top-end',
+        //           icon: 'success',
+        //           title: 'Successfully ' + approval_type + '!',
+        //           showConfirmButton: false,
+        //           timer: 1500
+        //         });
+        //     }).catch((error) => {
+        //       console.log(error);
+        //   });
         // } else {
-          
+        //   axios.post('/heygo/approve-student-booking', { 
+        //     'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
+        //       .then((res) => {
+        //         Swal.fire({
+        //           position: 'top-end',
+        //           icon: 'success',
+        //           title: 'Successfully ' + approval_type + '!',
+        //           showConfirmButton: false,
+        //           timer: 1500
+        //         });
+        //     }).catch((error) => {
+        //       console.log(error);
+        //   });
         // }
         $('#modalTeacherStartLesson').modal('hide');
       });
@@ -364,7 +376,7 @@ export default {
       });
     },
     fetchCalendarWeek(){
-      axios.get('/heygo/get-week-calendar').then((res) => {
+      axios.post('/heygo/get-week-calendar').then((res) => {
         this.dataWeekCalendar = res.data;
       }).catch((error) => {
           console.log(error);

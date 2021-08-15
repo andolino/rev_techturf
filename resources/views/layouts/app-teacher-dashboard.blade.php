@@ -107,7 +107,7 @@
                     Edit Profile
                   </a>
                   <hr>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  <a class="dropdown-item l-h-1p4" href="{{ url('display-teacher-calendar') }}">
                     Calendar
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">

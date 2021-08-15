@@ -21,6 +21,8 @@ import StudentPaymentMethods from './components/StudentPaymentMethods.vue';
 import TeacherUpcomingLesson from './components/TeacherUpcomingLesson.vue';
 import StudentUpcomingLesson from './components/StudentUpcomingLesson.vue';
 import TeachersNotifications from './components/TeachersNotifications.vue';
+import TeachersLibrary from './components/TeachersLibrary.vue';
+import TeachersCalendar from './components/TeachersCalendar.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import swal from 'sweetalert2';
@@ -31,6 +33,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 //view dropzone
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
 
 window.Form = Form
 window.Swal = swal
@@ -78,7 +81,9 @@ const app = new Vue({
 		'student-payment-methods'	: StudentPaymentMethods,
 		'teacher-upcoming-lesson' : TeacherUpcomingLesson,
 		'student-upcoming-lesson' : StudentUpcomingLesson,
-		'teachers-notifications' : TeachersNotifications
+		'teachers-notifications' 	: TeachersNotifications,
+		'teachers-library' 			 	: TeachersLibrary,
+		'teachers-calendar' 			: TeachersCalendar
 	}
 });
 

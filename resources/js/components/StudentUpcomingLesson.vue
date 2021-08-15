@@ -352,7 +352,7 @@ export default {
       // });
     },
     fetchCalendarWeek(){
-      axios.get('/heygo/get-week-calendar').then((res) => {
+      axios.post('/heygo/get-week-calendar').then((res) => {
         this.dataWeekCalendar = res.data;
       }).catch((error) => {
           console.log(error);
@@ -368,10 +368,8 @@ export default {
   },
   mounted() {
     this.fetchCalendarWeek();
-    this.fetchTimePerDay();
+    // this.fetchTimePerDay();
     this.getUpcomingLesson();
-
-    
   }
 }
 </script>

@@ -42,8 +42,8 @@ Route::post('/update-teacher-settings', [HomeController::class,'updateTeacherSet
 Route::post('/update-student-settings', [HomeController::class,'updateStudentSettings']);
 Route::post('/get-teachers-details', [HomeController::class,'getTeachersDetails']);
 Route::post('/get-students-details', [HomeController::class,'getStudentsDetails']);
-Route::get('/get-time-available-per-day', [HomeController::class, 'getATimeAvailablePerDay']);
-Route::get('/get-week-calendar', [HomeController::class, 'getAWeekCalendar']);
+Route::post('/get-time-available-per-day', [HomeController::class, 'getATimeAvailablePerDay']);
+Route::post('/get-week-calendar', [HomeController::class, 'getAWeekCalendar']);
 Route::post('/get-booked-student-info', [HomeController::class, 'getBookedStudentInfo']);
 
 
@@ -75,6 +75,9 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/get-student-booked-lesson', [HomeController::class, 'getStudentBookedLesson']);
     Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking']);
     Route::post('/display-teacher-feeds', [FeedsController::class, 'displayTeacherFeeds']);
+    Route::get('/display-teacher-calendar', [HomeController::class, 'displayTeacherCalendar']);
+    Route::get('/get-teachers-availability', [HomeController::class, 'getTeachersAvailability']);
+    Route::post('/save-teacher-availability', [HomeController::class, 'saveTeacherAvailability']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);

@@ -159,7 +159,7 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper2">
                     <div class="stepper-control">
-                      <table class="table table-sm font-12">
+                      <!-- <table class="table table-sm font-12">
                         <thead>
                           <tr>
                             <td class="text-center bg-calendar-hdr" v-for="dwc in dataWeekCalendar" :key="dwc.key">
@@ -168,16 +168,27 @@
                           </tr>
                           <tr v-for="dta in dataTimaAvPerDay" :key="dta.time">
                             <td class="text-center clk-time" v-for="dwc in dataWeekCalendar" :key="dwc.key">
-                              <button type="button" 
-                                class="btn btn-xs btn-radio-select"
-                                :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta[0].time)}"
-                                :data-date="dwc.w_date + ' ' + dta[0].time"
-                                @click="selectTimePreferred" 
-                                >{{ dta[0].time }}</button></td>
-                                <!-- :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta[0].time)}" -->
+                              
+                            </td>
                           </tr>
                         </thead>
-                      </table>
+                      </table> -->
+                      <h5>Calendar</h5>
+                      <b-row class="p-b bg-light text-center">
+                        <b-col class="p-3" v-for="(dwc, i) in dataWeekCalendar" :key="i">
+                          <label for="">{{ dwc.key }} <strong>{{ dwc.value }}</strong></label>
+                          <b-row v-for="(dta, i2) in dataTimaAvPerDay" :key="i2">
+                            <b-col class="border-1 font-12 pb-2" v-if="dta.w_date == dwc.w_date">
+                              <button type="button" 
+                                  class="btn btn-xs btn-radio-select "
+                                  :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta.time)}"
+                                  :data-date="dwc.w_date + ' ' + dta.time"
+                                  @click="selectTimePreferred" 
+                                  v-if="dwc.w_date == dta.w_date">{{ dta.time }}</button>
+                            </b-col>
+                          </b-row>
+                        </b-col>
+                      </b-row>
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
@@ -323,11 +334,17 @@
         </div>
       </div>
     </div>
+
+    <StudentsPref :asset="asset"/>
+
+
+
   </div>
 </template>
 
 <script>
   import moment from 'moment';
+  import StudentsPref from './StudentsPref.vue';
   export default {
     props: {
       findtutor: {
@@ -336,6 +353,9 @@
       }
     },
     name: 'FetchFeeds',
+    components: {
+      StudentsPref
+    },
     data(){
       return {
         dataFetchTutor: '',
@@ -392,18 +412,20 @@
 						console.log(error);
         });
       },
-      fetchCalendarWeek(){
-        axios.get('/heygo/get-week-calendar').then((res) => {
+      fetchCalendarWeek(tId){
+        axios.post('/heygo/get-week-calendar', { teachers_id: tId }).then((res) => {
             this.dataWeekCalendar = res.data;
+            // console.log(res.data);
 					}).catch((error) => {
 						console.log(error);
         });
       },
-      fetchTimePerDay(){
-        axios.get('/heygo/get-time-available-per-day').then((res) => {
+      fetchTimePerDay(tId){
+        axios.post('/heygo/get-time-available-per-day', {teachers_id: tId}).then((res) => {
             this.dataTimaAvPerDay = res.data;
+            console.log(this.dataTimaAvPerDay);
 					}).catch((error) => {
-						console.log(error);
+						// console.log(error);
         });
       },
       showTeacherProfile(id){
@@ -419,7 +441,10 @@
 					}).catch((error) => {
 						console.log(error);
         });
-        $('#modalBookTrial').modal('show');
+        this.fetchCalendarWeek(this.formToSave.teachers_id);
+        this.fetchTimePerDay(this.formToSave.teachers_id);
+        this.$bvModal.show('modal-students-pref');
+        // $('#modalBookTrial').modal('show');
       },
       selectTimePreferred(event){
         const sorted_date = event.target.getAttribute('data-date');
@@ -480,8 +505,8 @@
     },
     mounted(){
       this.fetchTutor();
-      this.fetchCalendarWeek();
-      this.fetchTimePerDay();
+      // this.fetchCalendarWeek();
+      // this.fetchTimePerDay();
       this.getLessonOption();
       this.getCommunicationApp();
     
