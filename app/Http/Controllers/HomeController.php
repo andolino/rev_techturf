@@ -463,7 +463,14 @@ class HomeController extends Controller {
         $data = DB::table('lesson_type_details')
                     ->select('id', 'title', 'body')
                     ->get();
-        return response()->json($data);
+        $d = [];
+        foreach ($data as $row) {
+            array_push($d, array(
+                'text'=>$row->body,
+                'value'=>$row->id
+            ));
+        }
+        return response()->json($d);
     }
     
     /*
@@ -483,7 +490,31 @@ class HomeController extends Controller {
         $data = DB::table('students_english_level')
                     ->select('id', 'level')
                     ->get();
-        return response()->json($data);
+        $d = array();
+        foreach ($data as $row) {
+            array_push($d, array(
+                'text'=>$row->level,
+                'value'=>$row->id
+            ));
+        }
+        return response()->json($d);
+    }
+    
+    /*
+    * get Student Date Plan *
+    */
+    public function getStudentsDatePlan(){
+        $data = DB::table('students_date_plan')
+                    ->select('id', 'text')
+                    ->get();
+        $d = array();
+        foreach ($data as $row) {
+            array_push($d, array(
+                'text'=>$row->text,
+                'value'=>$row->id
+            ));
+        }
+        return response()->json($d);
     }
     
     /*

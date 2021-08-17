@@ -9,7 +9,7 @@
     </div> -->
     <!-- <img :src="asset + 'images/ellipse-1.png'" alt=""> -->
 
-    <b-modal id="modal-students-pref" size="xl" class="m-0 p-0" hide-footer="true" title="" :hide-header="true">
+    <b-modal id="modal-students-pref" size="xl" class="m-0 p-0" title="" :hide-header="true" :hide-footer="true">
       <b-container class="bv-example-row p-0">
         <b-row>
           <b-col class="left-stepper-tab-ts h-100 p-0" style="
@@ -28,11 +28,11 @@
                   <label v-for="sl in studentsLevel" 
                     :key="sl.id" 
                     class="btn btn-light text-left mb-2 p-3 w-100 font-14" 
-                    :class="{ 'active' : form.students_level_id == sl.id }">
+                    :class="{ 'active' : formPref.students_level_id == sl.id }">
                     <input type="radio" 
                       
                       :value="sl.id" 
-                      v-model="form.students_level_id" 
+                      v-model="formPref.students_level_id" 
                       autocomplete="off">
                     {{ sl.level }} {{ sl.age_range_from }} {{ (sl.age_range_to == 0 ? ' and Above' : '-' + sl.age_range_to) }}
                   </label>
@@ -53,19 +53,34 @@
             <h5 for="" class="text-center mb-5">2. Select a type of lesson (Select one or two) </h5>
             <b-row>
               <b-col cols="6" offset="3" class="d-flex justify-content-center">
-                <div class="btn-vertical btn-group-toggle text-center w-100" data-toggle="buttons">
+                <!-- <div class="btn-vertical btn-group-toggle text-center w-100" data-toggle="buttons">
                   <label v-for="slt in studentsLessonTypeDetails" 
                     :key="slt.id" 
                     class="btn btn-light text-left mb-2 p-3 w-100 font-14"
-                    :class="{ 'active' : form.lesson_type_details_id == slt.id }">
+                    :class="{ 'active' : formPref.lesson_type_details_id == slt.id }">
                     <input type="radio"  
                       :value="slt.id" 
-                      v-model="form.lesson_type_details_id" 
+                      v-model="formPref.lesson_type_details_id" 
                       autocomplete="off">
                     {{ slt.body }}
                   </label>
-                </div>
+                </div> -->
+                <b-form-group
+                  label=""
+                  v-slot="{ ariaDescribedby }"
+                  class="w-100 chk-lesson-type"
+                >
+                  <b-form-checkbox-group
+                    v-model="formPref.lesson_type_details_id"
+                    :options="optionsLessonType"
+                    :aria-describedby="ariaDescribedby"
+                    stacked
+                    buttons
+                    button-variant="light text-left mb-2 p-3 font-14"
+                  ></b-form-checkbox-group>
+                </b-form-group>
               </b-col>
+
             </b-row>
             <b-row class="pt-5 pr-3">
               <b-col>
@@ -87,11 +102,12 @@
                 <div class="btn-vertical btn-group-toggle text-center w-100" data-toggle="buttons">
                   <label v-for="stp in studentsTestPrep" 
                     :key="stp.id" class="btn btn-light text-left mb-2 p-3 w-50 font-14 border-left"
-                    :class="{ 'active' : form.students_test_preparation_id == stp.id }">
+                    :class="{ 'active' : formPref.students_test_preparation_id == stp.id }">
                     <input type="radio" 
                       :value="stp.id" 
-                      v-model="form.students_test_preparation_id" 
-                      autocomplete="off">
+                      v-model="formPref.students_test_preparation_id" 
+                      autocomplete="off"
+                      @click="showPrefMsg(stp.id)">
                     {{ stp.body }}
                   </label>
                 </div>
@@ -102,7 +118,7 @@
               <b-col class="d-flex justify-content-center" offset="3" cols="6">
                 <b-form-textarea
                     id="textarea"
-                    v-model="test_prep_message"
+                    v-model="formPref.test_prep_message"
                     size="sm"
                     placeholder="Your message..."
                     rows="7"
@@ -122,6 +138,72 @@
               </b-col>
             </b-row>
           </b-col>
+
+          <b-col class="p-4 pt-5" cols="9" v-if="showStepper4">
+            <h5 for="" class="text-center mb-5">4. Current English Level </h5>
+            <b-row> 
+              <b-col cols="6" offset="3" class="d-flex justify-content-center">
+                <b-form-group
+                  label=""
+                  v-slot="{ ariaDescribedby }"
+                  class="w-100 chk-lesson-type">
+                  <b-form-radio-group
+                    v-model="formPref.students_english_level_id"
+                    :options="optionsEnglishLevel"
+                    :aria-describedby="ariaDescribedby"
+                    stacked
+                    buttons
+                    button-variant="light text-left mb-2 p-3 font-14"
+                  ></b-form-radio-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+
+            <b-row class="pt-5 pr-3">
+              <b-col >
+                <button type="button" 
+                    class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
+                    v-on:click="clickStepper('4', 'next')">Next</button>
+                <button type="button" 
+                    class="btn btn-default float-right btn-dashboard mb-3 font-14"
+                    v-on:click="clickStepper('4', 'back')">Back</button>
+              </b-col>
+            </b-row>
+          </b-col>
+          
+          <b-col class="p-4 pt-5" cols="9" v-if="showStepper5">
+            <h5 for="" class="text-center mb-5">5. How often do you plan to take lessons? </h5>
+            <b-row> 
+              <b-col cols="6" offset="3" class="d-flex justify-content-center">
+                <b-form-group
+                  label=""
+                  v-slot="{ ariaDescribedby }"
+                  class="w-100 chk-lesson-type">
+                  <b-form-radio-group
+                    v-model="formPref.students_date_plan_id"
+                    :options="optionsStudentsDatePlan"
+                    :aria-describedby="ariaDescribedby"
+                    stacked
+                    buttons
+                    button-variant="light text-left mb-2 p-3 font-14"
+                  ></b-form-radio-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+
+            <b-row class="pt-5 pr-3">
+              <b-col >
+                <button type="button" 
+                    class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
+                    v-on:click="clickStepper('5', 'next')">Done</button>
+                <button type="button" 
+                    class="btn btn-default float-right btn-dashboard mb-3 font-14"
+                    v-on:click="clickStepper('5', 'back')">Back</button>
+              </b-col>
+            </b-row>
+          </b-col>
+
+
         </b-row>
       </b-container>
     </b-modal>
@@ -137,19 +219,28 @@
         showStepper1: true,
         showStepper2: false,
         showStepper3: false,
+        showStepper4: false,
         showStepperPrep: false,
+        showStepper5: false,
         bgImgStepper: 'public/images/stepper-left.png',
         bgImgStudentView: 'public/images/feedback-1.png',
         studentsLevel: '',
         studentsLessonTypeDetails: '',
-        studentsEnglishLevel: '',
         studentsTestPrep: '',
-        form: {
+        ariaDescribedby: '',
+        formPref: {
           students_level_id: '',
-          lesson_type_details_id: '',
+          lesson_type_details_id: [],
           students_test_preparation_id: '',
           test_prep_message: '',
-        }
+          students_english_level_id: '',
+          students_date_plan_id: '',
+          students_id: ''
+        },
+        selectedLessonType: [], // Must be an array reference!
+        optionsLessonType: [],
+        optionsEnglishLevel: [],
+        optionsStudentsDatePlan: [],
       }
     },
     methods: {
@@ -159,20 +250,47 @@
           this.showStepper2 = !this.showStepper2;
         }
         if (ord=='2' && action=='next') {
-          this.showStepper3 = !this.showStepper3;
-          this.showStepper2 = !this.showStepper2;
+          if (this.formPref.lesson_type_details_id.includes(3)) {
+            this.showStepper3 = !this.showStepper3;
+            this.showStepper2 = !this.showStepper2;
+          } else {
+            this.showStepper4 = !this.showStepper4;
+            this.showStepper2 = !this.showStepper2;
+          }
         }
         if (ord=='2' && action=='back') {
           this.showStepper1 = !this.showStepper1;
           this.showStepper2 = !this.showStepper2;
         }
         if (ord=='3' && action=='next') {
-          this.showStepper4 = !this.showStepper4;
-          this.showStepper3 = !this.showStepper3;
+            this.showStepper4 = !this.showStepper4;
+            this.showStepper3 = !this.showStepper3;
         }
         if (ord=='3' && action=='back') {
           this.showStepper3 = !this.showStepper3;
           this.showStepper2 = !this.showStepper2;
+        }
+        if (ord=='4' && action=='next') {
+          this.showStepper5 = !this.showStepper5;
+          this.showStepper4 = !this.showStepper4;
+        }
+        if (ord=='4' && action=='back') {
+          if (this.formPref.lesson_type_details_id.includes(3)) {
+            this.showStepper4 = !this.showStepper4;
+            this.showStepper3 = !this.showStepper3;
+          } else {
+            this.showStepper4 = !this.showStepper4;
+            this.showStepper2 = !this.showStepper2;
+          }
+        }
+        if (ord=='5' && action=='next') {
+          // this.showStepper5 = !this.showStepper5;
+          // this.showStepper4 = !this.showStepper4;
+          console.log(this.formPref);
+        }
+        if (ord=='5' && action=='back') {
+          this.showStepper4 = !this.showStepper4;
+          this.showStepper5 = !this.showStepper5;
         }
       },
       fnGetStudentsLevel(){
@@ -186,7 +304,7 @@
       fnGetLessonTypeDetails(){
         //get the teachers_id
         axios.get('/heygo/get-lesson-type-details').then((res) => {
-          this.studentsLessonTypeDetails = res.data;
+          this.optionsLessonType = res.data;
 					}).catch((error) => {
 						console.log(error);
         });
@@ -199,22 +317,35 @@
 						console.log(error);
         });
       },
-      
       fnGetStudentsEnglishLevel(){
         //get the teachers_id
         axios.get('/heygo/get-students-english-level').then((res) => {
-          this.studentsEnglishLevel = res.data;
+          this.optionsEnglishLevel = res.data;
 					}).catch((error) => {
 						console.log(error);
         });
       },
-      
+      fnGetStudentsDatePlan(){
+        //get the teachers_id
+        axios.get('/heygo/get-students-date-plan').then((res) => {
+          this.optionsStudentsDatePlan = res.data;
+					}).catch((error) => {
+						console.log(error);
+        });
+      },
+      showPrefMsg(v){
+        if (v==12) {
+          this.showStepperPrep = !this.showStepperPrep;
+        }
+      }
     },
     mounted(){
       this.fnGetStudentsLevel();
       this.fnGetLessonTypeDetails();
       this.fnGetStudentsTestPrep();
       this.fnGetStudentsEnglishLevel();
+      this.fnGetStudentsDatePlan();
+      this.formPref.students_id = this.user_id;
     }
   }
 </script>
@@ -235,5 +366,11 @@
   color: #fff;
   margin-top: 26px;
   text-align: center;
+}
+.chk-lesson-type{
+  background: none !important;
+}
+.btn-group-vertical{
+  width: 100%;
 }
 </style>

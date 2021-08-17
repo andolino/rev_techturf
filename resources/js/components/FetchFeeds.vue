@@ -335,7 +335,7 @@
       </div>
     </div>
 
-    <StudentsPref :asset="asset"/>
+    <StudentsPref :asset="asset" :csrf="csrf" :baseurl="baseurl" :user_id="user_id"/>
 
 
 
