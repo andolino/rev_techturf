@@ -216,14 +216,20 @@ class HomeController extends Controller {
     
     public function getTeachersInfo($id){
         $data = DB::table('teachers')->where('id', '=', $id)->get();
-        return response()->json($data);
+        $student_id = Auth::id();
+        $has_pref = DB::table('students_pref')
+                        ->where('students_id', $student_id)
+                        ->get();
+        return response()->json(['data'=>$data, 'has_pref'=>(count($has_pref) > 0 ? true : false)]);
     }
+
     public function getLessonTypeRate(){
         $data = DB::table('lesson_rate_type')
                     ->select('*')
                     ->get();
         return response()->json($data);
     }
+
     public function getLessonPlan(){
         $tol = DB::table('type_of_lesson')->select('*')->get();
         $obj = array();
@@ -297,7 +303,8 @@ class HomeController extends Controller {
                                     GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
                                     ORDER BY ls.id desc"));
         return response()->json($data);
-    }    
+    }
+
     public function approveStudentBooking(){
         $approval_type = Request::post('approval_type');
         $is_confirm = 1;
@@ -310,7 +317,7 @@ class HomeController extends Controller {
         DB::table('lesson_schedule')
             ->where('id', '=', $lesson_schedule_id)
             ->update(['status' => $is_confirm]);
-    }  
+    }
 
     /*
     * get lesson option *
@@ -525,6 +532,32 @@ class HomeController extends Controller {
                     ->select('id', 'app_name', 'created_at', 'updated_at', 'icon')
                     ->get();
         return response()->json($data);
+    }
+    
+    /*
+    * save students pref *
+    */
+    public function saveStudentPref(){
+        $q = DB::table('students_pref')->updateOrInsert([
+            'students_id' => Request::post('students_id'),
+        ], [
+            // 'id' => Request::post('id'),
+            'students_id' => Request::post('students_id'),
+            'students_level_id' => Request::post('students_level_id'),
+            'lesson_type_details_id' => implode(',', Request::post('lesson_type_details_id')),
+            'students_test_preparation_id' => Request::post('students_test_preparation_id'),
+            'test_prep_message' => Request::post('test_prep_message'),
+            'students_english_level_id' => Request::post('students_english_level_id'),
+            'students_date_plan_id' => Request::post('students_date_plan_id')
+        ]); 
+        if($q){
+            return response()->json(['message'=>'success']);
+        } else {
+            return response()->json(['message'=>'error']);
+        }
+        return response()->json(Request::all());
+
+        // return response()->json($data);
     }
     
     public function getAWeekCalendar(){

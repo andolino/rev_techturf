@@ -423,7 +423,7 @@
       fetchTimePerDay(tId){
         axios.post('/heygo/get-time-available-per-day', {teachers_id: tId}).then((res) => {
             this.dataTimaAvPerDay = res.data;
-            console.log(this.dataTimaAvPerDay);
+            // console.log(this.dataTimaAvPerDay);
 					}).catch((error) => {
 						// console.log(error);
         });
@@ -435,16 +435,22 @@
         //get the teachers_id
         this.formToSave.teachers_id = e;
         axios.get('/heygo/get-teachers-info/'+e).then((res) => {
-            this.teachersdata = res.data;
-            this.rate_per_hr = res.data[0].rate_per_hr;
-            this.formToSave.lesson_plan_id = res.data[0].lesson_plan_id;
+            this.teachersdata = res.data.data;
+            this.rate_per_hr = res.data.data[0].rate_per_hr;
+            this.formToSave.lesson_plan_id = res.data.data[0].lesson_plan_id;
+            if (res.data.has_pref) {
+              $('#modalBookTrial').modal('show'); 
+            } else {
+              this.$bvModal.show('modal-students-pref');
+            }
+            // console.log(res.data.has_pref);
+            // console.log(res);
 					}).catch((error) => {
 						console.log(error);
         });
         this.fetchCalendarWeek(this.formToSave.teachers_id);
         this.fetchTimePerDay(this.formToSave.teachers_id);
-        this.$bvModal.show('modal-students-pref');
-        // $('#modalBookTrial').modal('show');
+        
       },
       selectTimePreferred(event){
         const sorted_date = event.target.getAttribute('data-date');

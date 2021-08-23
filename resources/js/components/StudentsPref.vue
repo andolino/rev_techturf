@@ -235,7 +235,8 @@
           test_prep_message: '',
           students_english_level_id: '',
           students_date_plan_id: '',
-          students_id: ''
+          students_id: '',
+          _token: this.csrf
         },
         selectedLessonType: [], // Must be an array reference!
         optionsLessonType: [],
@@ -256,6 +257,7 @@
           } else {
             this.showStepper4 = !this.showStepper4;
             this.showStepper2 = !this.showStepper2;
+            this.formPref.students_test_preparation_id = '';
           }
         }
         if (ord=='2' && action=='back') {
@@ -281,12 +283,33 @@
           } else {
             this.showStepper4 = !this.showStepper4;
             this.showStepper2 = !this.showStepper2;
+            this.formPref.students_test_preparation_id = '';
           }
         }
         if (ord=='5' && action=='next') {
           // this.showStepper5 = !this.showStepper5;
           // this.showStepper4 = !this.showStepper4;
-          console.log(this.formPref);
+          //console.log(this.formPref);
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "Note: lorem ipsum",
+            icon: 'question',
+            showCancelButton: true, 
+            confirmButtonColor: '#df9509',
+            cancelButtonColor: '#353333',
+            cancelButtonText: 'Wait',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // this.joinClassPanel = !this.joinClassPanel;
+              axios.post('/heygo/save-student-pref', this.formPref).then((res) => {
+                this.$bvModal.hide('modal-students-pref');
+                }).catch((error) => {
+                  console.log(error);
+              });
+            }
+          });
+          
         }
         if (ord=='5' && action=='back') {
           this.showStepper4 = !this.showStepper4;

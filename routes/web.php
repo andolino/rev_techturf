@@ -66,6 +66,7 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::get('/get-test-student-preparation', [HomeController::class, 'getTestStudentPreparation']);
     Route::get('/get-students-english-level', [HomeController::class, 'getStudentsEnglishLevel']);
     Route::get('/get-students-date-plan', [HomeController::class, 'getStudentsDatePlan']);
+    Route::post('/save-student-pref', [HomeController::class, 'saveStudentPref']);
 
 });
 

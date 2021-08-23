@@ -293,7 +293,7 @@ export default {
             window.open('https://us02web.zoom.us/j/' + e);
             
           }
-        }); 
+        });
       } else if (cs == 1) {
         this.joinClassPanel = !this.joinClassPanel;
         this.reschedulePanel = !this.reschedulePanel;
