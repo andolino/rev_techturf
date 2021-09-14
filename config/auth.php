@@ -55,6 +55,11 @@ return [
         'students' => [
             'driver' => 'session',
             'provider' => 'students',
+        ],
+        
+        'admins' => [
+            'driver' => 'session',
+            'provider' => 'admins',
         ]
     ],
 
@@ -90,6 +95,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Students::class,
         ],
+        
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admins::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

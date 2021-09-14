@@ -8,7 +8,21 @@
       <div class="card">
         <div class="card-body">
           <label class="card-title">{{ ul.time_sched }}</label>
-          <small class="float-right text-success">{{ timeReminder(ul.start_date, ul.end_date) }}</small>
+          <small class="float-right text-success" v-if="ul.status == 3">
+            {{ timeReminder(ul.start_date, ul.end_date) }}
+          </small>
+          <small class="float-right text-success" v-else-if="ul.status == 2">
+            {{ timeReminder(ul.start_date, ul.end_date) }}
+          </small>
+          <small class="float-right text-success" v-else-if="ul.status == 1">
+            For Approval
+          </small>
+          <small class="float-right text-danger" v-else>
+            Declined
+          </small>
+          <!-- <small class="float-right text-success">
+            {{ timeReminder(ul.start_date, ul.end_date) }}
+          </small> -->
           <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
           <p class="card-text">{{ ul.objective_text }}</p>
         </div>
@@ -84,19 +98,20 @@
                         </ul>
                       </div>
                     </div>
+                    
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next" 
                         @click="lessonApproval(studentInfo.lesson_schedule_id)" 
-                        data-apptype="confirm">Confirm</button>
+                        data-apptype="confirm" v-if="studentInfo.status == 1">Confirm</button>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 decline-student-booked" 
                         @click="lessonApproval(studentInfo.lesson_schedule_id)" 
-                        data-apptype="decline">Decline</button>
+                        data-apptype="decline" v-if="studentInfo.status == 1">Decline</button>
                   </div>
 
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="viewStudentCalendarBooked">
                     <div class="stepper-control">
-                      <table class="table table-sm font-12">
+                      <!-- <table class="table table-sm font-12">
                         <thead>
                           <tr>
                             <td class="text-center bg-calendar-hdr" v-for="dwc in dataWeekCalendar" :key="dwc.key">
@@ -111,10 +126,25 @@
                                 :data-date="dwc.w_date + ' ' + dta[0].time"
                                 @click="selectTimePreferred" 
                                 disabled>{{ dta[0].time }}</button></td>
-                                <!-- :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta[0].time)}" -->
                           </tr>
                         </thead>
-                      </table>
+                      </table> -->
+                      <h5>Calendar</h5>
+                      <b-row class="p-b bg-light text-center">
+                        <b-col class="p-3" v-for="(dwc, i) in dataWeekCalendar" :key="i">
+                          <label for="">{{ dwc.key }} <strong>{{ dwc.value }}</strong></label>
+                          <b-row v-for="(dta, i2) in dataTimaAvPerDay" :key="i2">
+                            <b-col class="border-1 font-12 pb-2" v-if="dta.w_date == dwc.w_date">
+                              <button type="button" 
+                                  class="btn btn-xs btn-radio-select "
+                                  :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta.time)}"
+                                  :data-date="dwc.w_date + ' ' + dta.time"
+                                  @click="selectTimePreferred" 
+                                  v-if="dwc.w_date == dta.w_date">{{ dta.time }}</button>
+                            </b-col>
+                          </b-row>
+                        </b-col>
+                      </b-row>
                     </div>
                     <div class="row mt-4">
                       <button type="button" 
@@ -211,7 +241,8 @@ export default {
         app_id: '',
         lesson_option_id: '',
         students_id: '',
-        lesson_schedule_id: ''
+        lesson_schedule_id: '',
+        status: ''
       },
       formToSave: {
         lesson_date: [],
@@ -316,12 +347,15 @@ export default {
             this.studentInfo.lesson_option_id   = res.data[0].lesson_option_id;
             this.studentInfo.students_id        = students_id;
             this.studentInfo.lesson_schedule_id = lesson_schedule_id;
+            this.studentInfo.status             = res.data[0].status;
             this.formToSave.lesson_date         = [moment(res.data[0].start_date).format('L HH:mm A'),
                                                   moment(res.data[0].end_date).format('L HH:mm A')]
         }).catch((error) => {
           console.log(error);
       });
+      this.fetchCalendarWeek();
       $('#modalTeacherStartLesson').modal('show');
+
     },
     lessonApproval(lesson_schedule_id) {
       const approval_type = event.target.getAttribute('data-apptype');
@@ -329,14 +363,28 @@ export default {
         // $swal function calls SweetAlert into the application with the specified configuration.
       Swal.fire({
         title: 'You want to ' + approval_type + ' ?',
-        text: "You won't be able to revert this schedule!",
+        text: "You won't be able to revert this transaction!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#fcb017',
         cancelButtonColor: '#212222',
         confirmButtonText: 'Yes, ' + approval_type + ' it!'
       }).then((result) => {
-        // if (result.isConfirmed) {
+        if (result.isConfirmed) {
+          axios.post('api/approve-student-booking', { 
+            'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
+              .then((res) => {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Successfully ' + approval_type + '!',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+            }).catch((error) => {
+              console.log(error);
+          });
+        } else {
         //   axios.post('/heygo/approve-student-booking', { 
         //     'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
         //       .then((res) => {
@@ -350,33 +398,26 @@ export default {
         //     }).catch((error) => {
         //       console.log(error);
         //   });
-        // } else {
-        //   axios.post('/heygo/approve-student-booking', { 
-        //     'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
-        //       .then((res) => {
-        //         Swal.fire({
-        //           position: 'top-end',
-        //           icon: 'success',
-        //           title: 'Successfully ' + approval_type + '!',
-        //           showConfirmButton: false,
-        //           timer: 1500
-        //         });
-        //     }).catch((error) => {
-        //       console.log(error);
-        //   });
-        // }
-        $('#modalTeacherStartLesson').modal('hide');
+        }
+        // $('#modalTeacherStartLesson').modal('hide');
       });
     },
     fetchTimePerDay(){
-      axios.get('/heygo/get-time-available-per-day').then((res) => {
+      axios.post('/heygo/get-time-available-per-day', { 'teachers_id' : this.user_id }).then((res) => {
         this.dataTimaAvPerDay = res.data;
       }).catch((error) => {
           console.log(error);
       });
     },
+    testEmail(){
+      axios.post('/heygo/verify-student-email', { 'email': 'dondonpentavia@gmail.com' }).then((res) => {
+        // this.dataTimaAvPerDay = res.data;
+      }).catch((error) => {
+          console.log(error);
+      });
+    },
     fetchCalendarWeek(){
-      axios.post('/heygo/get-week-calendar').then((res) => {
+      axios.post('/heygo/get-week-calendar', { 'teachers_id' : this.user_id }).then((res) => {
         this.dataWeekCalendar = res.data;
       }).catch((error) => {
           console.log(error);
@@ -400,7 +441,6 @@ export default {
   mounted() {
     this.getUpcomingLesson();
     this.fetchTimePerDay();
-    this.fetchCalendarWeek();
     
   }
 }

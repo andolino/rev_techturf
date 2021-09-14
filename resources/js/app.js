@@ -18,6 +18,7 @@ import FetchFeeds from './components/FetchFeeds.vue';
 import TeachersProfile from './components/TeachersProfile.vue';
 import StudentHomework from './components/StudentHomework.vue';
 import StudentPaymentMethods from './components/StudentPaymentMethods.vue';
+import TeacherPaymentMethods from './components/TeacherPaymentMethods.vue';
 import TeacherUpcomingLesson from './components/TeacherUpcomingLesson.vue';
 import StudentUpcomingLesson from './components/StudentUpcomingLesson.vue';
 import TeachersNotifications from './components/TeachersNotifications.vue';
@@ -79,6 +80,7 @@ const app = new Vue({
 		'student-homework'				: StudentHomework,
 		'teachers-profile'				: TeachersProfile,
 		'student-payment-methods'	: StudentPaymentMethods,
+		'teacher-payment-methods'	: TeacherPaymentMethods,
 		'teacher-upcoming-lesson' : TeacherUpcomingLesson,
 		'student-upcoming-lesson' : StudentUpcomingLesson,
 		'teachers-notifications' 	: TeachersNotifications,

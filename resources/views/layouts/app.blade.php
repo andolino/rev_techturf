@@ -36,6 +36,7 @@
           background-image: url( "data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(225, 170, 40)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E"); 
       } 
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 <div>
@@ -72,7 +73,6 @@
 
                         @if (!$logged_in)
                             <li class="nav-item mr-3">
-                                {{-- {{ route('login') }} --}}
                                 <a href="javascript:void(0);" class="nav-link btn-white font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Login') }}</a>
                             </li>
                         @endif
@@ -105,6 +105,11 @@
         </div>
     </nav>
     <main class="">
+        @isset($is_verified)
+            @if ($is_verified)
+                <div class="verified-container d-none">{{ $msg }}</div>
+            @endif
+        @endisset
         @yield('content')
     </main>
     <div id="app">
@@ -259,7 +264,27 @@
             behavior: "smooth"
         })
     }
+    if ($('div.verified-container').length) {
+        $(window).on('load', function(){
+            $('.verified-container').removeClass('d-none');
+            setTimeout(function(){
+                $(".verified-container").fadeOut();
+                window.location.href = "{{ url('/') }}";
+            }, 3000);
+        });
+    }
+
 </script>
 </body>
+<style>
+    .verified-container {
+        background: #fceabb;
+        background: -webkit-linear-gradient(to left, #f8b500, #fceabb);
+        background: linear-gradient(to left, #f8b500, #fceabb);
+        text-align: right;
+        color: #f0f0f0;
+        padding: 17px;
+    }
+</style>
 
 </html>

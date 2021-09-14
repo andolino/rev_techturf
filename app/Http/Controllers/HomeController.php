@@ -6,8 +6,13 @@ namespace App\Http\Controllers;
 use Request;
 use App\Models\Teachers;
 use App\Models\Students;
+use App\Models\Admins;
 use Auth;
 use DB;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
+
 
 class HomeController extends Controller {
     /**
@@ -218,7 +223,11 @@ class HomeController extends Controller {
         $data = DB::table('teachers')->where('id', '=', $id)->get();
         $student_id = Auth::id();
         $has_pref = DB::table('students_pref')
-                        ->where('students_id', $student_id)
+                        ->where([
+                            ['students_id', '=', $student_id ],
+                            ['teachers_id', '=', $id ],
+                            ['lesson_schedule_id', '=', null ],
+                        ])
                         ->get();
         return response()->json(['data'=>$data, 'has_pref'=>(count($has_pref) > 0 ? true : false)]);
     }
@@ -264,7 +273,8 @@ class HomeController extends Controller {
                                         concat(DATE_FORMAT(min(lsd.lesson_date), '%H:%i %p'), ' - ', DATE_FORMAT(max(lsd.lesson_date), '%H:%i %p')) as time_sched,
                                         lrt.type,
                                         lp.title,
-                                        concat(t.lastname, ', ', t.firstname) as fullname
+                                        concat(t.lastname, ', ', t.firstname) as fullname,
+                                        ls.status
                                     FROM teachers t
                                     LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
                                     LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
@@ -272,7 +282,7 @@ class HomeController extends Controller {
                                     LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
                                     LEFT JOIN students s on s.id = ls.students_id
                                     WHERE s.id = $students_id
-                                    AND (ls.status = 1 OR ls.status = 3)
+                                    -- AND (ls.status = 1 OR ls.status = 3)
                                     GROUP BY ls.id
                                     ORDER BY ls.id desc"));
         return response()->json($data);
@@ -291,7 +301,12 @@ class HomeController extends Controller {
                                         concat(t.lastname, ', ', t.firstname) as fullname,
                                         ca.app_name,
                                         ls.app_id,
-                                        ls.lesson_option_id
+                                        ls.lesson_option_id,
+                                        ls.status,
+                                        s.email as student_email,
+                                        t.email as teacher_email,
+                                        sl.level,
+                                        ltd.title
                                     FROM teachers t
                                     LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
                                     LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
@@ -299,6 +314,9 @@ class HomeController extends Controller {
                                     LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
                                     LEFT JOIN students s on s.id = ls.students_id
                                     LEFT JOIN communication_app ca on ca.id = ls.communication_app_id
+                                    LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                    LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                    LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
                                     WHERE ls.id = $lesson_schedule_id 
                                     GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
                                     ORDER BY ls.id desc"));
@@ -307,16 +325,73 @@ class HomeController extends Controller {
 
     public function approveStudentBooking(){
         $approval_type = Request::post('approval_type');
+        $lesson_schedule_id = Request::post('lesson_schedule_id');
         $is_confirm = 1;
         if ($approval_type == 'confirm') {
             $is_confirm = 3;
+            DB::table('lesson_schedule')
+                    ->where('id', '=', $lesson_schedule_id)
+                    ->update(['status' => $is_confirm]);
         } else {
-            $is_confirm = 0;
+            try {
+                $paymentLogs = DB::table('students_payment_log')->where('lesson_schedule_id', $lesson_schedule_id)->first();
+                $stripe = Stripe::refunds()->create($paymentLogs->user_id);
+
+                DB::table('students_payment_log')->insert([
+                    'lesson_schedule_id' => $lesson_schedule_id,
+                    'response_date' => date('Y-m-d H:i:s', $stripe['created']),
+                    'is_invalid' => $stripe['status'] != 'succeeded' ? 1 : 0,
+                    'trans_id' => $stripe['balance_transaction'],
+                    'user_id' => $stripe['id'],
+                    'charge_id' => $stripe['charge'],
+                    'amount' => 0,
+                    'refund_amount' => $paymentLogs->amount,
+                    'trans_type' => $stripe['object'],
+                    'currency' => strtoupper($stripe['currency'])
+                ]);
+                // update status of lesson schedule
+                $is_confirm = 0;
+                DB::table('lesson_schedule')
+                    ->where('id', '=', $lesson_schedule_id)
+                    ->update(['status' => $is_confirm]);
+                
+                $lsData = DB::select(DB::raw("SELECT 
+                                                    t.*,
+                                                    s.email,
+                                                    min(lsd.lesson_date) as start_time,
+                                                    max(lsd.lesson_date) as end_time,
+                                                    sl.level,
+                                                    ltd.title
+                                                FROM teachers t
+                                                LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                                LEFT JOIN students s ON s.id = ls.students_id
+                                                LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
+                                                LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                                LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                                LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
+                                                WHERE ls.id = '$lesson_schedule_id'
+                                                GROUP BY ls.id"));
+
+                $email = $lsData[0]->email;
+
+                $details = [
+                'dest'=>'teacher_cancelled_lesson',
+                'data' => [
+                    'teacher_name' => $lsData[0]->lastname . ', ' . $lsData[0]->firstname,
+                    'date' => date('Y-m-d H:i:s', strtotime($lsData[0]->start_time)),
+                    'time' => date('h:i:s', strtotime($lsData[0]->start_time)) . ' - ' . date('h:i:s', strtotime($lsData[0]->end_time)),
+                    'type_of_lesson' => $lsData[0]->level . ' - ' . $lsData[0]->title,
+                ],
+                'body' => 'This is a body'
+                ];
+                
+                Mail::to($email)->send(new RegisterMail($details));
+
+                return response()->json($stripe);
+            } catch (Exception $e) {
+                return response()->json($e->getMesssage());
+            }
         }
-        $lesson_schedule_id = Request::post('lesson_schedule_id');
-        DB::table('lesson_schedule')
-            ->where('id', '=', $lesson_schedule_id)
-            ->update(['status' => $is_confirm]);
     }
 
     /*
@@ -329,6 +404,7 @@ class HomeController extends Controller {
                     ->get();
         return $data;//response()->json();
     }
+    
     
     /*
     * students *
@@ -351,6 +427,8 @@ class HomeController extends Controller {
         }
         return view('students', ['data' => $data, 'teachers' => $teachers]);
     }
+
+
     public function studentsAccountSettings(){
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
         return view('students-account-settings', ['data' => $data]);
@@ -359,31 +437,27 @@ class HomeController extends Controller {
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
         return view('students-payment-methods', ['data' => $data]);
     }
-    public function saveBookedSchedule(){
-        $lesson_date = explode(',', Request::post('lesson_date'));
+    public function teachersPaymentMethods(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        return view('teachers-payment-methods', ['data' => $data]);
+    }
+    public function saveEmailCommunication(){
+        $lesson_schedule_id = Request::post('lesson_schedule_id');
         $m = array();
         $d = array();
         array_push($m, array(
-            'teachers_id'           => Request::post('teachers_id'),
-            'lesson_plan_id'        => Request::post('lesson_plan_id'),
-            'lesson_option_id'      => Request::post('lesson_option_id'),
             'communication_app_id'  => Request::post('communication_app_id'),
             'app_id'                => Request::post('app_id'),
-            'students_id'           => Request::post('user_id')
         ));
-        DB::table('lesson_schedule')->insert($m);
-        $lesson_schedule_id = DB::getPdo()->lastInsertId();
-        for ($i=0; $i < count($lesson_date); $i++) { 
-            array_push($d, array(
-                'lesson_schedule_id' => $lesson_schedule_id,
-                'lesson_date'        => date('Y-m-d h:i:s', strtotime($lesson_date[$i])),
-            ));
-        }
-        $q = DB::table('lesson_schedule_details')->insert($d);
-        if ($q) {
-            return redirect()->intended('students');
-        }
+        DB::table('lesson_schedule')    
+            ->where('id', $lesson_schedule_id)    
+            ->update([
+                'communication_app_id'  => Request::post('communication_app_id'),
+                'app_id'                => Request::post('app_id'),
+            ]);
+        return redirect()->intended('students');
     }
+    
     public function getStudentBookedLesson() {
         $teachers_id = Request::post('teachers_id');
         $data = DB::select(DB::raw("SELECT 
@@ -395,7 +469,8 @@ class HomeController extends Controller {
                                         lrt.type,
                                         lp.title,
                                         concat(s.lastname, ', ', s.firstname) as fullname,
-                                        s.id as students_id
+                                        s.id as students_id,
+                                        ls.status
                                     FROM teachers t
                                     LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
                                     LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
@@ -403,11 +478,12 @@ class HomeController extends Controller {
                                     LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
                                     LEFT JOIN students s on s.id = ls.students_id
                                     WHERE t.id = $teachers_id
-                                    AND (ls.status = 1 OR ls.status = 3)
+                                    -- AND (ls.status = 1 OR ls.status = 3)
                                     GROUP BY ls.id
                                     ORDER BY ls.id desc"));
         return response()->json($data);
     }
+
     public function getBookedStudentInfo(){
         $lesson_date = date('Y-m-d', strtotime(Request::post('lesson_date')));
         $students_id = Request::post('students_id');
@@ -423,7 +499,8 @@ class HomeController extends Controller {
                                         concat(s.lastname, ', ', s.firstname) as fullname,
                                         ca.app_name,
                                         ls.app_id,
-                                        ls.lesson_option_id
+                                        ls.lesson_option_id,
+                                        ls.status
                                     FROM teachers t
                                     LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
                                     LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
@@ -433,7 +510,7 @@ class HomeController extends Controller {
                                     LEFT JOIN communication_app ca on ca.id = ls.communication_app_id
                                     WHERE s.id = $students_id
                                     AND ls.id = $lesson_schedule_id
-                                    AND (ls.status = 1 OR ls.status = 3)
+                                    -- AND (ls.status = 1 OR ls.status = 3)
                                     GROUP BY DATE_FORMAT(ls.lesson_date, '%Y-%m-%d')
                                     ORDER BY ls.id desc"));
         return response()->json($data);
@@ -540,6 +617,8 @@ class HomeController extends Controller {
     public function saveStudentPref(){
         $q = DB::table('students_pref')->updateOrInsert([
             'students_id' => Request::post('students_id'),
+            'teachers_id' => Request::post('teachers_id'),
+            'lesson_schedule_id' => null
         ], [
             // 'id' => Request::post('id'),
             'students_id' => Request::post('students_id'),
@@ -548,7 +627,8 @@ class HomeController extends Controller {
             'students_test_preparation_id' => Request::post('students_test_preparation_id'),
             'test_prep_message' => Request::post('test_prep_message'),
             'students_english_level_id' => Request::post('students_english_level_id'),
-            'students_date_plan_id' => Request::post('students_date_plan_id')
+            'students_date_plan_id' => Request::post('students_date_plan_id'),
+            'teachers_id' => Request::post('teachers_id')
         ]); 
         if($q){
             return response()->json(['message'=>'success']);
@@ -640,6 +720,217 @@ class HomeController extends Controller {
         // return $timePerDay;
     }
 
+    public function studentPaymentCharge(){
+        try {
+            /** 
+             * Input Stripe Gateway
+             */
+            $stripe = Stripe::charges()->create([
+                'amount' => Request::post('amount'),
+                'currency' => 'USD',
+                'source' => Request::post('stripeToken'),
+                'receipt_email' => Request::post('email'),
+                'description' => Request::post('book_description')
+            ]);
+
+            /** 
+             * Input Backend
+             */
+            $lesson_date = Request::post('lesson_date');
+            $m = array();
+            $d = array();
+            array_push($m, array(
+                'teachers_id'           => Request::post('teachers_id'),
+                'lesson_plan_id'        => Request::post('lesson_plan_id'),
+                'lesson_option_id'      => Request::post('lesson_option_id'),
+                // 'communication_app_id'  => Request::post('communication_app_id'),
+                // 'app_id'                => Request::post('app_id'),
+                'students_id'           => Request::post('user_id'),
+                'created_at'            => date('Y-m-d H:i:s')
+            ));
+            DB::table('lesson_schedule')->insert($m);
+            $lesson_schedule_id = DB::getPdo()->lastInsertId();
+            for ($i=0; $i < count($lesson_date); $i++) { 
+                array_push($d, array(
+                    'lesson_schedule_id' => $lesson_schedule_id,
+                    'lesson_date'        => date('Y-m-d h:i:s', strtotime($lesson_date[$i])),
+                    'created_at'        => date('Y-m-d H:i:s')
+                ));
+            }
+            DB::table('lesson_schedule_details')->insert($d);
+            DB::table('students_payment_log')->insert([
+                'lesson_schedule_id' => $lesson_schedule_id,
+                'response_date' => date('Y-m-d H:i:s', $stripe['created']),
+                'is_invalid' => $stripe['status'] != 'succeeded' ? 1 : 0,
+                'trans_id' => $stripe['balance_transaction'],
+                'user_id' => $stripe['id'],
+                'amount' => Request::post('amount'),
+                'trans_type' => $stripe['object'],
+                'currency' => strtoupper($stripe['currency'])
+            ]);
+            /**
+             * heygo wallet
+             */
+            $students_payment_log_id = DB::getPdo()->lastInsertId();
+            DB::table('heygo_wallet')->insert([
+                'students_payment_log_id' => $students_payment_log_id,
+                'amount' => (Request::post('amount') * 0.15),
+                'created_at' => date('Y-m-d H:i:s', $stripe['created'])
+            ]);
+            /**
+             * teachers wallet
+             */
+            DB::table('teachers_wallet')->insert([
+                'students_payment_log_id' => $students_payment_log_id,
+                'amount' => Request::post('amount') - (Request::post('amount') * 0.15),
+                'created_at' => date('Y-m-d H:i:s', $stripe['created'])
+            ]);
+
+            //update students pref
+            $q = DB::table('students_pref')
+                    ->where([
+                        ['students_id', '=', Request::post('user_id')],
+                        ['teachers_id', '=', Request::post('teachers_id')],
+                        ['lesson_schedule_id', '=', null],
+                    ])->update(['lesson_schedule_id' => $lesson_schedule_id]);
+        
+            if ($q) {
+                // get students_pref
+                $students_pref = DB::table('students_pref')
+                            ->where([
+                                ['students_id', '=', Request::post('user_id')],
+                                ['teachers_id', '=', Request::post('teachers_id')],
+                                ['lesson_schedule_id', '=', $lesson_schedule_id],
+                            ])->first();
+
+                $students_level = DB::table('students_level')
+                                ->where('id', $students_pref->students_level_id)->first();
+                $lessonTypeDetailsID = explode(',', $students_pref->lesson_type_details_id);
+                $lesson_type_details = DB::table('lesson_type_details')
+                                ->whereIn('id', $lessonTypeDetailsID)->first();
+
+                $teacherData = Teachers::where('id', Request::post('teachers_id'))->first();
+
+
+                $email = Request::post('email');
+                $details = [
+                'dest'=>'student_booked_lesson',
+                'data' => [
+                    'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
+                    'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
+                    'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
+                    'type_of_lesson' => $students_level->level . ' - ' . $lesson_type_details->title,
+                ],
+                'body' => 'This is a body'
+                ];
+                Mail::to($email)->send(new RegisterMail($details));
+            }
+            
+
+            return response()->json(['stripe_date'=>$stripe,'lesson_schedule_id'=>$lesson_schedule_id]);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
+
+    }
+    
+    public function teacherCreateStripe(){
+        try {
+            /** 
+             * Input Stripe Gateway
+             */
+            $stripe = Stripe::customers()->create([
+                'name' => Request::post('account_name'),
+                'source' => Request::post('stripeToken'),
+                'email' => Request::post('email'),
+                'description' => 'Account Creation'
+            ]);
+
+            /** 
+             * Input Backend
+             */
+            // $lesson_date = Request::post('lesson_date');
+            // $m = array();
+            // $d = array();
+            // array_push($m, array(
+            //     'teachers_id'           => Request::post('teachers_id'),
+            //     'lesson_plan_id'        => Request::post('lesson_plan_id'),
+            //     'lesson_option_id'      => Request::post('lesson_option_id'),
+            //     // 'communication_app_id'  => Request::post('communication_app_id'),
+            //     // 'app_id'                => Request::post('app_id'),
+            //     'students_id'           => Request::post('user_id'),
+            //     'created_at'            => date('Y-m-d H:i:s')
+            // ));
+            // DB::table('lesson_schedule')->insert($m);
+            // $lesson_schedule_id = DB::getPdo()->lastInsertId();
+            // for ($i=0; $i < count($lesson_date); $i++) { 
+            //     array_push($d, array(
+            //         'lesson_schedule_id' => $lesson_schedule_id,
+            //         'lesson_date'        => date('Y-m-d h:i:s', strtotime($lesson_date[$i])),
+            //         'created_at'        => date('Y-m-d H:i:s')
+            //     ));
+            // }
+            // DB::table('lesson_schedule_details')->insert($d);
+            DB::table('teachers')
+                    ->where('id', Request::post('teachers_id'))
+                    ->update(['stripe_id' => $stripe['id']]);
+
+            // return response()->json(['stripe_date'=>$stripe,'lesson_schedule_id'=>$lesson_schedule_id]);
+            return response()->json($stripe);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
+    }
+
+    public function updateStudentSchedule(){
+        try {
+            DB::table('lesson_schedule_details')->where('lesson_schedule_id', Request::post('lesson_schedule_id'))->delete();
+            $d = [];
+            for ($i=0; $i < count(Request::post('lesson_date')); $i++) { 
+                array_push($d, array(
+                    'lesson_schedule_id' => Request::post('lesson_schedule_id'),
+                    'lesson_date' => date('Y-m-d H:i:s', strtotime(Request::post('lesson_date')[$i])),
+                    'created_at' => date('Y-m-d H:i:s'),
+                ));
+            }
+            DB::table('lesson_schedule_details')->insert($d);
+
+            // email notification for students
+            $student_email = Request::post('student_email');
+            $details = [
+                'dest'=>'student_reschedule_booked',
+                'data' => [
+                    'teacher_name' => Request::post('teacher_name'),
+                    'date' => date('Y-m-d H:i:s', strtotime(Request::post('lesson_date')[0])),
+                    'time' => date('h:i:s', strtotime(Request::post('lesson_date')[0])) . ' - ' . date('h:i:s', strtotime(Request::post('lesson_date')[1])),
+                    'type_of_lesson' => Request::post('lesson_type')
+                ],
+                'body' => ''
+            ];
+            Mail::to($student_email)->send(new RegisterMail($details));
+
+            // email notification for teachers
+            // $student_email = Request::post('student_email');
+            // $details = [
+            //     'dest'=>'student_reschedule_booked',
+            //     'data' => [
+            //         'teacher_name' => Request::post('teacher_name'),
+            //         'date' => date('Y-m-d H:i:s', strtotime(Request::post('lesson_date')[0])),
+            //         'time' => date('h:i:s', strtotime(Request::post('lesson_date')[0])) . ' - ' . date('h:i:s', strtotime(Request::post('lesson_date')[1])),
+            //         'type_of_lesson' => Request::post('lesson_type')
+            //     ],
+            //     'body' => ''
+            // ];
+            // Mail::to($student_email)->send(new RegisterMail($details));
+
+            // return response()->json(['stripe_date'=>$stripe,'lesson_schedule_id'=>$lesson_schedule_id]);
+            return response()->json(['msg'=>'Schedule Successfully Updated']);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
+    }
+
+   
 
 
 

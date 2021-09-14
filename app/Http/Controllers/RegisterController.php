@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
+use Illuminate\Support\Facades\Crypt;
 
 class RegisterController extends Controller
 {
@@ -127,7 +130,68 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+        $this->verifyStudentEmail($request);
         return redirect()->intended('login/students');
+    }
+
+    public function verifyStudentEmail($req){
+        $email = $req->email;
+        $details = [
+            'dest'=>'registration',
+            'title' => 'This is a title',
+            'body' => 'This is a body',
+            'ver_link' => url('/verifying-student-email') . '/' . Crypt::encryptString($email),
+        ];
+        Mail::to($email)->send(new RegisterMail($details));
+    }
+
+    public function verifyingStudentEmail($encEmail){
+        $email = Crypt::decryptString($encEmail);
+        $q = Students::where('email', $email)
+                    ->update(['is_verified' => 1]);
+        if ($q) {
+            $logged_in = false;
+            return view('index', [
+                'is_verified' => true,
+                'logged_in' => $logged_in,
+                'msg' => 'Your email is already verified!'
+            ]);
+        } else {
+            $logged_in = false;
+            return view('index', [
+                'is_verified' => false,
+                'logged_in' => $logged_in,
+                'msg' => 'Error encounter!'
+            ]);
+        }
+    }
+
+    public function viewRegTemplate(){
+        $details = [
+            'title' => 'This is a title',
+            'body' => 'This is a body',
+            'ver_link' => '',
+        ];
+        // return view('emails.student_reg_mail', ['details' => $details]);
+        // return view('emails.student_booked_lesson', ['details' => $details]);
+        // return view('emails.student_booked_lesson', ['details' => $details]);
+        $lsData = DB::select(DB::raw("SELECT 
+                                                    t.*,
+                                                    s.email,
+                                                    min(lsd.lesson_date) as start_time,
+                                                    max(lsd.lesson_date) as end_time,
+                                                    sl.level,
+                                                    ltd.title
+                                                FROM teachers t
+                                                LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                                LEFT JOIN students s ON s.id = ls.students_id
+                                                LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
+                                                LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                                LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                                LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
+                                                WHERE ls.id = '87'
+                                                GROUP BY ls.id"));
+        echo $lsData[0]->email;
     }
 
     

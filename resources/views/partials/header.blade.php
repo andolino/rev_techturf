@@ -20,7 +20,7 @@
 <style id="rs-plugin-settings-inline-css" type="text/css">
 	#rs-demo-id { }
 </style>
-
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 <div id="app">

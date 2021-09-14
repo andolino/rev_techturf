@@ -251,8 +251,7 @@
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="showStepper3 = !showStepper3; 
-                                    showStepper4 = !showStepper4;">Next</button>
+                        v-on:click="showPaymentSection('next')">Next</button>
                     <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
                         v-on:click="showStepper2 = !showStepper2; 
@@ -262,9 +261,9 @@
                     <div class="stepper-control">
                         <h4>Payment Method</h4>
                         <label class="mb-3 font-12">It's safe to pay on Preply All transactions are protected by SSL encryption.</label>
-                        <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-vertical btn-group-toggle mb-5" data-toggle="buttons">
                           <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
-                          <label class="btn btn-light w-100 mb-2 p-3">
+                          <!-- <label class="btn btn-light w-100 mb-2 p-3">
                             <input type="radio" name="payment-method" autocomplete="off"> 
                             <span class="sc-title"><img :src="asset + 'images/gpay.png'" alt=""></span>
                             <span class="sc-price"></span>
@@ -273,22 +272,58 @@
                             <input type="radio" name="payment-method" autocomplete="off"> 
                             <span class="sc-title"><img :src="asset + 'images/apay.png'" alt=""></span>
                             <span class="sc-price"></span>
-                          </label>
+                          </label> -->
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <label for="">Booking Payment Summary</label>
+                              <table class="table w-100 font-12 font-weight-strong">
+                                <tr>
+                                  <td><strong>BOOKED DETAILS</strong></td>
+                                  <td class="text-right">{{ lessonOptTitle }} {{ totalHrs }}/s </td>
+                                </tr>
+                                <tr>
+                                  <td><strong>RATE PER HR</strong></td>
+                                  <td class="text-right">{{ rate_per_hr }} </td>
+                                </tr>
+                                <tr>
+                                  <td><strong>SERVICE CHARGE</strong></td>
+                                  <td class="text-right">500JPY</td>
+                                </tr>
+                                <tr>
+                                  <td><strong>TOTAL AMOUNT TO PAY</strong></td>
+                                  <td class="text-right">{{ (rate_per_hr || 0) * totalHrs + 500 }}</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
                           <label class="btn btn-light w-100 mb-2 p-3">
                             <input type="radio" name="payment-method" autocomplete="off"> 
-                            <span class="sc-title"><img :src="asset + 'images/ppay.png'" alt=""></span>
+                            <span class="sc-title"><span style="font-size: 14px;">Pay Debit/Credit Card with</span> <img :src="asset + 'images/spay.png'" alt=""></span>
                             <span class="sc-price"></span>
                           </label>
+                          
+                          <form @submit.prevent="submitStudentPayment">
+                            <!-- <b-form-group>
+                              <b-form-input v-model="formStudentPayment.student_name" placeholder="Student Name"></b-form-input>
+                            </b-form-group>
+                            <b-form-group>
+                              <b-form-input v-model="formStudentPayment.student_email" placeholder="Student Email"></b-form-input>
+                            </b-form-group>
+                            <b-form-group>
+                              <b-form-input v-model="formStudentPayment.amount" placeholder="Amount"></b-form-input>
+                            </b-form-group> -->
+                            <div ref="card" id="stripe_card"></div>
+                            <b-button ref="submitStudPayFrm" class="d-none" type="submit">Submit</b-button>
+                          </form>
+
                         </div>
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="showStepper4 = !showStepper4; 
-                                    showStepper5 = !showStepper5;">Next</button>
+                        v-on:click="destroyStripeCard('next')">Next</button>
                     <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
-                        v-on:click="showStepper3 = !showStepper3; 
-                                    showStepper4 = !showStepper4;">Previous</button>
+                        v-on:click="destroyStripeCard('previous')">Previous</button>
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper5">
                     <div class="stepper-control">
@@ -299,7 +334,7 @@
                           <div class="col-lg-6 m-auto">
                             <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
                               <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
-                              <label class="btn btn-light w-100 mb-2 p-3" v-for="gca in getComApp" :key="gca.id">
+                              <label class="btn btn-light w-100 mb-2 p-3" v-for="gca in getComApp" :key="gca.id" @click="pickComApp = false">
                                 <input type="radio" v-model="formToSave.communication_app_id" :value="gca.id" name="communication-tool" autocomplete="off"> 
                                 <span class="sc-title"><img :src="asset + 'images/' + gca.icon" alt=""> {{ gca.app_name }}</span>
                                 <span class="sc-price"></span>
@@ -307,19 +342,20 @@
                             </div>
                             <input type="text" 
                               class="form-control text-center input-custom font-14 mb-3" 
-                              placeholder="Your ID"
+                              placeholder="Your Email"
                               name="com_id"
-                              v-model="formToSave.app_id">
+                              v-model="formToSave.app_id" :disabled="pickComApp">
                           </div>
                         </div>
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                             @click="submitBookedSchedule">Finished</button>
-                    <button type="button" 
+                    <!-- <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
-                        v-on:click="showStepper4 = !showStepper4; 
-                                    showStepper5 = !showStepper5;">Previous</button>
+                        v-on:click="showPaymentSection('previous')">Previous</button> -->
+                        <!-- showStepper4 = !showStepper4; 
+                        showStepper5 = !showStepper5; -->
                   </div>
                   
                 </transition>
@@ -335,9 +371,13 @@
       </div>
     </div>
 
-    <StudentsPref :asset="asset" :csrf="csrf" :baseurl="baseurl" :user_id="user_id"/>
+    <StudentsPref :asset="asset" :csrf="csrf" :fnBookATrial="fnBookATrial" :teachers_id="formToSave.teachers_id" :baseurl="baseurl" :user_id="user_id"/>
 
-
+    <div class="show_loading" v-if="showLoading">
+      <p>
+        <i class="fas fa-spinner fa-pulse"></i> Please wait.. <br> <span style="font-size: 14px;">Processing your payment</span>
+      </p> 
+    </div>
 
   </div>
 </template>
@@ -345,6 +385,25 @@
 <script>
   import moment from 'moment';
   import StudentsPref from './StudentsPref.vue';
+  var stripe = Stripe(`${process.env.MIX_STRIPE_KEY}`);
+  var elements = stripe.elements();
+  var stripe_style = {
+    base: {
+      color: "#32325d",
+      fontFamily: '"Roboto", Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: "16px", 
+      "::placeholder": {
+        color: "#aab7c4",
+      }
+    },
+    invalid:{
+      color: "#fa755a",
+      iconColor: "#fa755a"
+    }
+  };
+  var card = undefined;
+
   export default {
     props: {
       findtutor: {
@@ -376,18 +435,26 @@
         showStepper5: false,
         showStepper6: false,
         timeActive: false,
+        studentsData: '',
+        formStudentPayment: {
+          amount: 0,
+        },
         formToSave: {
           teachers_id : '',
           lesson_plan_id : '',
           lesson_option_id : '',
           lesson_date: [],
           communication_app_id: '',
-          app_id: ''
+          app_id: '',
+          student_email: ''
         },
         sorted_date: '',
         moment: moment,
         totalHrs: 0,
-        lessonOptTitle: ''
+        lessonOptTitle: '',
+        lesson_schedule_id: '',
+        pickComApp: true,
+        showLoading: true
       }
     },
     methods: {
@@ -438,11 +505,12 @@
             this.teachersdata = res.data.data;
             this.rate_per_hr = res.data.data[0].rate_per_hr;
             this.formToSave.lesson_plan_id = res.data.data[0].lesson_plan_id;
-            if (res.data.has_pref) {
+            if (res.data.has_pref && this.$root.$refs.StudentsPref.formPref.students_level_id != '') {
               $('#modalBookTrial').modal('show'); 
             } else {
               this.$bvModal.show('modal-students-pref');
             }
+            console.log(res.data.has_pref, this.$root.$refs.StudentsPref.formPref.students_level_id);
             // console.log(res.data.has_pref);
             // console.log(res);
 					}).catch((error) => {
@@ -482,40 +550,131 @@
             break;
         }
         this.sorted_date = this.formToSave.lesson_date;
-        console.log(this.sorted_date);
+        // console.log(this.sorted_date);
       },
       getTitleLessonOpt(title){
         this.lessonOptTitle = title;
       },
       submitBookedSchedule(){
         let data = new FormData();
-        data.append('teachers_id', this.formToSave.teachers_id);
-        data.append('lesson_plan_id', this.formToSave.lesson_plan_id);
-        data.append('lesson_option_id', this.formToSave.lesson_option_id);
-        data.append('lesson_date', this.formToSave.lesson_date);
+        // data.append('teachers_id', this.formToSave.teachers_id);
+        // data.append('lesson_plan_id', this.formToSave.lesson_plan_id);
+        // data.append('lesson_option_id', this.formToSave.lesson_option_id);
+        // data.append('lesson_date', this.formToSave.lesson_date);
         data.append('communication_app_id', this.formToSave.communication_app_id);
         data.append('app_id', this.formToSave.app_id);
-        data.append('user_id', this.user_id);
-        data.append('_token', this.csrf);
-        axios.post('/heygo/save-booked-schedule', data).then((res) => {
-            if (typeof res.data.errors === 'undefined') {
-              window.location.reload();
-              
-            }
-					}).catch((error) => {
+        // data.append('user_id', this.user_id);
+        // data.append('_token', this.csrf);
+        data.append('lesson_schedule_id', this.lesson_schedule_id);
+        axios.post('/heygo/save-email-communication', data).then((res) => {
+          if (typeof res.data.errors === 'undefined') {
+            window.location.reload();
+            
+          }
+        }).catch((error) => {
+          console.log(error);
+          // this.form.errors.record(error.response.data.errors);
+        });
+      },
+      submitStudentPayment: function (e) {
+        stripe.createToken(card).then(result=>{
+          if (result.error) {
+            console.log('error happend when getting token');
+          } else {
+            this.handlePaymentToken(result.token);
+          }
+        });
+      },
+      handlePaymentToken(token){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this payment!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Wait',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.showStepper4 = !this.showStepper4; 
+            this.showStepper5 = !this.showStepper5;
+            this.formStudentPayment.stripeToken = token.id;
+            let data = new FormData();
+            this.formStudentPayment.teachers_id = this.formToSave.teachers_id;
+            this.formStudentPayment.lesson_plan_id = this.formToSave.lesson_plan_id;
+            this.formStudentPayment.lesson_option_id = this.formToSave.lesson_option_id;
+            this.formStudentPayment.lesson_date = this.formToSave.lesson_date;
+            this.formStudentPayment.communication_app_id = this.formToSave.communication_app_id;
+            this.formStudentPayment.app_id = this.formToSave.app_id;
+            this.formStudentPayment.user_id = this.user_id;
+            this.formStudentPayment.amount = ((this.rate_per_hr || 0) * this.totalHrs + 500);
+            this.formStudentPayment.email = this.studentsData[0].email;
+            this.formStudentPayment.book_description = this.totalHrs + ' hr/s Lesson';
+            this.formStudentPayment.student_name = this.studentsData[0].lastname + ', ' + this.studentsData[0].firstname;
+            this.showLoading = true;
+            axios.post('api/student-payment-charge', this.formStudentPayment).then((res)=>{
+              console.log("res: ", res.data.stripe_date);
+              this.lesson_schedule_id = res.data.lesson_schedule_id;
+              this.showLoading = false;
+            }).catch((err)=>console.log(err));
+          } 
+          // else {
+          // }
+        });
+      },
+      showPaymentSection(t){
+        if (t == 'next') {
+          this.showStepper3 = !this.showStepper3; 
+          this.showStepper4 = !this.showStepper4;
+        } else {
+          this.showStepper4 = !this.showStepper4; 
+          this.showStepper5 = !this.showStepper5;
+        }
+        card = elements.create('card', {
+          style: stripe_style,
+          hidePostalCode: true
+        });
+        /**
+         * element need to exists on the page before calling mount().
+         */
+        setTimeout(function(){
+          card.mount("#stripe_card");
+        }, 500);
+      },
+      destroyStripeCard(t){
+        if (t == 'next') {
+          this.$refs.submitStudPayFrm.click();
+        } else {
+          //previous
+          setTimeout(function(){
+            card.destroy("#stripe_card");
+          }, 500);
+          this.showStepper3 = !this.showStepper3;
+          this.showStepper4 = !this.showStepper4;
+        }
+        
+      },
+      getStudentsInfo(){
+        axios.get('/heygo/get-students-info/'+this.user_id).then((res) => {
+            this.studentsData = res.data
+          }).catch((error) => {
             console.log(error);
-						// this.form.errors.record(error.response.data.errors);
-					});
+        });
       }
-      
     },
-    mounted(){
+    beforeMount: function(){
+      this.showLoading = false;
+    },
+    mounted: function(){
       this.fetchTutor();
       // this.fetchCalendarWeek();
       // this.fetchTimePerDay();
       this.getLessonOption();
       this.getCommunicationApp();
-    
+      this.getStudentsInfo();
+      
+
       // Get the element with id="defaultOpen" and click on it
       // document.getElementById("defaultOpen").click();
     },
@@ -614,5 +773,41 @@
   .active-time{
     background: #f7bb17 !important;
     color: #fff !important;
+  }
+  .StripeElement{
+    border: solid 1px #ddd;
+    border-radius: 3px;
+    height:40px;
+
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+  .StripeElement--invalid{
+    border-color: #fa755a;
+  }
+  .StripeElement--webkit-autofill{
+    background-color: #fefde5 !important;
+  }
+  .StripeElement{
+    border:solid 1px #ddd;
+    border-radius: 3px;
+  }
+  .show_loading{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: 50% 50% no-repeat rgba(98, 90, 76, 0.77);
+  }
+  .show_loading p {
+    margin-top: 22%;
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
   }
 </style>

@@ -5,17 +5,45 @@
       title=""
       img-top
       tag="article"
-      style="max-width: 20rem;font-size:14px;"
+      style="font-size:14px;"
       class="mb-2"
     >
-      <b-row>
+      <b-row class="w-100">
         <b-col>
-          <label for="" class="font-12">Time Start</label>
-          <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>
+          <b-row>
+            <b-col>
+              <label for="" class="font-12">Time Start</label>
+              <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>  
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <label for="" class="font-12">Time End</label>
+              <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_end"></datetime>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <label for="" class="font-12" data-tooltip="test">Status</label>
+              <b-form-select v-model="form.selected_status" class="rounded-0 font-12" :options="status_options" size="sm"></b-form-select>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-card-text></b-card-text>
+              <div v-if="addAvailDateTime">
+                <b-button href="#" @click="saveAddTeacherAvailability" variant="default" class="font-12">Add</b-button>
+              </div>
+              <div v-else>
+                <b-button href="#" variant="default" class="font-12" @click="saveAddTeacherAvailability">Update</b-button>
+                <b-button href="#" variant="default" class="font-12" @click="addAvailDateTime = !addAvailDateTime; form.teacher_availability_id = null">Cancel</b-button>
+              </div>
+            </b-col>
+          </b-row>
         </b-col>
-        <b-col>
-          <label for="" class="font-12">Time End</label>
-          <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_end"></datetime>
+        <b-col cols="9">
+          <label for=""></label>
+          <Fullcalendar ref="calendar" :options="calendarOptions"/>
         </b-col>
       </b-row>
       <!-- <b-row>
@@ -35,22 +63,14 @@
       </b-row> -->
       <b-row>
         <b-col>
-          <label for="" class="font-12" data-tooltip="test">Status</label>
-          <b-form-select v-model="form.selected_status" class="rounded-0 font-12" :options="status_options" size="sm"></b-form-select>
+          
         </b-col>
       </b-row>
-      <b-card-text></b-card-text>
-      <div v-if="addAvailDateTime">
-        <b-button href="#" @click="saveAddTeacherAvailability" variant="default" class="font-12">Add</b-button>
-      </div>
-      <div v-else>
-        <b-button href="#" variant="default" class="font-12" @click="saveAddTeacherAvailability">Update</b-button>
-        <b-button href="#" variant="default" class="font-12" @click="addAvailDateTime = !addAvailDateTime; form.teacher_availability_id = null">Cancel</b-button>
-      </div>
-    </b-card>
+      
 
-    <label for=""></label>
-    <Fullcalendar ref="calendar" :options="calendarOptions"/>
+    </b-card>
+    
+    
   </div>
 </template>
 
@@ -101,7 +121,6 @@
             let ht = '';
                 ht+='<div class="card" style="height:100%;">';
                   ht+='<div class="card-body pt-2 pr-3 pl-3 pb-3">';
-                    ht+='<label class="font-12 pb-0 mb-2 w-100 text-right text-muted">Time Ago</label>';
                     ht+='<h6 class="card-title">'+arg.timeText+'</h6>';
                     // ht+='<p class="card-subtitle mb-2 text-muted">'+arg.event.title+'</p>';
                     ht+='<small class="text-muted">'+arg.event.extendedProps.status_text+'</small>';

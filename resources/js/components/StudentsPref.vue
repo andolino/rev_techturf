@@ -213,7 +213,7 @@
 <script>
   export default {
     name: "StudentsPref",
-    props: [ 'csrf', 'baseurl', 'asset', 'user_id' ],
+    props: [ 'csrf', 'baseurl', 'asset', 'user_id', 'teachers_id', 'fnBookATrial'],
     data(){
       return {
         showStepper1: true,
@@ -302,8 +302,11 @@
           }).then((result) => {
             if (result.isConfirmed) {
               // this.joinClassPanel = !this.joinClassPanel;
+              this.formPref.teachers_id = this.teachers_id;
               axios.post('/heygo/save-student-pref', this.formPref).then((res) => {
                 this.$bvModal.hide('modal-students-pref');
+                this.fnBookATrial(this.teachers_id);
+                console.log(res);
                 }).catch((error) => {
                   console.log(error);
               });
@@ -369,6 +372,7 @@
       this.fnGetStudentsEnglishLevel();
       this.fnGetStudentsDatePlan();
       this.formPref.students_id = this.user_id;
+      this.$root.$refs.StudentsPref = this;
     }
   }
 </script>

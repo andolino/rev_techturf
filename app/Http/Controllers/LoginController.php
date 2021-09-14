@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\Teachers;
+use App\Models\Students;
 
 
 class LoginController extends Controller{
@@ -40,6 +42,7 @@ class LoginController extends Controller{
             $this->middleware('guest')->except('logout');
             $this->middleware('guest:teachers')->except('logout');
             $this->middleware('guest:students')->except('logout');
+            $this->middleware('guest:admins')->except('logout');
     }
 
      public function showTeachersLoginForm(){
@@ -75,18 +78,48 @@ class LoginController extends Controller{
         }
         return view('auth.login', ['url' => 'students', 'logged_in' => $logged_in]);
     }
+    
+    public function showAdminsLoginForm(){
+        $logged_in = true;
+        $objS = Auth::guard('admins')->user();
+        if (is_null($objS)) {
+            $logged_in = false;
+        }
+        return view('auth.admin-login', ['url' => 'admins', 'logged_in' => $logged_in]);
+    }
 
+    public function adminsLogin(Request $request){
+        $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+        if (Auth::guard('admins')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+            return redirect()->intended('/admins');
+        }
+        // return back()->withInput($request->only('email', 'remember'));
+        // return [ 
+        //     'errors' => [
+        //         'email' => ['Invalid Credentials']
+        //     ]
+        // ];
+    }
+    
     public function studentsLogin(Request $request){
         $this->validate($request, [
             'email'   => 'required|email',
             'password' => 'required|min:6'
         ]);
-        if (Auth::guard('students')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('students')->attempt([
+                                        'email' => $request->email, 
+                                        'password' => $request->password,
+                                        'is_verified' => 1
+                                    ], $request->get('remember'))) {
             return redirect()->intended('/students');
         }
         // return back()->withInput($request->only('email', 'remember'));
+        $students = Students::where('email', $request->email)->first();
         return [ 'errors' => [
-            'email' => ['Invalid Credentials']
+            'email' => [($students->is_verified == 0 ? 'Your Account is not verified' : 'Invalid Credentials')]
         ]];
     }
 }

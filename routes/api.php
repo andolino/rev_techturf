@@ -33,5 +33,8 @@ Route::post('/register/students', [RegisterController::class,'createStudents']);
 Route::post('/login/teachers', [LoginController::class,'teachersLogin'])->name('login-teachers');
 Route::post('/login/students', [LoginController::class,'studentsLogin'])->name('login-students');
 Route::post('/post-teacher-feeds', [FeedsController::class,'postTeacherFeeds'])->name('post-feeds');
+Route::post('/student-payment-charge', [HomeController::class,'studentPaymentCharge'])->name('student-charge');
+Route::post('/teacher-create-stripe', [HomeController::class,'teacherCreateStripe'])->name('teacher-create-stripe');
+Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking'])->name('approval-booking');
 
 // Route::get('/todo', [TodoController::class, 'index']);

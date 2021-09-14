@@ -8,7 +8,18 @@
       <div class="card">
         <div class="card-body">
           <label class="card-title">{{ ul.time_sched }}</label>
-          <small class="float-right text-success">{{ timeReminder(ul.start_date, ul.end_date) }}</small>
+          <small class="float-right text-success" v-if="ul.status == 3">
+            {{ timeReminder(ul.start_date, ul.end_date) }}
+          </small>
+          <small class="float-right text-success" v-else-if="ul.status == 2">
+            {{ timeReminder(ul.start_date, ul.end_date) }}
+          </small>
+          <small class="float-right text-success" v-else-if="ul.status == 1">
+            For Approval
+          </small>
+          <small class="float-right text-danger" v-else>
+            Declined
+          </small>
           <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
           <p class="card-text">{{ ul.objective_text }}</p>
         </div>
@@ -82,7 +93,7 @@
                               class="btn btn-md btn-yellow w-100 font-12"> Go to Profile</button>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row" v-if="this.teacherInfo.lesson_status == 3">
                           <div class="col-lg-4">
                             <label for="" class="mb-0">Class Status</label>
                             <select class="form-control form-control-sm" id="class_status">
@@ -92,16 +103,26 @@
                               <option value="2">Cancel Lesson</option>
                             </select>
                           </div>
+                          
+                        </div>
+                        <div v-else-if="this.teacherInfo.lesson_status == 0">
+                          <b-alert show variant="danger">This Schedule is Decline</b-alert>
+                        </div>
+                        <div v-else>
+                          <b-alert show variant="warning">This Schedule is for Approval</b-alert>
                         </div>
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="chooseClassStatus(teacherInfo.app_id)">Next</button>
+                        v-on:click="chooseClassStatus(teacherInfo.app_id)" v-if="this.teacherInfo.lesson_status == 3">Next</button>
+                    <button type="button" 
+                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
+                        @click="rescheduleStudentBooked" v-else>Reschedule</button>
                   </div>
                   
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="reschedulePanel">
                     <div class="stepper-control">
-                      <table class="table table-sm font-12">
+                      <!-- <table class="table table-sm font-12">
                         <thead>
                           <tr>
                             <td class="text-center bg-calendar-hdr" v-for="dwc in dataWeekCalendar" :key="dwc.key">
@@ -118,12 +139,27 @@
                                 >{{ dta[0].time }}</button></td>
                           </tr>
                         </thead>
-                      </table>
+                      </table> -->
+                      <h5>Calendar</h5>
+                      <b-row class="p-b bg-light text-center">
+                        <b-col class="p-3" v-for="(dwc, i) in dataWeekCalendar" :key="i">
+                          <label for="">{{ dwc.key }} <strong>{{ dwc.value }}</strong></label>
+                          <b-row v-for="(dta, i2) in dataTimaAvPerDay" :key="i2">
+                            <b-col class="border-1 font-12 pb-2" v-if="dta.w_date == dwc.w_date">
+                              <button type="button" 
+                                  class="btn btn-xs btn-radio-select "
+                                  :class="{ 'active-time' : formToSave.lesson_date.some(d => d === dwc.w_date + ' ' + dta.time)}"
+                                  :data-date="dwc.w_date + ' ' + dta.time"
+                                  @click="selectTimePreferred" 
+                                  v-if="dwc.w_date == dta.w_date">{{ dta.time }}</button>
+                            </b-col>
+                          </b-row>
+                        </b-col>
+                      </b-row>
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                            v-on:click="showStepper1 = !showStepper1; 
-                                        showStepper2 = !showStepper2;">Confirm</button>
+                            v-on:click="updateRescheduleStudent">Confirm</button>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-prev"
                             v-on:click="joinClassPanel = !joinClassPanel;
@@ -204,10 +240,17 @@ export default {
         type_of_lesson   : '',
         app_name         : '',
         app_id           : '',
-        lesson_option_id : ''
+        lesson_option_id : '',
+        lesson_status    : '',
+        teachers_id      : ''
       },
       formToSave: {
         lesson_date: [],
+        lesson_schedule_id: '',
+        student_email: '',
+        teacher_email: '',
+        teacher_name: '',
+        lesson_type: ''
       },
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -221,6 +264,7 @@ export default {
     getUpcomingLesson(){
       axios.post('/heygo/get-teacher-booked-lesson', { 'students_id' : this.user_id }).then((res) => {
           this.upcomingLessonData = res.data;
+          this.teacherInfo.teachers_id = res.data[0].id;
         }).catch((error) => {
           console.log(error);
       });
@@ -234,6 +278,13 @@ export default {
           this.teacherInfo.app_name         = res.data[0].app_name;
           this.teacherInfo.app_id           = res.data[0].app_id;
           this.teacherInfo.lesson_option_id = res.data[0].lesson_option_id;
+          this.teacherInfo.lesson_status = res.data[0].status;
+
+          this.formToSave.lesson_schedule_id = lesson_schedule_id;
+          this.formToSave.student_email = res.data[0].student_email;
+          this.formToSave.teacher_email = res.data[0].teacher_email;
+          this.formToSave.teacher_name = this.teacherInfo.name;
+          this.formToSave.lesson_type = res.data[0].level + ' - ' + res.data[0].title;
         }).catch((error) => {
           console.log(error);
       });
@@ -338,7 +389,7 @@ export default {
           break;
       }
       this.sorted_date = this.formToSave.lesson_date;
-      console.log(this.sorted_date);
+      // console.log(this.sorted_date);
     },
     fnBookATrial(){
       //get the teachers_id
@@ -352,24 +403,69 @@ export default {
       // });
     },
     fetchCalendarWeek(){
-      axios.post('/heygo/get-week-calendar').then((res) => {
+      axios.post('/heygo/get-week-calendar', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
         this.dataWeekCalendar = res.data;
+        // console.log(this.dataWeekCalendar);
       }).catch((error) => {
           console.log(error);
       });
     },
     fetchTimePerDay(){
-      axios.get('/heygo/get-time-available-per-day').then((res) => {
+      axios.post('/heygo/get-time-available-per-day', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
         this.dataTimaAvPerDay = res.data;
       }).catch((error) => {
           console.log(error);
       });
     },
+    rescheduleStudentBooked(){
+      this.joinClassPanel = !this.joinClassPanel;
+      this.reschedulePanel = !this.reschedulePanel;
+      this.fetchCalendarWeek();
+      this.fetchTimePerDay();
+    },
+    updateRescheduleStudent(){
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this schedule!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Wait',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.post('/heygo/update-student-schedule', this.formToSave).then((res) => {
+              // console.log(this.formToSave);
+              // this.dataWeekCalendar = res.data;
+              // console.log(this.dataWeekCalendar);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Reschedule Successfully',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              $('#modalStudentStartLesson').modal('hide');
+              setTimeout(function(){
+                window.location.reload();
+              }, 800);
+            }).catch((error) => {
+                console.log(error);
+            });
+          } 
+          // else {
+          // }
+        });
+
+      
+    }
   },
   mounted() {
-    this.fetchCalendarWeek();
     // this.fetchTimePerDay();
     this.getUpcomingLesson();
+    this.fetchCalendarWeek();
+
   }
 }
 </script>
