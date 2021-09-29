@@ -115,9 +115,9 @@
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                         v-on:click="chooseClassStatus(teacherInfo.app_id)" v-if="this.teacherInfo.lesson_status == 3">Next</button>
-                    <button type="button" 
+                    <button type="button" v-if="this.teacherInfo.lesson_status != 0"
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        @click="rescheduleStudentBooked" v-else>Reschedule</button>
+                        @click="rescheduleStudentBooked">Reschedule</button>
                   </div>
                   
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="reschedulePanel">

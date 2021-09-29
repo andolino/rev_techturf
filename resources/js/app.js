@@ -24,9 +24,11 @@ import StudentUpcomingLesson from './components/StudentUpcomingLesson.vue';
 import TeachersNotifications from './components/TeachersNotifications.vue';
 import TeachersLibrary from './components/TeachersLibrary.vue';
 import TeachersCalendar from './components/TeachersCalendar.vue';
+import TeachersPurchaseHistory from './components/TeachersPurchaseHistory.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import swal from 'sweetalert2';
+
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -57,8 +59,6 @@ Vue.component('todo-component', require('./components/TodoComponent.vue').defaul
 // Vue.component('b-carousel', '');
 
 
-
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -85,7 +85,8 @@ const app = new Vue({
 		'student-upcoming-lesson' : StudentUpcomingLesson,
 		'teachers-notifications' 	: TeachersNotifications,
 		'teachers-library' 			 	: TeachersLibrary,
-		'teachers-calendar' 			: TeachersCalendar
+		'teachers-calendar' 			: TeachersCalendar,
+		'teachers-purchase-history' : TeachersPurchaseHistory
 	}
 });
 

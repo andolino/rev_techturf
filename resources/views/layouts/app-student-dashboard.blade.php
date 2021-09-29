@@ -159,7 +159,7 @@
                   <a class="dropdown-item l-h-1p4" href="#">
                     Heygo Credits
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  <a class="dropdown-item l-h-1p4" href="{{ url('students-purchase-history') }}">
                     Purchase History
                   </a>
                   <hr>

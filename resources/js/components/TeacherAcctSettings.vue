@@ -41,7 +41,8 @@
                 </label>
               </div> -->
               <div class="col-lg-12">
-                <div class="form-check form-check-inline" v-for="lrt in lessonTypeRate" :key="lrt.id">
+                <label for="" class="font-12">Trial Lesson Rate</label>
+                <div class="form-check form-check-inline w-100" v-for="lrt in lessonTypeRate" :key="lrt.id">
                   <input class="form-check-input" 
                         type="radio" 
                         name="lesson_rate_type_id" 

@@ -48,7 +48,7 @@
                 <div class="col-lg-9 mt-4">
                   <button class="btn btn-default font-12 float-right text-center ml-3 btn-dashboard" 
                     @click="fnBookATrial(dft.id)">
-                    Book A Trial
+                    {{ hasTrial(dft.lesson_option_id) ? 'Book a Lesson' : 'Book a Trial' }}
                   </button>
                   <button 
                       class="btn btn-default font-12 float-right text-center btn-dashboard" 
@@ -144,11 +144,22 @@
                   <div class="col-lg-8 pl-0" v-if="showStepper1">
                     <div class="stepper-control">
                       <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
-                        <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3">
-                          <input type="radio" v-model="formToSave.lesson_option_id" :value="lo.id" name="lesson-option" id="lesson-option" autocomplete="off"> 
+                        <label v-for="lo in lessonOption" :key="lo.id" ref="sc_price" @click="getTitleLessonOpt(lo.title, lo.trial_lesson_rate, lo.id)" class="btn btn-light w-100 mb-2 p-3">
+                          <input type="radio" v-model="formToSave.lesson_option_id" :value="lo.id" 
+                            name="lesson-option" id="lesson-option" autocomplete="off" :disabled="lo.lesson_option_id == 1 && lo.trial_lesson_rate == 0"> 
+                          <span class="trial_lesson_taked" v-if="lo.lesson_option_id == 1 && lo.trial_lesson_rate == 0">
+                            <i class="fas fa-exclamation"></i> Sorry you've already used your trial lesson.
+                          </span>
                           <span class="sc-title">{{ lo.title }}</span>
                           <span class="sc-sm-silent">{{ lo.lesson_count }} Lessons</span>
-                          <span class="sc-price">{{ lo.id == 1 ? '' : lo.currency + ' ' + ( rate_per_hr || 0)}}</span>
+                          <span  class="sc-price" v-if="lo.id == 1 || lo.lesson_option_id == 1">
+                            {{ ( lo.trial_lesson_rate == 0 
+                                    ? 'Free'
+                                    : lo.currency + ' ' + (rate_per_hr * (lo.trial_lesson_rate / 100)) ) }}
+                          </span>
+                          <span class="sc-price" v-else>
+                            {{ lo.currency + ' ' + ( rate_per_hr || 0) }}
+                          </span> 
                         </label>
                       </div>
                     </div>
@@ -192,8 +203,7 @@
                     </div>
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="showStepper2 = !showStepper2; 
-                                    showStepper3 = !showStepper3;">Next</button>
+                        v-on:click="chooseBookingDate">Next</button>
                     <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
                         v-on:click="showStepper1 = !showStepper1; 
@@ -229,7 +239,8 @@
                                   </div>
                                   <div class="col-lg-6 text-right">
                                     <label for="">Service Details</label>
-                                    <p class="mb-1">{{ (rate_per_hr || 0) }}/hour <br> {{ totalHrs }} <br> 500JPY</p>
+                                    <p class="mb-1" v-if="trialFree">0/hour <br> {{ totalHrs }} <br> {{ 0 }} JPY</p>
+                                    <p class="mb-1" v-else>{{ (rate_per_hr || 0) }}/hour <br> {{ totalHrs }} <br> {{ procFee }} JPY</p>
                                   </div>
                                 </div>
                                 
@@ -239,7 +250,8 @@
                                     <label for="">TOTAL</label>
                                   </div>
                                   <div class="col-lg-6 text-right">
-                                    <label for="">{{ (rate_per_hr || 0) * totalHrs + 500 }} JPY</label>
+                                    <label for="" v-if="trialFree">0 JPY</label>
+                                    <label for="" v-else>{{ (rate_per_hr || 0) * totalHrs + procFee }} JPY</label>
                                   </div>
                                 </div>
                               </div>
@@ -283,20 +295,23 @@
                                 </tr>
                                 <tr>
                                   <td><strong>RATE PER HR</strong></td>
-                                  <td class="text-right">{{ rate_per_hr }} </td>
+                                  <td class="text-right" v-if="trialFree">0 </td>
+                                  <td class="text-right" v-else>{{ rate_per_hr }} </td>
                                 </tr>
                                 <tr>
                                   <td><strong>SERVICE CHARGE</strong></td>
-                                  <td class="text-right">500JPY</td>
+                                  <td class="text-right" v-if="trialFree">0 JPY</td>
+                                  <td class="text-right" v-else>{{ procFee }} JPY</td>
                                 </tr>
                                 <tr>
                                   <td><strong>TOTAL AMOUNT TO PAY</strong></td>
-                                  <td class="text-right">{{ (rate_per_hr || 0) * totalHrs + 500 }}</td>
+                                  <td class="text-right" v-if="trialFree">0</td>
+                                  <td class="text-right" v-else>{{ (rate_per_hr || 0) * totalHrs + procFee }}</td>
                                 </tr>
                               </table>
                             </div>
                           </div>
-                          <label class="btn btn-light w-100 mb-2 p-3">
+                          <label class="btn btn-light w-100 mb-2 p-3" v-if="trialFree == false">
                             <input type="radio" name="payment-method" autocomplete="off"> 
                             <span class="sc-title"><span style="font-size: 14px;">Pay Debit/Credit Card with</span> <img :src="asset + 'images/spay.png'" alt=""></span>
                             <span class="sc-price"></span>
@@ -409,7 +424,7 @@
       findtutor: {
         type: Array,
         default: [],
-      }
+      },
     },
     name: 'FetchFeeds',
     components: {
@@ -446,7 +461,8 @@
           lesson_date: [],
           communication_app_id: '',
           app_id: '',
-          student_email: ''
+          student_email: '',
+          has_pref: false
         },
         sorted_date: '',
         moment: moment,
@@ -454,13 +470,22 @@
         lessonOptTitle: '',
         lesson_schedule_id: '',
         pickComApp: true,
-        showLoading: true
+        showLoading: false,
+        procFee: 0,
+        trialFree: false
       }
     },
     methods: {
-      getLessonOption(){
-        axios.get('/heygo/get-lesson-option').then((res) => {
-						this.lessonOption = res.data
+      getLessonOption(students_id, teachers_id){
+        axios.post('/heygo/get-lesson-option', { 'students_id' : students_id, 'teachers_id' : teachers_id }).then((res) => {
+						this.lessonOption = res.data;
+            //if student have book a trial lesson
+            // if (res.data[0].trial_lesson_rate == 0) {
+            //   this.trialFree = true;
+            //   // this.rate_per_hr = 0;
+            // } else {
+            //   this.trialFree = false;
+            // }
 					}).catch((error) => {
 						console.log(error);
         });
@@ -500,17 +525,24 @@
       },
       fnBookATrial(e){
         //get the teachers_id
+        Object.assign(this.$data, this.$options.data());
+        this.getCommunicationApp();
+        this.getStudentsInfo();
         this.formToSave.teachers_id = e;
         axios.get('/heygo/get-teachers-info/'+e).then((res) => {
             this.teachersdata = res.data.data;
-            this.rate_per_hr = res.data.data[0].rate_per_hr;
             this.formToSave.lesson_plan_id = res.data.data[0].lesson_plan_id;
-            if (res.data.has_pref && this.$root.$refs.StudentsPref.formPref.students_level_id != '') {
+            this.rate_per_hr = res.data.data[0].rate_per_hr;
+            // data from StudentPref Component
+            // this.$root.$refs.StudentsPref.formPref
+            if (res.data.has_pref) {
               $('#modalBookTrial').modal('show'); 
+              this.getLessonOption(this.user_id, this.formToSave.teachers_id);
             } else {
               this.$bvModal.show('modal-students-pref');
             }
-            console.log(res.data.has_pref, this.$root.$refs.StudentsPref.formPref.students_level_id);
+
+            // console.log(res.data.has_pref, this.$root.$refs.StudentsPref.formPref.students_level_id);
             // console.log(res.data.has_pref);
             // console.log(res);
 					}).catch((error) => {
@@ -518,7 +550,7 @@
         });
         this.fetchCalendarWeek(this.formToSave.teachers_id);
         this.fetchTimePerDay(this.formToSave.teachers_id);
-        
+
       },
       selectTimePreferred(event){
         const sorted_date = event.target.getAttribute('data-date');
@@ -526,34 +558,44 @@
         switch (lesson_option_id) {
           case 1:
             //trial lesson
-            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm');
             var ed = moment(new Date(sorted_date)).add(30, 'minutes');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
             this.totalHrs = duration.asHours();
             break;
           case 2:
             //1 Hour lesson
-            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm');
             var ed = moment(new Date(sorted_date)).add(1, 'hours');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date)))); 
-            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
             this.totalHrs = duration.asHours();
             break;
           default:
             //30 Minute Lesson (For Elementary Level)
-            var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+            var sd = moment(new Date(sorted_date)).format('L HH:mm');
             var ed = moment(new Date(sorted_date)).add(30, 'minutes');
             var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+            this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
             this.totalHrs = duration.asHours();
             break;
         }
         this.sorted_date = this.formToSave.lesson_date;
+        this.procFee = ((this.rate_per_hr || 0) * this.totalHrs) * 0.06
         // console.log(this.sorted_date);
       },
-      getTitleLessonOpt(title){
+      getTitleLessonOpt(title, trial_lesson_rate, lesson_option_id){
         this.lessonOptTitle = title;
+        if (trial_lesson_rate == 0 && lesson_option_id == 1) {
+          this.trialFree = true;
+        } else {
+          this.trialFree = false;
+        }
+      },
+      chooseBookingDate(){
+        this.showStepper2 = !this.showStepper2; 
+        this.showStepper3 = !this.showStepper3;
       },
       submitBookedSchedule(){
         let data = new FormData();
@@ -577,15 +619,21 @@
         });
       },
       submitStudentPayment: function (e) {
-        stripe.createToken(card).then(result=>{
-          if (result.error) {
-            console.log('error happend when getting token');
-          } else {
-            this.handlePaymentToken(result.token);
-          }
-        });
+        this.showLoading = true;
+        if (this.trialFree == true) {
+          this.handleFreeTrialLesson();
+        } else {
+          stripe.createToken(card).then(result=>{
+            if (result.error) {
+              console.log('error happend when getting token');
+            } else {
+              this.handlePaymentToken(result.token);
+            }
+          });
+        }
       },
       handlePaymentToken(token){
+        this.showLoading = false;
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this payment!",
@@ -608,12 +656,50 @@
             this.formStudentPayment.communication_app_id = this.formToSave.communication_app_id;
             this.formStudentPayment.app_id = this.formToSave.app_id;
             this.formStudentPayment.user_id = this.user_id;
-            this.formStudentPayment.amount = ((this.rate_per_hr || 0) * this.totalHrs + 500);
+            this.formStudentPayment.amount = this.trialFree == true ? 0 : ((this.rate_per_hr || 0) * this.totalHrs + this.procFee);
             this.formStudentPayment.email = this.studentsData[0].email;
             this.formStudentPayment.book_description = this.totalHrs + ' hr/s Lesson';
             this.formStudentPayment.student_name = this.studentsData[0].lastname + ', ' + this.studentsData[0].firstname;
             this.showLoading = true;
             axios.post('api/student-payment-charge', this.formStudentPayment).then((res)=>{
+              console.log("res: ", res.data.stripe_date);
+              this.lesson_schedule_id = res.data.lesson_schedule_id;
+              this.showLoading = false;
+            }).catch((err)=>console.log(err));
+          } 
+          // else {
+          // }
+        });
+      },
+      handleFreeTrialLesson(){
+        this.showLoading = false;
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this booking!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Wait',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.showStepper4 = !this.showStepper4; 
+            this.showStepper5 = !this.showStepper5;
+            let data = new FormData();
+            this.formStudentPayment.teachers_id = this.formToSave.teachers_id;
+            this.formStudentPayment.lesson_plan_id = this.formToSave.lesson_plan_id;
+            this.formStudentPayment.lesson_option_id = this.formToSave.lesson_option_id;
+            this.formStudentPayment.lesson_date = this.formToSave.lesson_date;
+            this.formStudentPayment.communication_app_id = this.formToSave.communication_app_id;
+            this.formStudentPayment.app_id = this.formToSave.app_id;
+            this.formStudentPayment.user_id = this.user_id;
+            this.formStudentPayment.amount = this.trialFree == true ? 0 : ((this.rate_per_hr || 0) * this.totalHrs + this.procFee);
+            this.formStudentPayment.email = this.studentsData[0].email;
+            this.formStudentPayment.book_description = this.totalHrs + ' hr/s Lesson';
+            this.formStudentPayment.student_name = this.studentsData[0].lastname + ', ' + this.studentsData[0].firstname;
+            this.showLoading = true;
+            axios.post('api/student-book-free-trial', this.formStudentPayment).then((res)=>{
               console.log("res: ", res.data.stripe_date);
               this.lesson_schedule_id = res.data.lesson_schedule_id;
               this.showLoading = false;
@@ -631,20 +717,24 @@
           this.showStepper4 = !this.showStepper4; 
           this.showStepper5 = !this.showStepper5;
         }
-        card = elements.create('card', {
-          style: stripe_style,
-          hidePostalCode: true
-        });
-        /**
-         * element need to exists on the page before calling mount().
-         */
-        setTimeout(function(){
-          card.mount("#stripe_card");
-        }, 500);
+        if (this.trialFree == false) {
+          card = elements.create('card', {
+            style: stripe_style,
+            hidePostalCode: true
+          });
+          /**
+           * element need to exists on the page before calling mount().
+           */
+          setTimeout(function(){
+            card.mount("#stripe_card");
+          }, 500);
+        }
       },
       destroyStripeCard(t){
         if (t == 'next') {
+
           this.$refs.submitStudPayFrm.click();
+        
         } else {
           //previous
           setTimeout(function(){
@@ -653,7 +743,6 @@
           this.showStepper3 = !this.showStepper3;
           this.showStepper4 = !this.showStepper4;
         }
-        
       },
       getStudentsInfo(){
         axios.get('/heygo/get-students-info/'+this.user_id).then((res) => {
@@ -661,6 +750,18 @@
           }).catch((error) => {
             console.log(error);
         });
+      },
+      hasTrial(lesson_option_id){
+        if (lesson_option_id === null) {
+          return false;
+        } else {
+          var e_loi = lesson_option_id.split(',');
+          if (e_loi.includes('1')) {
+            return true;
+          }else{
+            return false;
+          }
+        }
       }
     },
     beforeMount: function(){
@@ -668,15 +769,8 @@
     },
     mounted: function(){
       this.fetchTutor();
-      // this.fetchCalendarWeek();
-      // this.fetchTimePerDay();
-      this.getLessonOption();
       this.getCommunicationApp();
       this.getStudentsInfo();
-      
-
-      // Get the element with id="defaultOpen" and click on it
-      // document.getElementById("defaultOpen").click();
     },
     destroyed(){
       console.log('destroyed');
@@ -809,5 +903,15 @@
     text-align: center;
     color: #fff;
     font-size: 24px;
+  }
+  .trial_lesson_taked {
+    position: absolute;
+    font-size: 11px;
+    background: #e8e4d9;
+    padding: 8px;
+    right: 92px;
+    border-radius: 4px;
+    border: 0.5px solid #b9b9b9;
+    z-index: 1;
   }
 </style>

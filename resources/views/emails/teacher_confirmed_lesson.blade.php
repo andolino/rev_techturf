@@ -105,13 +105,13 @@
       <img src="{{ asset('images/banner-icon-land.png') }}">
     </div>
     <div class="body-panel">
-      <h3>You confirmed <br> your next lesson!</h3>
+      <h3>You confirmed <br> your lesson!</h3>
       <ul id="list-booked">
-        <li><strong>Name of Teacher:</strong> lorem ipsum </li>
-        <li><strong>Date:</strong> 20/05/2021</li>
-        <li><strong>Time:</strong> 08:00 - 10:00am</li>
-        <li><strong>Type of Lesson:</strong> lorem ipsum</li>
-        <li><strong>Trial Lesson:</strong> </li>
+        <li><strong>Name of Teacher:</strong> {{ $details['data']['teacher_name'] }} </li>
+        <li><strong>Date:</strong> {{ $details['data']['date'] }}</li>
+        <li><strong>Time:</strong> {{ $details['data']['time'] }}</li>
+        <li><strong>Type of Lesson:</strong> {{ $details['data']['type_of_lesson'] }} </li>
+        {{-- <li><strong>Trial Lesson:</strong> </li> --}}
       </ul>
       <p>
         Lesson is booked! Please wait for you the confirmation <br> from the teacher.

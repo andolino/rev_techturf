@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::get('/students', [HomeController::class, 'studentsDashboard']);
     Route::get('/teachers-profile/{any}', [HomeController::class, 'teachersProfile']);
     Route::get('/get-teachers-info/{any}', [HomeController::class, 'getTeachersInfo']);
-    Route::get('/get-lesson-option', [HomeController::class, 'getLessonOption']);
+    Route::post('/get-lesson-option', [HomeController::class, 'getLessonOption']);
     Route::get('/students-account-settings', [HomeController::class, 'studentsAccountSettings']);
     Route::get('/students-payment-methods', [HomeController::class, 'studentsPaymentMethods']);
     Route::post('/save-student-bank-acct', [HomeController::class, 'saveStudentBankAcct']);
@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::get('/get-students-date-plan', [HomeController::class, 'getStudentsDatePlan']);
     Route::post('/save-student-pref', [HomeController::class, 'saveStudentPref']);
     Route::post('/update-student-schedule', [HomeController::class, 'updateStudentSchedule']);
+    Route::get('/students-purchase-history', [HomeController::class, 'studentsPurchaseHistory']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {
@@ -106,6 +107,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/display-teacher-calendar', [HomeController::class, 'displayTeacherCalendar']);
     Route::get('/get-teachers-availability', [HomeController::class, 'getTeachersAvailability']);
     Route::post('/save-teacher-availability', [HomeController::class, 'saveTeacherAvailability']);
+    Route::get('/teachers-purchase-history', [HomeController::class, 'teachersPurchaseHistory']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);

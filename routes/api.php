@@ -36,5 +36,7 @@ Route::post('/post-teacher-feeds', [FeedsController::class,'postTeacherFeeds'])-
 Route::post('/student-payment-charge', [HomeController::class,'studentPaymentCharge'])->name('student-charge');
 Route::post('/teacher-create-stripe', [HomeController::class,'teacherCreateStripe'])->name('teacher-create-stripe');
 Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking'])->name('approval-booking');
+Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
+
 
 // Route::get('/todo', [TodoController::class, 'index']);

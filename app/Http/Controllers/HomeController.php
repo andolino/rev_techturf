@@ -70,6 +70,46 @@ class HomeController extends Controller {
         return view('teachers-calendar', ['data' => $data]);
     }
     
+    public function teachersPurchaseHistory(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        $purchases = DB::select(DB::raw("SELECT 
+                                            concat(s.lastname, ', ', s.firstname) as student_name, 
+                                            concat(t.lastname, ', ', t.firstname) as teacher_name, 
+                                            spl.trans_id, spl.currency, spl.response_date, spl.amount as gross_amount, hw.*,
+                                            sl.level,
+                                            ltd.title
+                                        from teachers_wallet hw
+                                        left join students_payment_log spl on hw.students_payment_log_id = spl.id
+                                        left join lesson_schedule ls on ls.id = spl.lesson_schedule_id
+                                        LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                        LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                        LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
+                                        left join teachers t on t.id = ls.teachers_id
+                                        left join students s on s.id = ls.students_id
+                                        WHERE t.id = " . Auth::id()));
+        return view('teacher-purchase-history', ['data' => $data, 'purchases' => $purchases]);
+    }
+    
+    public function studentsPurchaseHistory(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        $purchases = DB::select(DB::raw("SELECT 
+                                            concat(s.lastname, ', ', s.firstname) as student_name, 
+                                            concat(t.lastname, ', ', t.firstname) as teacher_name, 
+                                            spl.trans_id, spl.currency, spl.response_date, spl.amount as gross_amount, hw.*,
+                                            sl.level,
+                                            ltd.title
+                                        from teachers_wallet hw
+                                        left join students_payment_log spl on hw.students_payment_log_id = spl.id
+                                        left join lesson_schedule ls on ls.id = spl.lesson_schedule_id
+                                        LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                        LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                        LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
+                                        left join teachers t on t.id = ls.teachers_id
+                                        left join students s on s.id = ls.students_id
+                                        WHERE s.id = " . Auth::id()));
+        return view('student-purchase-history', ['data' => $data, 'purchases' => $purchases]);
+    }
+    
     public function getTeachersAvailability(){
         // $data = DB::table('teacher_availability')->where('teacher_id', '=', Auth::id())->get();
         $teacher_id = Auth::id();
@@ -224,12 +264,11 @@ class HomeController extends Controller {
         $student_id = Auth::id();
         $has_pref = DB::table('students_pref')
                         ->where([
-                            ['students_id', '=', $student_id ],
-                            ['teachers_id', '=', $id ],
-                            ['lesson_schedule_id', '=', null ],
+                            ['students_id', '=', $student_id],
+                            ['teachers_id', '=', $id]
                         ])
                         ->get();
-        return response()->json(['data'=>$data, 'has_pref'=>(count($has_pref) > 0 ? true : false)]);
+        return response()->json(['data'=>$data, 'has_pref'=> count($has_pref) == 0 ? false : true]); //(count($has_pref) > 0 ? true : false)
     }
 
     public function getLessonTypeRate(){
@@ -327,11 +366,42 @@ class HomeController extends Controller {
         $approval_type = Request::post('approval_type');
         $lesson_schedule_id = Request::post('lesson_schedule_id');
         $is_confirm = 1;
+
+        $lsData = DB::select(DB::raw("SELECT 
+                                        t.*,
+                                        s.email,
+                                        min(lsd.lesson_date) as start_time,
+                                        max(lsd.lesson_date) as end_time,
+                                        sl.level,
+                                        ltd.title
+                                    FROM teachers t
+                                    LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
+                                    LEFT JOIN students s ON s.id = ls.students_id
+                                    LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
+                                    LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
+                                    LEFT JOIN students_level sl ON sl.id = sp.students_level_id
+                                    LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
+                                    WHERE ls.id = '$lesson_schedule_id'
+                                    GROUP BY ls.id"));
+
         if ($approval_type == 'confirm') {
             $is_confirm = 3;
             DB::table('lesson_schedule')
                     ->where('id', '=', $lesson_schedule_id)
                     ->update(['status' => $is_confirm]);
+
+            $email = $lsData[0]->email;
+            $details = [
+                'dest'=>'teacher_confirmed_lesson',
+                'data' => [
+                    'teacher_name' => $lsData[0]->lastname . ', ' . $lsData[0]->firstname,
+                    'date' => date('Y-m-d H:i:s', strtotime($lsData[0]->start_time)),
+                    'time' => date('h:i:s', strtotime($lsData[0]->start_time)) . ' - ' . date('h:i:s', strtotime($lsData[0]->end_time)),
+                    'type_of_lesson' => $lsData[0]->level . ' - ' . $lsData[0]->title,
+                ],
+                'body' => ''
+            ];
+            Mail::to($email)->send(new RegisterMail($details));
         } else {
             try {
                 $paymentLogs = DB::table('students_payment_log')->where('lesson_schedule_id', $lesson_schedule_id)->first();
@@ -355,22 +425,7 @@ class HomeController extends Controller {
                     ->where('id', '=', $lesson_schedule_id)
                     ->update(['status' => $is_confirm]);
                 
-                $lsData = DB::select(DB::raw("SELECT 
-                                                    t.*,
-                                                    s.email,
-                                                    min(lsd.lesson_date) as start_time,
-                                                    max(lsd.lesson_date) as end_time,
-                                                    sl.level,
-                                                    ltd.title
-                                                FROM teachers t
-                                                LEFT JOIN lesson_schedule ls ON ls.teachers_id = t.id
-                                                LEFT JOIN students s ON s.id = ls.students_id
-                                                LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
-                                                LEFT JOIN students_pref sp on sp.lesson_schedule_id = ls.id
-                                                LEFT JOIN students_level sl ON sl.id = sp.students_level_id
-                                                LEFT JOIN lesson_type_details ltd ON ltd.id = sp.lesson_type_details_id
-                                                WHERE ls.id = '$lesson_schedule_id'
-                                                GROUP BY ls.id"));
+                
 
                 $email = $lsData[0]->email;
 
@@ -398,9 +453,17 @@ class HomeController extends Controller {
     * get lesson option *
     */
     public function getLessonOption(){
+        $teachers_id = Request::post('teachers_id');
+        $students_id = Request::post('students_id');
         $data = DB::table('lesson_option')
                     ->leftJoin('currency_rate', 'currency_rate.id', '=', 'lesson_option.currency_rate_id')
-                    ->select('lesson_option.*', 'currency_rate.currency')
+                    ->select('lesson_option.*', 'currency_rate.currency', DB::raw("(SELECT GROUP_CONCAT(DISTINCT ls.lesson_option_id
+                    ORDER BY ls.lesson_option_id DESC SEPARATOR ',') AS lesson_option_id FROM lesson_schedule ls
+                    WHERE ls.lesson_option_id = lesson_option.id AND ls.students_id = $students_id
+                    AND ls.teachers_id = $teachers_id) AS lesson_option_id"), DB::raw("(SELECT lrt.rate
+                                                        FROM teachers t
+                                                        left join lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
+                                                        WHERE t.id = $teachers_id) AS trial_lesson_rate"))
                     ->get();
         return $data;//response()->json();
     }
@@ -414,8 +477,14 @@ class HomeController extends Controller {
         $teachers = DB::table('teachers')
                         ->leftJoin('currency_rate', 'currency_rate.id', '=', 'teachers.currency_rate_id')
                         ->leftJoin('lesson_rate_type', 'lesson_rate_type.id', '=', 'teachers.lesson_rate_type_id')
-                        ->select('teachers.*', 'currency_rate.currency', 'lesson_rate_type.type')
+                        ->leftJoin('lesson_schedule', 'lesson_schedule.teachers_id', '=', 'teachers.id')
+                        ->select('teachers.*', 
+                                'currency_rate.currency', 
+                                'lesson_rate_type.type', 
+                                DB::raw("GROUP_CONCAT(DISTINCT lesson_schedule.lesson_option_id
+                                ORDER BY lesson_schedule.lesson_option_id DESC SEPARATOR ',') as lesson_option_id"))
                         // , 'currency_rate.*', 'lesson_rate_type.type'
+                        ->groupBy('teachers.id')
                         ->get();
         if (isset($_GET['q'])) {
             $q = $_GET['q'];
@@ -693,7 +762,7 @@ class HomeController extends Controller {
             // $currWeek[] = date("m/d/Y l", $ts);
             array_push($time, array(
                 'w_date' => date("m/d/Y", strtotime($r->start_time)),
-                'time' => date('H:i A', strtotime($r->start_time))
+                'time' => date('H:i', strtotime($r->start_time))
             ));
         }
         return $time; 
@@ -753,7 +822,7 @@ class HomeController extends Controller {
             for ($i=0; $i < count($lesson_date); $i++) { 
                 array_push($d, array(
                     'lesson_schedule_id' => $lesson_schedule_id,
-                    'lesson_date'        => date('Y-m-d h:i:s', strtotime($lesson_date[$i])),
+                    'lesson_date'        => date('Y-m-d H:i:s', strtotime($lesson_date[$i])),
                     'created_at'        => date('Y-m-d H:i:s')
                 ));
             }
@@ -792,10 +861,15 @@ class HomeController extends Controller {
                         ['students_id', '=', Request::post('user_id')],
                         ['teachers_id', '=', Request::post('teachers_id')],
                         ['lesson_schedule_id', '=', null],
-                    ])->update(['lesson_schedule_id' => $lesson_schedule_id]);
+                    ])->update(
+                        [
+                            'lesson_schedule_id' => $lesson_schedule_id, 
+                            'lesson_option_id' => Request::post('lesson_option_id')
+                        ]
+                    );
         
             if ($q) {
-                // get students_pref
+                // Trial Lesson
                 $students_pref = DB::table('students_pref')
                             ->where([
                                 ['students_id', '=', Request::post('user_id')],
@@ -814,20 +888,125 @@ class HomeController extends Controller {
 
                 $email = Request::post('email');
                 $details = [
-                'dest'=>'student_booked_lesson',
-                'data' => [
-                    'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
-                    'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
-                    'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
-                    'type_of_lesson' => $students_level->level . ' - ' . $lesson_type_details->title,
-                ],
-                'body' => 'This is a body'
+                    'dest'=>'student_booked_lesson',
+                    'data' => [
+                        'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
+                        'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
+                        'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
+                        'type_of_lesson' => $students_level->level . ' - ' . $lesson_type_details->title,
+                    ],
+                    'body' => 'This is a body'
+                ];
+                Mail::to($email)->send(new RegisterMail($details));
+            } else {
+                // Any Lesson
+                $teacherData = Teachers::where('id', Request::post('teachers_id'))->first();
+                $email = Request::post('email');
+                $details = [
+                    'dest'=>'student_booked_lesson',
+                    'data' => [
+                        'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
+                        'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
+                        'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
+                        'type_of_lesson' => ''
+                    ],
+                    'body' => 'This is a body'
                 ];
                 Mail::to($email)->send(new RegisterMail($details));
             }
-            
 
             return response()->json(['stripe_date'=>$stripe,'lesson_schedule_id'=>$lesson_schedule_id]);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
+
+    }
+    
+    public function studentBookFreeTrial(){
+        try {
+            /** 
+             * Input Backend
+             */
+            $lesson_date = Request::post('lesson_date');
+            $m = array();
+            $d = array();
+            array_push($m, array(
+                'teachers_id'           => Request::post('teachers_id'),
+                'lesson_plan_id'        => Request::post('lesson_plan_id'),
+                'lesson_option_id'      => Request::post('lesson_option_id'),
+                // 'communication_app_id'  => Request::post('communication_app_id'),
+                // 'app_id'                => Request::post('app_id'),
+                'students_id'           => Request::post('user_id'),
+                'created_at'            => date('Y-m-d H:i:s')
+            ));
+            DB::table('lesson_schedule')->insert($m);
+            $lesson_schedule_id = DB::getPdo()->lastInsertId();
+            for ($i=0; $i < count($lesson_date); $i++) { 
+                array_push($d, array(
+                    'lesson_schedule_id' => $lesson_schedule_id,
+                    'lesson_date'        => date('Y-m-d H:i:s', strtotime($lesson_date[$i])),
+                    'created_at'        => date('Y-m-d H:i:s')
+                ));
+            }
+            DB::table('lesson_schedule_details')->insert($d);
+            //update students pref
+            $q = DB::table('students_pref')
+                    ->where([
+                        ['students_id', '=', Request::post('user_id')],
+                        ['teachers_id', '=', Request::post('teachers_id')],
+                        ['lesson_schedule_id', '=', null],
+                    ])->update(
+                        [
+                            'lesson_schedule_id' => $lesson_schedule_id, 
+                            'lesson_option_id' => Request::post('lesson_option_id')
+                        ]
+                    );
+            if ($q) {
+                // Trial Lesson
+                $students_pref = DB::table('students_pref')
+                            ->where([
+                                ['students_id', '=', Request::post('user_id')],
+                                ['teachers_id', '=', Request::post('teachers_id')],
+                                ['lesson_schedule_id', '=', $lesson_schedule_id],
+                            ])->first();
+
+                $students_level = DB::table('students_level')
+                                ->where('id', $students_pref->students_level_id)->first();
+                $lessonTypeDetailsID = explode(',', $students_pref->lesson_type_details_id);
+                $lesson_type_details = DB::table('lesson_type_details')
+                                ->whereIn('id', $lessonTypeDetailsID)->first();
+
+                $teacherData = Teachers::where('id', Request::post('teachers_id'))->first();
+                $email = Request::post('email');
+                $details = [
+                    'dest'=>'student_booked_lesson',
+                    'data' => [
+                        'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
+                        'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
+                        'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
+                        'type_of_lesson' => $students_level->level . ' - ' . $lesson_type_details->title,
+                    ],
+                    'body' => 'This is a body'
+                ];
+                Mail::to($email)->send(new RegisterMail($details));
+            } else {
+                // Any Lesson
+                $teacherData = Teachers::where('id', Request::post('teachers_id'))->first();
+                $email = Request::post('email');
+                $details = [
+                    'dest'=>'student_booked_lesson',
+                    'data' => [
+                        'teacher_name' => $teacherData->lastname . ', ' . $teacherData->firstname,
+                        'date' => date('Y-m-d H:i:s', strtotime($d[0]['lesson_date'])),
+                        'time' => date('h:i:s', strtotime($d[0]['lesson_date'])) . ' - ' . date('h:i:s', strtotime($d[1]['lesson_date'])),
+                        'type_of_lesson' => ''
+                    ],
+                    'body' => 'This is a body'
+                ];
+                Mail::to($email)->send(new RegisterMail($details));
+            }
+
+            return response()->json(['lesson_schedule_id'=>$lesson_schedule_id]);
         } catch (Exception $e) {
             return response()->json($e->getMessage());
         }

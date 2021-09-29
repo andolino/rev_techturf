@@ -206,7 +206,11 @@
       </div>
     </div>
 
-    
+    <div class="show_loading" v-if="showLoading">
+      <p>
+        <i class="fas fa-spinner fa-pulse"></i> Please wait..
+      </p> 
+    </div>
 
   </div>
 </template>
@@ -252,7 +256,8 @@ export default {
       asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
       user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
       upcomingLessonData: '',
-      sorted_date: ''
+      sorted_date: '',
+      showLoading: false
     }
   },
   methods: {
@@ -306,26 +311,26 @@ export default {
       switch (lesson_option_id) {
         case 1:
           //trial lesson
-          var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+          var sd = moment(new Date(sorted_date)).format('L HH:mm');
           var ed = moment(new Date(sorted_date)).add(30, 'minutes');
           var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
           this.totalHrs = duration.asHours();
           break;
         case 2:
           //1 Hour lesson
-          var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+          var sd = moment(new Date(sorted_date)).format('L HH:mm');
           var ed = moment(new Date(sorted_date)).add(1, 'hours');
           var duration = moment.duration(ed.diff(moment(new Date(sorted_date)))); 
-          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
           this.totalHrs = duration.asHours();
           break;
         default:
           //30 Minute Lesson (For Elementary Level)
-          var sd = moment(new Date(sorted_date)).format('L HH:mm A');
+          var sd = moment(new Date(sorted_date)).format('L HH:mm');
           var ed = moment(new Date(sorted_date)).add(30, 'minutes');
           var duration = moment.duration(ed.diff(moment(new Date(sorted_date))));
-          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm A')];
+          this.formToSave.lesson_date = [sd, moment(ed).format('L HH:mm')];
           this.totalHrs = duration.asHours();
           break;
       }
@@ -348,8 +353,8 @@ export default {
             this.studentInfo.students_id        = students_id;
             this.studentInfo.lesson_schedule_id = lesson_schedule_id;
             this.studentInfo.status             = res.data[0].status;
-            this.formToSave.lesson_date         = [moment(res.data[0].start_date).format('L HH:mm A'),
-                                                  moment(res.data[0].end_date).format('L HH:mm A')]
+            this.formToSave.lesson_date         = [moment(res.data[0].start_date).format('L HH:mm'),
+                                                  moment(res.data[0].end_date).format('L HH:mm')]
         }).catch((error) => {
           console.log(error);
       });
@@ -371,6 +376,7 @@ export default {
         confirmButtonText: 'Yes, ' + approval_type + ' it!'
       }).then((result) => {
         if (result.isConfirmed) {
+          this.showLoading = true;
           axios.post('api/approve-student-booking', { 
             'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
               .then((res) => {
@@ -381,6 +387,10 @@ export default {
                   showConfirmButton: false,
                   timer: 1500
                 });
+                this.showLoading = false;
+                setTimeout(function(){
+                  window.location.reload();
+                }, 1500);
             }).catch((error) => {
               console.log(error);
           });

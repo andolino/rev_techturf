@@ -111,7 +111,10 @@
         <li><strong>Date:</strong> {{ $details['data']['date'] }}</li>
         <li><strong>Time:</strong> {{ $details['data']['time'] }}</li>
         <li><strong>Type of Lesson:</strong> {{ $details['data']['type_of_lesson'] }} </li>
-        {{-- <li><strong>Trial Lesson</strong> </li> --}}
+        @if ($details['data']['type_of_lesson'] == '')
+        @else
+          <li><strong>Trial Lesson</strong> {{ $details['data']['type_of_lesson'] }}</li> 
+        @endif
       </ul>
       <p>
         Lesson is booked! Please wait for you the confirmation <br> from the teacher.

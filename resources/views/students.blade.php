@@ -67,7 +67,7 @@
                         </form>
                     </div>
                 </div>
-               <fetch-feeds :findtutor="{{ $teachers }}" ></fetch-feeds>
+               <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
             @elseif (!empty($teachersprofile))
                 <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
             @else

@@ -38,6 +38,9 @@ class RegisterMail extends Mailable
             case 'teacher_cancelled_lesson':
                 return $this->markdown('emails.teacher_cancelled_lesson');
                 break;
+            case 'teacher_confirmed_lesson':
+                return $this->markdown('emails.teacher_confirmed_lesson');
+                break;
             case 'student_reschedule_booked':
                 return $this->markdown('emails.student_reschedule_booked');
                 break;
